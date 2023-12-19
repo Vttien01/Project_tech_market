@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { Button, Form, Image } from 'antd';
 
@@ -21,57 +21,77 @@ import SelectField from '@components/common/form/SelectField';
 import logo from '@assets/images/logoTech.png';
 import imgContact from '@assets/images/imgContact.png';
 import './style.css';
+import TextField from '@components/common/form/TextField';
 import useDisclosure from '@hooks/useDisclosure';
 import ListDetailsForm from './ListDetailsForm';
+import PasswordGeneratorField from '@components/common/form/PasswordGeneratorField';
+import { IconCake, IconMailExclamation, IconPhone } from '@tabler/icons-react';
+import dayjs from 'dayjs';
+import { formatDateString } from '@utils';
+import { AppConstants, DATE_FORMAT_DISPLAY, DATE_FORMAT_VALUE, DEFAULT_FORMAT } from '@constants';
+import DatePickerField from '@components/common/form/DatePickerField';
 
 window.Buffer = window.Buffer || Buffer;
 const message = defineMessages({
     copyRight: '{brandName} - © Copyright {year}. All Rights Reserved',
-    loginFail: 'Sai tên đăng nhập hoặc mật khẩu !!!',
+    loginFail: 'Chưa điền đủ các trường thông tin!!!',
     login: 'Đăng nhập',
 });
 
-const LoginPage = () => {
+const SignupPage = () => {
     const intl = useIntl();
     const translate = useTranslate();
+    const [idHash, setidHash] = useState('');
     const [openedDetailsModal, handlerDetailsModal] = useDisclosure(false);
-    const [form] = Form.useForm();
     const base64Credentials = Buffer.from(`${appAccount.APP_USERNAME}:${appAccount.APP_PASSWORD}`).toString('base64');
     const { execute, loading } = useFetch({
-        ...apiConfig.account.loginBasic,
+        ...apiConfig.user.create,
         authorization: `Basic ${base64Credentials}`,
     });
+    const [form] = Form.useForm();
     const { execute: executeGetProfile } = useFetchAction(accountActions.getProfile, {
         loading: useFetchAction.LOADING_TYPE.APP,
     });
     const { profile } = useAuth();
 
     const onFinish = (values) => {
+        values.birthday = values.birthday && formatDateString(values.birthday, DEFAULT_FORMAT);
         console.log(values.grant_type);
         let data;
 
         // Kiểm tra giá trị của grant_type
         if (values.grant_type === 'user') {
             // Nếu grant_type rỗng, sử dụng phone làm username
-            data = { phone: values.username, password: values.password, grant_type: values.grant_type };
+            data = {
+                phone: values.phone,
+                password: values.password,
+                email: values.email,
+                fullName: values.fullName,
+                birthday: values.birthday,
+            };
         } else {
             // Nếu grant_type không rỗng, sử dụng giá trị của values
             data = values;
         }
         execute({
             data: { ...data },
-            onCompleted: (res) => {
-                setCacheAccessToken(res.access_token);
-                executeGetProfile();
+            onCompleted: (response) => {
+                // setCacheAccessToken(res.access_token);
+                // executeGetProfile();
+                setidHash(response.data.idHash);
+                handlerDetailsModal.open();
+                console.log(response);
             },
             onError: () => showErrorMessage(translate.formatMessage(message.loginFail)),
         });
     };
-    const handleForgotPasswordClick = () => {
-        // Xử lý sự kiện khi người dùng click vào "Quên mật khẩu?"
-        console.log('Người dùng đã click vào "Quên mật khẩu?"');
-        handlerDetailsModal.open();
-        // Thêm logic xử lý quên mật khẩu của bạn tại đây
+
+    const validateStartDate = (_, value) => {
+        const date = dayjs(formatDateString(new Date(), DEFAULT_FORMAT), DATE_FORMAT_VALUE);
+        if (date && value && value.isAfter(date)) {
+            return Promise.reject('Ngày sinh phải nhỏ hơn ngày hiện tại');
+        }
+        return Promise.resolve();
     };
 
     return (
@@ -80,6 +100,7 @@ const LoginPage = () => {
                 open={openedDetailsModal}
                 onCancel={() => handlerDetailsModal.close()}
                 form={form}
+                idHash={idHash}
             />
             <div className="area_login_1">
                 <nav className="nav">
@@ -100,7 +121,7 @@ const LoginPage = () => {
                                 <a href="/all-product">Sản phẩm</a>
                             </li>
                             <li>
-                                <a href="#">Liên hệ</a>
+                                <a href="/contact">Liên hệ</a>
                             </li>
                         </ul>
                     </div>
@@ -108,27 +129,76 @@ const LoginPage = () => {
             </div>
             <div className="area_login_left">
                 {/* <div className="loginForm"> */}
+                <Image
+                    src={imgContact}
+                    style={{ objectFit: 'cover', height: 500, width: 500, borderRadius: 20 }}
+                    preview={false}
+                />
+            </div>
+            <div className="area_login_right">
                 <div className="top">
                     <h2>Welcome to our website</h2>
-                    <h4>Please login</h4>
+                    <h4>Please signup</h4>
                 </div>
                 <Form
                     name="login-form"
                     onFinish={onFinish}
-                    initialValues={{
-                        username: 'superAdmin',
-                        password: '123456',
-                    }}
+                    // initialValues={{
+                    //     phone: 'superAdmin',
+                    //     password: '123456',
+                    // }}
                     layout="vertical"
                 >
                     <div className="input">
                         <InputTextField
-                            name="username"
-                            fieldProps={{ prefix: <UserOutlined /> }}
+                            name="phone"
+                            fieldProps={{ prefix: <IconPhone /> }}
                             // label={intl.formatMessage(message.username)}
-                            placeholder={intl.formatMessage(commonMessage.username)}
+                            placeholder="Số điện thoại"
                             size="large"
                             required
+                        />
+                    </div>
+                    <div className="input">
+                        <InputTextField
+                            name="email"
+                            fieldProps={{ prefix: <IconMailExclamation /> }}
+                            // label={intl.formatMessage(message.username)}
+                            placeholder={intl.formatMessage(commonMessage.email)}
+                            size="large"
+                            rules={[
+                                {
+                                    type: 'email',
+                                    message: 'Định dạng email không hợp lệ',
+                                },
+                            ]}
+                            required
+                        />
+                    </div>
+                    <div className="input">
+                        <InputTextField
+                            name="fullName"
+                            fieldProps={{ prefix: <UserOutlined /> }}
+                            // label={intl.formatMessage(message.username)}
+                            placeholder="Họ và tên"
+                            size="large"
+                            required
+                        />
+                    </div>
+                    <div className="input">
+                        <DatePickerField
+                            fieldProps={{ prefix: <IconCake /> }}
+                            showTime={true}
+                            name="birthday"
+                            placeholder="Ngày sinh"
+                            format={DEFAULT_FORMAT}
+                            style={{ width: '100%', height: 60 }}
+                            size="large"
+                            rules={[
+                                {
+                                    validator: validateStartDate,
+                                },
+                            ]}
                         />
                     </div>
                     <div className="input">
@@ -143,20 +213,6 @@ const LoginPage = () => {
                         />
                         <i className="fa-solid fa-eye"></i>
                     </div>
-                    <div className="input">
-                        <SelectField
-                            placeholder={<FormattedMessage defaultMessage="Bạn là?" />}
-                            required
-                            name="grant_type"
-                            options={loginOptions}
-                            style={{ height: 60 }}
-                        />
-                    </div>
-                    <div className="forget">
-                        <a href="#" onClick={handleForgotPasswordClick}>
-                            Quên mật khẩu?
-                        </a>
-                    </div>
                     <Button
                         type="primary"
                         size="large"
@@ -165,24 +221,17 @@ const LoginPage = () => {
                         className="btnLogin"
                         style={{ width: '100%' }}
                     >
-                        {intl.formatMessage(message.login)}
+                        ĐĂNG KÝ
                     </Button>
                     <div className="or">
                         <p>
-                            Nếu chưa có tài khoản hãy <a href="/signup">Đăng ký</a>
+                            Nếu có tài khoản hãy <a href="/login">Đăng nhập</a>
                         </p>
                     </div>
                 </Form>
-            </div>
-            <div className="area_login_right">
-                <Image
-                    src={imgContact}
-                    style={{ objectFit: 'cover', height: 500, width: 500, borderRadius: 20 }}
-                    preview={false}
-                />
             </div>
         </div>
     );
 };
 
-export default LoginPage;
+export default SignupPage;

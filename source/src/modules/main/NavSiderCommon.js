@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 // import './index.css';
-import { LaptopOutlined, NotificationOutlined, UserOutlined, UnorderedListOutlined } from '@ant-design/icons';
+import { LaptopOutlined, NotificationOutlined, UserOutlined, PhoneOutlined, TabletOutlined, ClockCircleOutlined } from '@ant-design/icons';
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
 import Icon from '@ant-design/icons/lib/components/AntdIcon';
 import styles from './NavSiderCommon.module.scss';
@@ -8,6 +8,9 @@ import { generatePath, matchPath, useLocation, useNavigate } from 'react-router-
 import routes from '@routes';
 import useValidatePermission from '@hooks/useValidatePermission';
 import apiConfig from '@constants/apiConfig.js';
+import order from '@assets/icons/sort-descending.svg';
+import { IconClock12, IconHeading } from '@tabler/icons-react';
+import { IconHeadphones } from '@tabler/icons-react';
 
 const { Sider } = Layout;
 
@@ -15,79 +18,80 @@ const navMenuConfig = [
     {
         label: (
             <div style={{ marginLeft: 10, fontSize: 16 }}>
-                <UserOutlined size={20} /> Điện thoại
+                <PhoneOutlined size={20} /> Điện thoại
             </div>
         ),
-        key: 'quan-ly-mon-hoc',
-        children: [
-            {
-                label: <span>Apple</span>,
-                key: 'apple',
-            },
-            {
-                label: `Oppo`,
-                key: 'oppo',
-            },
-            {
-                label: `SamSung`,
-                key: 'samsung',
-            },
-            {
-                label: `Vivo`,
-                key: 'vivo',
-            },
-        ],
+        key: 'Điện thoại',
+        // children: [
+        //     // {
+        //     //     label: <span>Apple</span>,
+        //     //     key: 'APPLE',
+        //     //     // path: routes.adminsListPage.path,
+        //     // },
+        //     // {
+        //     //     label: `Oppo`,
+        //     //     key: 'OPPO',
+        //     // },
+        //     // {
+        //     //     label: `SamSung`,
+        //     //     key: 'SAMSUNG',
+        //     // },
+        //     // {
+        //     //     label: `Vivo`,
+        //     //     key: 'VIVO',
+        //     // },
+        // ],
     },
     {
         label: (
             <div style={{ marginLeft: 10, fontSize: 16 }}>
-                <UserOutlined size={20} /> Laptop
+                <LaptopOutlined size={20} /> Laptop
             </div>
         ),
-        key: 'quan-ly-du-an',
-        children: [
-            {
-                label: `Macbook`,
-                key: 'leader-management',
-            },
-            {
-                label: `Laptop Asus`,
-                key: 'developer-management',
-            },
+        key: 'laptop',
+        // children: [
+        //     // {
+        //     //     label: `Macbook`,
+        //     //     key: 'MACBOOK',
+        //     // },
+        //     // {
+        //     //     label: `Laptop Lenovo`,
+        //     //     key: 'LENOVO',
+        //     // },
 
-            {
-                label: `Laptop Dell`,
-                key: 'project-management',
-            },
-            {
-                label: `Laptop HP`,
-                key: 'project-role-management',
-            },
-        ],
+        //     // {
+        //     //     label: `Laptop Dell`,
+        //     //     key: 'DELL',
+        //     // },
+        //     // {
+        //     //     label: `Laptop HP`,
+        //     //     key: 'HP',
+        //     // },
+        // ],
     },
     {
         label: (
             <div style={{ marginLeft: 2, fontSize: 16 }}>
-                <UserOutlined size={20} /> Tablet
+                <TabletOutlined size={20} /> Tablet
             </div>
         ),
-        key: 'smartphones',
+        key: 'TABLET',
     },
     {
         label: (
             <div style={{ marginLeft: 2, fontSize: 16 }}>
-                <UserOutlined size={20} /> SmatchWatch
+                <ClockCircleOutlined size={20} /> SmatchWatch
             </div>
         ),
-        key: 'smatchwatch',
+        key: 'SMATCHWATCH',
     },
     {
         label: (
             <div style={{ marginLeft: 2, fontSize: 16 }}>
-                <UserOutlined size={20} /> Tai nghe
+                <IconHeadphones size={20} /> Tai nghe
             </div>
         ),
-        key: 'head-phone',
+        key: 'TAI NGHE',
     },
 ];
 
@@ -102,7 +106,7 @@ const NavSiderCommon = ({ collapsed, onCollapse, width }) => {
 
     const onMenuClick = (item) => {
         console.log(item.key);
-        navigate(`/all-product/${item.key}`);
+        navigate(`/all-product?category=${item.key}`);
     };
 
     const activeNav = useMemo(() => {
@@ -175,7 +179,7 @@ const NavSiderCommon = ({ collapsed, onCollapse, width }) => {
     return (
         <Sider
             style={{ background: colorBgContainer }}
-            className={'app-sider ' + styles.sidebar}
+            className={ styles.sidebar}
             collapsible
             collapsed={collapsed}
             width={width}
@@ -189,18 +193,6 @@ const NavSiderCommon = ({ collapsed, onCollapse, width }) => {
                 mode="vertical"
                 items={makeNavs(navMenuConfig)}
             />
-            {/* <Menu
-                style={{ height: '400px', borderRight: 10 }}
-                // key={location.pathname == '/' ? 'initial' : 'navSider'}
-                mode="vertical"
-                items={makeNavs(navMenuConfig)}
-                defaultSelectedKeys={activeNav.selectedKeys}
-                defaultOpenKeys={activeNav.openKeys}
-                // openKeys={activeNav.openKeys}
-                selectedKeys={activeNav.selectedKeys}
-                onSelect={(item) => handleMenuItemClick(item)
-                }
-            /> */}
         </Sider>
     );
 };

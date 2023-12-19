@@ -35,6 +35,16 @@ const apiConfig = {
             method: 'POST',
             headers: baseHeader,
         },
+        forgetpasswordAccount: {
+            baseURL: `${apiUrl}v1/account/forget_password`,
+            method: 'POST',
+            headers: baseHeader,
+        },
+        requestForgetPassword: {
+            baseURL: `${apiUrl}v1/account/request_forget_password`,
+            method: 'POST',
+            headers: baseHeader,
+        },
         logout: {
             baseURL: `${apiUrl}v1/account/logout`,
             method: 'GET',
@@ -46,7 +56,7 @@ const apiConfig = {
             headers: baseHeader,
         },
         createAdmin: {
-            baseURL: `${apiUrl}v1/account/create_admin`,
+            baseURL: `${apiUrl}v1/account/create_employee`,
             method: `POST`,
             headers: baseHeader,
         },
@@ -73,7 +83,13 @@ const apiConfig = {
             headers: baseHeader,
         },
         create: {
-            baseURL: `${apiUrl}v1/user/create`,
+            baseURL: `${apiUrl}v1/user/signup`,
+            method: `POST`,
+            headers: baseHeader,
+        },
+
+        forgetPassword: {
+            baseURL: `${apiUrl}v1/user/confirm_otp`,
             method: `POST`,
             headers: baseHeader,
         },
@@ -284,7 +300,7 @@ const apiConfig = {
             headers: baseHeader,
         },
     },
-    settings:{
+    settings: {
         getSettingsList: {
             baseURL: `${apiUrl}v1/settings/list`,
             method: 'GET',

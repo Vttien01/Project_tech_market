@@ -69,7 +69,6 @@ const HomePage = () => {
     let catProductsThree = allproducts?.filter((product) => product?.categoryDto?.name === 'Phụ kiện') || [];
     let catProductsFour = allproducts?.filter((product) => product?.categoryDto?.name === 'Tai Nghe') || [];
 
-    console.log(allproducts);
 
     return (
         <div className="container" style={{ marginLeft:80 }}>

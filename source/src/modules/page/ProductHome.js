@@ -14,14 +14,8 @@ import useFetch from '@hooks/useFetch';
 const ProductHome = () => {
     const [collapsed, setCollapsed] = useState(false);
     const [items, setItems] = useState([]);
-    // const {
-    //     data: allproducts1,
-    //     loading: allproductsLoading,
-    //     execute: executgeallproducts,
-    // } = useFetch(apiConfig.product.autocomplete, {
-    //     immediate: true,
-    //     mappingData: ({ data }) => data.content,
-    // });
+    const queryParameters = new URLSearchParams(window.location.search);
+    const category = queryParameters.get('category');
 
     const toggleCollapsed = () => setCollapsed((prev) => !prev);
 
@@ -30,7 +24,7 @@ const ProductHome = () => {
             <div className={styles.siderHeader}>
                 <NavSiderCommon collapsed={collapsed} onCollapse={toggleCollapsed} />
             </div>
-            <Products title={ "Tất cả sản phẩm" }/>
+            {category ? <Products title={ category }/> : <Products/>}
             {/* <div>
                 <Routes>
                     <Route path="/" element={<Products/>}></Route>

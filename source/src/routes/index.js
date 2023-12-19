@@ -13,6 +13,7 @@ import SettingSavePage from '@modules/listSetting/SettingSavePage';
 import ProductHomePageRoutes from '@modules/page/routes';
 import BrandRoutes from '@modules/brand/routes';
 import ProductRoutes from '@modules/product/routes';
+import SignupPage from '@modules/signup';
 
 /*
 	auth
@@ -44,6 +45,12 @@ const routes = {
         component: LoginPage,
         auth: false,
         title: 'Login page',
+    },
+    signupPage: {
+        path: '/signup',
+        component: SignupPage,
+        auth: false,
+        title: 'Signup page',
     },
     profilePage: {
         path: '/profile',

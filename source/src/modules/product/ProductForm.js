@@ -76,8 +76,10 @@ const ProductForm = ({ isEditing, formId, actions, dataDetail, onSubmit, setIsCh
             );
             formRequest.setFieldsValue({
                 ...dataDetail,
-                brandId: dataDetail?.brandDto?.name,
-                categoryId: dataDetail?.categoryDto?.name,
+                price: dataDetail.price.toString(),
+                saleOff: dataDetail?.saleOff.toString(),
+                brandId: dataDetail?.brandDto?.id,
+                categoryId: dataDetail?.categoryDto?.id,
             });
             setImageUrl(dataDetail.image);
         }

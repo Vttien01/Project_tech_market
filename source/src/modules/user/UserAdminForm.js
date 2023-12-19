@@ -64,7 +64,7 @@ const UserAdminForm = (props) => {
                         <CropImageField
                             label={translate.formatMessage(commonMessage.avatar)}
                             name="avatar"
-                            imageUrl={imageUrl && `${AppConstants.contentRootUrl}${imageUrl}`}
+                            imageUrl={imageUrl}
                             aspect={1 / 1}
                             uploadFile={uploadFile}
                         />

@@ -1,4 +1,4 @@
-import {  Form, Input } from 'antd';
+import { ConfigProvider, Form, Input } from 'antd';
 import React from 'react';
 import useFormField from '@hooks/useFormField';
 import TextArea from 'antd/es/input/TextArea';
@@ -19,7 +19,14 @@ const PasswordGeneratorField = (props) => {
         suffix,
         value,
     } = props;
-
+    <ConfigProvider
+        theme={{
+            token: {
+                // Seed Token
+                labelColor: '#ffffff',
+            },
+        }}
+    ></ConfigProvider>;
     const getMaxLengthMsg = () => {
         const { maxLength, maxLengthMsg } = props;
         return maxLengthMsg || `Số ký tự không thể nhiều hơn ${maxLength}`;
@@ -58,7 +65,7 @@ const PasswordGeneratorField = (props) => {
             name={fieldName}
             validateStatus={validateStatus}
             help={help}
-            rules={[ ...rules, ...getTextFieldRules() ]}
+            rules={[...rules, ...getTextFieldRules()]}
         >
             {type === 'textarea' ? (
                 <TextArea
