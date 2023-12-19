@@ -513,6 +513,32 @@ const apiConfig = {
             isRequiredTenantId: true,
         },
     },
+    cart: {
+        getList: {
+            baseURL: `${apiUrl}v1/`,
+            method: 'GET',
+            headers: baseHeader,
+            isRequiredTenantId: true,
+        },
+        add: {
+            baseURL: `${apiUrl}v1/`,
+            method: 'POST',
+            headers: baseHeader,
+            isRequiredTenantId: true,
+        },
+        update: {
+            baseURL: `${apiUrl}v1/`,
+            method: 'PUT',
+            headers: baseHeader,
+            isRequiredTenantId: true,
+        },
+        delete: {
+            baseURL: `${apiUrl}v1/`,
+            method: 'DELETE',
+            headers: baseHeader,
+            isRequiredTenantId: true,
+        },
+    },
 };
 
 export default apiConfig;

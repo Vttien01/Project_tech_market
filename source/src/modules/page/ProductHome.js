@@ -13,6 +13,15 @@ import useFetch from '@hooks/useFetch';
 
 const ProductHome = () => {
     const [collapsed, setCollapsed] = useState(false);
+    const [items, setItems] = useState([]);
+    // const {
+    //     data: allproducts1,
+    //     loading: allproductsLoading,
+    //     execute: executgeallproducts,
+    // } = useFetch(apiConfig.product.autocomplete, {
+    //     immediate: true,
+    //     mappingData: ({ data }) => data.content,
+    // });
 
     const toggleCollapsed = () => setCollapsed((prev) => !prev);
 
@@ -21,12 +30,13 @@ const ProductHome = () => {
             <div className={styles.siderHeader}>
                 <NavSiderCommon collapsed={collapsed} onCollapse={toggleCollapsed} />
             </div>
-            <div>
+            <Products title={ "Tất cả sản phẩm" }/>
+            {/* <div>
                 <Routes>
-                    <Route path="/" element={<Products />}></Route>
+                    <Route path="/" element={<Products/>}></Route>
                     <Route path="/:categoryId" element={<Products />}></Route>
                 </Routes>
-            </div>
+            </div> */}
         </div>
     );
 };

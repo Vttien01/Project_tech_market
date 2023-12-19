@@ -77,6 +77,10 @@
         .para{
             margin: 1rem 0;
             opacity: 0.9;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            max-width: 70ch; /* Số ký tự tối đa trên mỗi dòng */
         }
         .info{
             margin-bottom: 1.6rem;
