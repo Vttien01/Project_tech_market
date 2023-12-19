@@ -1,11 +1,13 @@
+/* eslint-disable react/no-unknown-property */
 import React from 'react';
 import { UsergroupAddOutlined, ControlOutlined, InboxOutlined } from '@ant-design/icons';
 import routes from '@routes';
 import { FormattedMessage } from 'react-intl';
 import apiConfig from './apiConfig';
 import product from "@assets/icons/building-factory.svg";
-import news from "@assets/icons/news.svg";
-
+import { Iconnews } from '@assets/icons/icon';
+import IconOrder from '@assets/icons/icon';
+import order from '@assets/icons/sort-descending.svg';
 
 export const navMenuConfig = [
     {
@@ -36,7 +38,8 @@ export const navMenuConfig = [
     {
         label: <FormattedMessage defaultMessage="Quản lý Sản phẩm" />,
         key: 'product-management',
-        icon: <img src={product} alt="My SVG" />,
+        // eslint-disable-next-line react/no-unknown-property
+        icon: <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-building-factory" width="18" height="18" viewBox="0 0 24 24" stroke-width="1" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 21c1.147 -4.02 1.983 -8.027 2 -12h6c.017 3.973 .853 7.98 2 12" /><path d="M12.5 13h4.5c.025 2.612 .894 5.296 2 8" /><path d="M9 5a2.4 2.4 0 0 1 2 -1a2.4 2.4 0 0 1 2 1a2.4 2.4 0 0 0 2 1a2.4 2.4 0 0 0 2 -1a2.4 2.4 0 0 1 2 -1a2.4 2.4 0 0 1 2 1" /><path d="M3 21l19 0" /></svg>,
         children: [
             {
                 label: <FormattedMessage defaultMessage="Thương hiệu" />,
@@ -61,7 +64,7 @@ export const navMenuConfig = [
     {
         label: <FormattedMessage defaultMessage="News management" />,
         key: 'news-management',
-        icon: <img src={news} alt="My SVG" />,
+        icon: <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-news" width="18" height="18" viewBox="0 0 24 24" stroke-width="1" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M16 6h3a1 1 0 0 1 1 1v11a2 2 0 0 1 -4 0v-13a1 1 0 0 0 -1 -1h-10a1 1 0 0 0 -1 1v12a3 3 0 0 0 3 3h11" /><path d="M8 8l4 0" /><path d="M8 12l4 0" /><path d="M8 16l4 0" /></svg>,
         children: [
             {
                 label: <FormattedMessage defaultMessage="News" />,
@@ -74,6 +77,20 @@ export const navMenuConfig = [
                 key: 'news-category',
                 path: routes.newsCategoryListPage.path,
                 permission: [apiConfig.category.getList.baseURL],
+            },
+        ],
+    },
+    {
+        label: <FormattedMessage defaultMessage="Quản lý đơn hàng" />,
+        key: 'order-management',
+        // eslint-disable-next-line react/no-unknown-property
+        icon: <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-menu-order" width="18" height="18" viewBox="0 0 24 24" stroke-width="1" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 10h16" /><path d="M4 14h16" /><path d="M9 18l3 3l3 -3" /><path d="M9 6l3 -3l3 3" /></svg>,
+        children: [
+            {
+                label: <FormattedMessage defaultMessage="Đơn hàng" />,
+                key: 'order',
+                // path: routes.orderListPage.path,
+                permission: [apiConfig.order.getList.baseURL],
             },
         ],
     },

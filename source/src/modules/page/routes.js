@@ -3,7 +3,8 @@ import ProductHomePage from './ProductHome';
 import IntroductionHomePage from './IntroductionHome';
 import ContactHome from './ContactHome';
 import ExperienceHome from './ExperienceHome';
-import HomePage from './HomePage';
+import HomePage from './HomePage/HomePage';
+import ProductSinglePage from './ProductSinglePage/ProductSinglePage';
 export default {
     ProductHomePage1: {
         path: '/all-product',
@@ -38,6 +39,12 @@ export default {
     HomePage: {
         path: '/home',
         component: HomePage,
+        auth: null,
+        title: 'Trang chủ',
+    },
+    ProductDetails: {
+        path: '/productdetail/:id',
+        component: ProductSinglePage,
         auth: null,
         title: 'Trang chủ',
     },

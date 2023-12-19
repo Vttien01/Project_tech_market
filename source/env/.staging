@@ -1,4 +1,4 @@
-REACT_APP_API = http://103.188.82.155/
+REACT_APP_API = https://tech-market.space/
 REACT_APP_ENV = staging
 GENERATE_SOURCEMAP = false
 CI = false

@@ -25,10 +25,10 @@ const IntroductionHome = () => {
                 </Space>
             </div>
             <div className="area2"></div>
-            <div className="area3">
+            <div className="area3" style={{ display: 'flex', justifyContent: 'center', marginLeft:50 }}>
                 <Image src={intro1} style={{ objectFit: 'cover' }} preview={false} />
             </div>
-            <div className="area4"></div>
+            {/* <div className="area4"></div> */}
             <div className="area2_1">
                 <Col offset={6}>
                     <Avatar src={IconIntro1} size={120} />

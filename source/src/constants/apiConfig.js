@@ -409,6 +409,110 @@ const apiConfig = {
             isRequiredTenantId: true,
         },
     },
+    review: {
+        getByProductPublic: {
+            baseURL: `${apiUrl}v1/review/get-by-product-public/:id`,
+            method: 'GET',
+            headers: baseHeader,
+            isRequiredTenantId: true,
+        },
+
+        getByProduct: {
+            baseURL: `${apiUrl}v1/review/get-by-product/:id`,
+            method: 'GET',
+            headers: baseHeader,
+            isRequiredTenantId: true,
+        },
+        create: {
+            baseURL: `${apiUrl}v1/review/create`,
+            method: 'POST',
+            headers: baseHeader,
+            isRequiredTenantId: true,
+        },
+        update: {
+            baseURL: `${apiUrl}v1/review/update`,
+            method: 'PUT',
+            headers: baseHeader,
+            isRequiredTenantId: true,
+        },
+        delete: {
+            baseURL: `${apiUrl}v1/review/delete/:id`,
+            method: 'DELETE',
+            headers: baseHeader,
+            isRequiredTenantId: true,
+        },
+
+        getMyReview: {
+            baseURL: `${apiUrl}v1/review/get-my-review`,
+            method: 'GET',
+            headers: baseHeader,
+            isRequiredTenantId: true,
+        },
+
+        getUnratedProduct: {
+            baseURL: `${apiUrl}v1/review/get-unrated-product`,
+            method: 'GET',
+            headers: baseHeader,
+            isRequiredTenantId: true,
+        },
+
+        listReviews: {
+            baseURL: `${apiUrl}v1/review/star/:productId`,
+            method: 'GET',
+            headers: baseHeader,
+            isRequiredTenantId: true,
+        },
+    },
+    order: {
+        getList: {
+            baseURL: `${apiUrl}v1/order/list`,
+            method: 'GET',
+            headers: baseHeader,
+            isRequiredTenantId: true,
+        },
+        getById: {
+            baseURL: `${apiUrl}v1/order/get/:id`,
+            method: 'GET',
+            headers: baseHeader,
+            isRequiredTenantId: true,
+        },
+        create: {
+            baseURL: `${apiUrl}v1/order/create`,
+            method: 'POST',
+            headers: baseHeader,
+            isRequiredTenantId: true,
+        },
+        update: {
+            baseURL: `${apiUrl}v1/order/update`,
+            method: 'PUT',
+            headers: baseHeader,
+            isRequiredTenantId: true,
+        },
+        updateMyOrder: {
+            baseURL: `${apiUrl}v1/order/update-my-order`,
+            method: 'PUT',
+            headers: baseHeader,
+            isRequiredTenantId: true,
+        },
+        cancelMyOrder: {
+            baseURL: `${apiUrl}v1/order/cancel-my-order`,
+            method: 'PUT',
+            headers: baseHeader,
+            isRequiredTenantId: true,
+        },
+        myOrder: {
+            baseURL: `${apiUrl}v1/order/my-order`,
+            method: 'GET',
+            headers: baseHeader,
+            isRequiredTenantId: true,
+        },
+        getOrderPhone: {
+            baseURL: `${apiUrl}v1/order/get-order-phone`,
+            method: 'GET',
+            headers: baseHeader,
+            isRequiredTenantId: true,
+        },
+    },
 };
 
 export default apiConfig;

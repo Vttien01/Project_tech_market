@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import NavSiderCommon from '@modules/main/NavSiderCommon';
-import styles from '../main/MainLayout.module.scss';
+import styles from '../../main/MainLayout.module.scss';
 import './home.css';
 import { Carousel, Row, Col, Image, Radio, Flex, List, Card } from 'antd';
 import { Button, Space } from 'antd';
@@ -13,11 +13,11 @@ import banner6 from '@assets/images/HomePage/slider-banner2.jpg';
 import banner7 from '@assets/images/HomePage/slider-banner3.jpg';
 import { useParams } from 'react-router-dom';
 const positionOptions = ['top', 'bottom', 'both'];
-import { AddToCard, getAllProduct, getProductsByCategory } from './Components/API/index';
-import useFetch from '@hooks/useFetch';
-import apiConfig from '@constants/apiConfig';
+import { AddToCard, getAllProduct, getProductsByCategory } from '../Components/API/index';
 import ProductList from '@components/ProductList/ProductList';
 import ProductGird from '@components/ProductGird/ProductGrid';
+import useFetch from '@hooks/useFetch';
+import apiConfig from '@constants/apiConfig';
 
 window.onload = function () {};
 
@@ -50,7 +50,7 @@ const HomePage = () => {
         data: products,
         loading: getCategorysLoading,
         execute: executeGetCategorys,
-    } = useFetch(apiConfig.product.top10BestSelling, {
+    } = useFetch(apiConfig.product.top10BestSellingt, {
         immediate: true,
     });
     const {
@@ -72,8 +72,8 @@ const HomePage = () => {
     console.log(allproducts);
 
     return (
-        <div className="container">
-            <div className="siderHome">
+        <div className="container" style={{ marginLeft:80 }}>
+            <div className="siderHome" >
                 <NavSiderCommon collapsed={collapsed} onCollapse={toggleCollapsed} />
             </div>
             <div className="BannerHome">
@@ -115,38 +115,33 @@ const HomePage = () => {
                 </div>
             </div>
             <div className="contentTrend">
-                <Space
-                    direction="horizontal"
-                    style={{
-                        marginBottom: '20px',
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center', // Adjust as needed
-                    }}
-                    size="middle"
-                >
-                    <span style={{ fontSize: 40, marginLeft: 10 }}>TREND</span>
-                    <Space size={[4, 16]} wrap>
-                        {new Array(4).fill(null).map((_, index) => (
-                            // eslint-disable-next-line react/no-array-index-key
-                            <Button key={index}>Button</Button>
-                        ))}
-                    </Space>
-                </Space>
-                <List
-                    grid={{
-                        gutter: 16,
-                        column: 4,
-                    }}
-                    dataSource={items}
-                    renderItem={(item) => (
-                        <List.Item>
-                            <Card title={item.title}>Card content</Card>
-                        </List.Item>
-                    )}
-                />
+                <div className="main-content bg-whitesmoke">
+                    <div>
+                        <div className="categories py-0">
+                            <div className="categories-item">
+                                <div className="title-md">
+                                    <h3>Điện thoại</h3>
+                                </div>
+                                {products && <ProductGird products={catProductsTwo} />}
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div className="contentProduct"></div>
+            <div className="contentProduct">
+                <div className="main-content bg-whitesmoke">
+                    <div>
+                        <div className="categories py-0">
+                            <div className="categories-item">
+                                <div className="title-md">
+                                    <h3>Laptop</h3>
+                                </div>
+                                {products && <ProductGird products={catProductsOne} />}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div className="contentProudctBonus"></div>
         </div>
     );
