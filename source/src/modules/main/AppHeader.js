@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, Menu, Avatar, Space, Image, Input, ConfigProvider } from 'antd';
+import { Layout, Menu, Avatar, Space, Image, Input, ConfigProvider, Badge } from 'antd';
 import {
     DownOutlined,
     UserOutlined,
@@ -46,10 +46,37 @@ const AppHeader = ({ collapsed, onCollapse }) => {
         // navigate(routes.ProductHomePage1.path);
     };
 
+    // const { execute, data } = useFetch({
+    //     ...apiConfig.cart.getList,
+    // });
+    const {
+        data,
+        // loading: getcompanyLoading,
+        execute: executesbrands,
+    } = useFetch(apiConfig.cart.getList, {
+        immediate: true,
+        // mappingData: ({ data }) =>
+        //     data.content.map((item) => ({
+        //         value: item.id,
+        //         label: item.name,
+        //     })),
+    });
+
+    console.log(data);
+
+    const itemCart = data ? data : [];
+
     const itemHeader = () => {
         const items = [
             {
-                icon: <ShoppingCartOutlined style={{ fontSize: 22 }} />,
+                // icon: <ShoppingCartOutlined style={{ fontSize: 22 }} />,
+                icon: (
+                    <div className="btn bg-white text-success mx-2 ">
+                        <Badge color="secondary" badgeContent={5}>
+                            <ShoppingCartOutlined style={{ fontSize: 22 }} />
+                        </Badge>
+                    </div>
+                ),
                 key: 'cart',
             },
         ];
@@ -112,24 +139,15 @@ const AppHeader = ({ collapsed, onCollapse }) => {
     return (
         <Layout>
             <Header className={styles.appHeader} style={{ padding: 0, background: 'white', height: 90 }}>
-                {/* <span className={styles.iconCollapse} onClick={onCollapse}>
-                    {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-                </span> */}
                 <a href="" title="Tech-Market" rel="home" style={{ marginLeft: 100, marginTop: 35 }}>
                     <img width="200" height="60" src={logo} alt="Tech-market" />
                 </a>
                 {/* <Input.Search
-                        placeholder="Bạn muốn tìm gì?"
-                        size="500"
-                        style={{ marginTop: 15, width: 400, alignItems: 'center', marginLeft: 150 }}
-                    /> */}
-                {/* <Search
-                    placeholder="input search text"
-                    allowClear
-                    enterButton="Search"
-                    size="large"
-                    style={{ marginTop: 15, width: 400, alignItems: 'center', marginLeft: 150 }}
+                    placeholder="Bạn muốn tìm gì?"
+                    size="500"
+                    style={{ fontSize:5, marginTop: 15, width: 400, alignItems: 'center', marginLeft: 150 }}
                 /> */}
+
                 <Menu mode="horizontal" className={styles.rightMenu} selectedKeys={[]} items={itemHeader()} />
             </Header>
             <ConfigProvider

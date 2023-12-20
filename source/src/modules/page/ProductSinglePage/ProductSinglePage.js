@@ -13,6 +13,7 @@ import useFetch from '@hooks/useFetch';
 import { formatMoney } from '@utils';
 import { IconMinus, IconPlus } from '@tabler/icons-react';
 import { Button, Space, message } from 'antd';
+import axios from 'axios';
 
 const ProductSinglePage = () => {
     const { id } = useParams();
@@ -40,8 +41,6 @@ const ProductSinglePage = () => {
         if (product?.length > 0) setDetail(product);
         else setDetail([]);
     }, [product]);
-
-    console.log(product);
 
     // getting single product
     // useEffect(() => {
@@ -239,8 +238,27 @@ const ProductSinglePage = () => {
     );
 };
 
+const saveCartInCookie = (cartItems) => {
+    // Tạo một yêu cầu POST đến endpoint của backend
+
+};
+
+const getAllCookies = () => {
+    const cookieString = document.cookie;
+    const cookies = {};
+
+    cookieString.split('; ').forEach((cookie) => {
+      const [key, value] = cookie.split('=');
+      cookies[key] = value;
+    });
+
+    return cookies;
+  };
+
 function AddToCardButton({ item, quantity }) {
+    console.log("Button");
     const [loading, setLoading] = useState(false);
+    // console.log(cookies);
     const {
         data: addcard,
         loading: addCardLoading,
@@ -252,7 +270,32 @@ function AddToCardButton({ item, quantity }) {
     });
 const AddProducttoCard = () => {
     setLoading(true);
-    executeAddCard().then((response) => {
+    // Lấy tất cả cookies
+
+    // Gọi API và thêm cookie vào headers
+    // executeAddCard({
+    //     headers: {
+    //         Cookie: allCookies,
+    //     },
+    // })
+    executeAddCard().then((response, Headers) => {
+        console.log(Headers);
+        const rawCookies = response.headers ? response.headers.get('Set-cookie') : "Khong co";
+
+        if (rawCookies) {
+            // Chuyển đổi chuỗi cookies thành đối tượng cookie
+            const cookies = Object.fromEntries(
+                rawCookies.split('; ').map((cookie) => {
+                    const [key, value] = cookie.split('=');
+                    return [key, value];
+                }),
+            );
+
+            // Sử dụng cookie theo cách bạn muốn
+            const yourCookieValue = cookies['cart'];
+            console.log(rawCookies);
+        }
+
         if(response.result === true) {
             message.success(`Sản phẩm được thêm vào giỏ hàng thành công`);
             setLoading(false);
@@ -262,6 +305,7 @@ const AddProducttoCard = () => {
         }
     });
   };
+
     return (
         <button type="button" className="add-to-cart-btn btn">
             <i className="fas fa-shopping-cart"></i>
