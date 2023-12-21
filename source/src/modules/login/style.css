@@ -156,14 +156,15 @@ input{
     font-size: 15px;
 }
 .forget{
-    font-size: 15px;
+    font-size: 18px;
     /* margin-top: 2px; */
     margin-bottom: 2px;
     transition: 0.3s;
-    color: #aac1ec;
+    color: #ffffff;
 }
 .forget a:hover{
     text-decoration: underline;
+    font-weight: 600;
 }
 .btn button{
     width: 100%;
@@ -187,8 +188,8 @@ input{
 .or{
     text-align: center;
     margin-bottom: 20px;
-    color: #aac1ec;
-    font-size: 15px;
+    color: #ffffff;
+    font-size: 18px;
 }
 .or a:hover{
     text-decoration: underline;

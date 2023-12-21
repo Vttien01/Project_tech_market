@@ -7,7 +7,6 @@ import AppFooter from './AppFooter';
 
 import styles from './MainLayout.module.scss';
 import { brandName } from '@constants';
-import NavSiderCommon from './NavSiderCommon';
 
 const { Content, Footer } = Layout;
 

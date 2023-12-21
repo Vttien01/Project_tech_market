@@ -2,7 +2,7 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import { AddToCard, getAllProduct, getProductsByCategory } from '../API';
 import { Badge, Button, Card, Image, List, Rate, Select, Spin, Typography, message } from 'antd';
-import './Product.css';
+// import './Product.css';
 import { useParams } from 'react-router-dom';
 import CardProduct from './CardProduct';
 import useFetch from '@hooks/useFetch';
@@ -53,16 +53,6 @@ function Products({ title }) {
             console.log(item1);
         } else setItem1([]);
     }, [allproducts1, title]);
-    // useEffect(() => {
-    //     (params?.categoryId ? getProductsByCategory(params.categoryId) : getAllProduct()).then((res) => {
-    //         setItems(res.products);
-    //         setLoading(false);
-    //     });
-    // }, [params]);
-    // console.log(allproducts1);
-    // console.log(items);
-    // console.log(item1);
-    // window.location.reload();
 
     const getSortedProduct = () => {
         let sortedItem =[...item1];
@@ -89,7 +79,7 @@ function Products({ title }) {
         return <Spin spinning />;
     }
     return (
-        <div className="Product">
+        <div className="Product" style={{ display: 'flex', flexDirection: 'column', justifyContent:'center', marginRight:0, maxWidth:992 }}>
             <div style={{ marginBottom: 10 }}>
                 <Typography.Text style={{ fontSize: '30px', fontWeight: 'bolder' }}> {title} </Typography.Text>
             </div>
@@ -121,7 +111,7 @@ function Products({ title }) {
                 ></Select>
             </div>
             <List
-                pagination={{ position: 'bottom', align: 'center', pageSize: 6 }}
+                pagination={{ position: 'bottom', pageSize: 6 }}
                 renderItem={(product, index) => <CardProduct product={product} index={index} />}
                 dataSource={getSortedProduct()} // Assume getSortedProduct() returns your product data
                 grid={{ column: 3 }}

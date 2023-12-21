@@ -531,25 +531,25 @@ const apiConfig = {
     },
     cart: {
         getList: {
-            baseURL: `${apiUrl}v1/`,
+            baseURL: `${apiUrl}v1/cart/get-my-cart`,
             method: 'GET',
             headers: baseHeader,
             isRequiredTenantId: true,
         },
         add: {
-            baseURL: `${apiUrl}v1/`,
+            baseURL: `${apiUrl}v1/cart/add-product-into-cart`,
             method: 'POST',
             headers: baseHeader,
             isRequiredTenantId: true,
         },
         update: {
-            baseURL: `${apiUrl}v1/`,
+            baseURL: `${apiUrl}v1/cart/update`,
             method: 'PUT',
             headers: baseHeader,
             isRequiredTenantId: true,
         },
         delete: {
-            baseURL: `${apiUrl}v1/`,
+            baseURL: `${apiUrl}v1/cart/delete/:id`,
             method: 'DELETE',
             headers: baseHeader,
             isRequiredTenantId: true,

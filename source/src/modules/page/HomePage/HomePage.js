@@ -71,7 +71,7 @@ const HomePage = () => {
 
 
     return (
-        <div className="container" style={{ marginLeft:80 }}>
+        <div className="container">
             <div className="siderHome" >
                 <NavSiderCommon collapsed={collapsed} onCollapse={toggleCollapsed} />
             </div>

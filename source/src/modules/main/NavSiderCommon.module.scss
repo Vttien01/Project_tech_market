@@ -1,8 +1,8 @@
 @import '@assets/scss/global';
 .sidebar {
-    overflow: auto;
+    // overflow: auto;
     height: 580px;
-    position: fixed;
+    position: relative;
     left: 0;
     top: 0;
     bottom: 0;

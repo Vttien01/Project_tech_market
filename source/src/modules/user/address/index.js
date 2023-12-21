@@ -85,7 +85,7 @@ const AddressListPage = ({ pageOptions }) => {
         <PageWrapper routes={pageOptions.renderBreadcrumbs(commonMessage, translate)}>
             <ListPage
                 searchForm={mixinFuncs.renderSearchForm({ fields: searchFields, initialValues: queryFilter })}
-                // actionBar={mixinFuncs.renderActionBar()}
+                actionBar={mixinFuncs.renderActionBar()}
                 baseTable={
                     <BaseTable
                         onChange={mixinFuncs.changePagination}

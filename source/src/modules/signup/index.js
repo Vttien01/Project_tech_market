@@ -55,7 +55,7 @@ const SignupPage = () => {
     const { profile } = useAuth();
 
     const onFinish = (values) => {
-        values.birthday = values.birthday && formatDateString(values.birthday, DEFAULT_FORMAT);
+        values.birthday = values.birthday+"00:00:00" && formatDateString(values.birthday, DEFAULT_FORMAT);
         console.log(values.grant_type);
         let data;
 
@@ -191,7 +191,7 @@ const SignupPage = () => {
                             showTime={true}
                             name="birthday"
                             placeholder="Ngày sinh"
-                            format={DEFAULT_FORMAT}
+                            format={DATE_FORMAT_DISPLAY}
                             style={{ width: '100%', height: 60 }}
                             size="large"
                             rules={[

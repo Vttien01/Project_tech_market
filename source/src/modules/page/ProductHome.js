@@ -1,15 +1,11 @@
 import React, { useState } from 'react';
 import NavSiderCommon from '@modules/main/NavSiderCommon';
 import Products from './Components/Product';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, generatePath } from 'react-router-dom';
 import styles from '../main/MainLayout.module.scss';
-import { useEffect } from 'react';
-import { AddToCard, getAllProduct, getProductsByCategory } from './Components/API';
-import { Badge, Button, Card, Image, List, Rate, Select, Spin, Typography, message } from 'antd';
 import './Product.css';
-import { useParams } from 'react-router-dom';
-import apiConfig from '@constants/apiConfig';
-import useFetch from '@hooks/useFetch';
+import PageWrapper from '@components/common/layout/PageWrapper';
+import routes from '@routes';
 
 const ProductHome = () => {
     const [collapsed, setCollapsed] = useState(false);
@@ -20,11 +16,11 @@ const ProductHome = () => {
     const toggleCollapsed = () => setCollapsed((prev) => !prev);
 
     return (
-        <div style={{ align: 'start', display: 'flex', flex: 1 }}>
-            <div className={styles.siderHeader}>
+        <div style={{ justifyContent: 'center', display:'flex' }}>
+            <div>
                 <NavSiderCommon collapsed={collapsed} onCollapse={toggleCollapsed} />
             </div>
-            {category ? <Products title={ category }/> : <Products/>}
+            <div>{category ? <Products title={category} /> : <Products />}</div>
             {/* <div>
                 <Routes>
                     <Route path="/" element={<Products/>}></Route>

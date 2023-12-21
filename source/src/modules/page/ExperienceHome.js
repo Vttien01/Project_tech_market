@@ -1,4 +1,3 @@
-import NavSiderCommon from '@modules/main/NavSiderCommon';
 import React, { useEffect, useState } from 'react';
 import styles from '../main/MainLayout.module.scss';
 import { Avatar, Badge, Button, Card, Col, Image, List, Row, Skeleton, Space, Typography } from 'antd';
@@ -106,7 +105,6 @@ const ExperienceHome = () => {
                         </List.Item>
                     )}
                 />
-                {/* <NavSiderCommon collapsed={collapsed} onCollapse={toggleCollapsed} /> */}
             </div>
             <div className="Product">
                 <List

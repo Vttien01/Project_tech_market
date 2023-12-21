@@ -5,6 +5,7 @@ import ContactHome from './ContactHome';
 import ExperienceHome from './ExperienceHome';
 import HomePage from './HomePage/HomePage';
 import ProductSinglePage from './ProductSinglePage/ProductSinglePage';
+import OrderPage from './OrderPage/OrderPage';
 export default {
     ProductHomePage1: {
         path: '/all-product',
@@ -47,5 +48,11 @@ export default {
         component: ProductSinglePage,
         auth: null,
         title: 'Trang chủ',
+    },
+    OderPage: {
+        path: '/my-order',
+        component: OrderPage,
+        auth: null,
+        title: 'Đặt hàng',
     },
 };

@@ -39,7 +39,13 @@ const AddressForm = (props) => {
     };
 
     const handleDistrictChange = (selectedValue) => {
-        setDistrict(selectedValue);
+        if (selectedValue === null) {
+            setDistrict(null);
+            console.log(1);
+        } else {
+            setDistrict(selectedValue);
+            console.log(province);
+        }
         // Các xử lý khác dựa trên giá trị district
     };
 
@@ -126,9 +132,10 @@ const AddressForm = (props) => {
                             name="wardId"
                             apiConfig={apiConfig.nation.autocomplete}
                             mappingOptions={(item) => ({ value: item.id, label: item.name })}
-                            initialSearchParams={{ kind: 3 }}
+                            initialSearchParams={{ parentId: district, kind: 3 }}
                             searchParams={(text) => ({ name: text, kind: 3 })}
                             required
+                            key={district}
                         />
                     </Col>
 

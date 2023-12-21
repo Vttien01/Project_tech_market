@@ -98,6 +98,10 @@ export const STATUS_DELETE = -2;
 export const DEFAULT_TABLE_ITEM_SIZE = 10;
 export const DEFAULT_TABLE_PAGE_START = 0;
 
+export const PAYPAL_METHOD = 1;
+export const COD_METHOD = 2;
+export const VNPAY_METHOD = 3;
+
 export const commonStatus = {
     PENDING: 0,
     ACTIVE: 1,

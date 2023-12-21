@@ -34,6 +34,12 @@ export const statusOptions = [
     { value: STATUS_INACTIVE, label: commonMessage.statusInactive, color: '#CC0000' },
 ];
 
+export const paymentOptions = [
+    { value: 0, label: 'Thanh toán tiền mặt', color: '#00A648' },
+    { value: 1, label: 'Thanh toán PAYPAL', color: '#FFBF00' },
+    { value: 2, label: 'Thanh toán VNPAY', color: '#CC0000' },
+];
+
 export const formSize = {
     small: '700px',
     normal: '800px',
