@@ -12,14 +12,18 @@ import apiConfig from '@constants/apiConfig';
 import useFetch from '@hooks/useFetch';
 import { formatMoney } from '@utils';
 import { IconMinus, IconPlus } from '@tabler/icons-react';
-import { Button, Space, message } from 'antd';
+import { Button, Form, Space, message } from 'antd';
 import axios from 'axios';
+import ListDetailsForm from './ListDetailsForm';
+import useDisclosure from '@hooks/useDisclosure';
 
 const ProductSinglePage = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
     const queryParameters = new URLSearchParams(window.location.search);
     const [detail, setDetail] = useState([]);
+    const [openedDetailsModal, handlerDetailsModal] = useDisclosure(false);
+    const [form] = Form.useForm();
     const maxLines = 7;
     // const productId = queryParameters.get('productId');
     // const productId = useParams();
@@ -53,7 +57,12 @@ const ProductSinglePage = () => {
     //     }
     // }, [cartMessageStatus]);
 
-    let discountedPrice = product?.price - product?.price * (product?.saleOff / 100);
+    let discountedPrice;
+    if (product?.saleOff) {
+        discountedPrice = product?.price - product?.price * (product?.saleOff / 100);
+    } else {
+        discountedPrice = 0;
+    }
     // if (productSingleStatus === STATUS.LOADING) {
     //     return <Loading />;
     // }
@@ -84,6 +93,15 @@ const ProductSinglePage = () => {
 
     return (
         <div className="con1 py-5 bg-whitesmoke" style={{ display: 'flex', justifyContent: 'center' }}>
+            <ListDetailsForm
+                open={openedDetailsModal}
+                onCancel={() => handlerDetailsModal.close()}
+                form={form}
+                itemCart={product?.listProductVariant}
+                quantity={quantity}
+                saleOff={product?.saleOff !==0 ? product?.saleOff : 0}
+                nameProduct={product?.name}
+            />
             <Space size={'large'} style={{ alignItems: 'center' }}>
                 <div className="product-single-l">
                     <div className="product-img">
@@ -164,36 +182,52 @@ const ProductSinglePage = () => {
                                 </span>
                             </div>
                         </div>
+                        {discountedPrice !== 0 ? (
+                            <div className="price">
+                                <div className="flex align-center">
+                                    <div className="old-price text-gray">
+                                        {formatMoney(product?.price, {
+                                            groupSeparator: ',',
+                                            decimalSeparator: '.',
+                                            currentcy: 'đ',
+                                            currentcyPosition: 'BACK',
+                                            currentDecimal: '0',
+                                        })}
+                                    </div>
+                                    <span className="fs-14 mx-2 text-dark">Bao gồm tất cả các loại thuế</span>
+                                </div>
 
-                        <div className="price">
-                            <div className="flex align-center">
-                                <div className="old-price text-gray">
-                                    {formatMoney(product?.price, {
-                                        groupSeparator: ',',
-                                        decimalSeparator: '.',
-                                        currentcy: 'đ',
-                                        currentcyPosition: 'BACK',
-                                        currentDecimal: '0',
-                                    })}
-                                </div>
-                                <span className="fs-14 mx-2 text-dark">Bao gồm tất cả các loại thuế</span>
-                            </div>
-
-                            <div className="flex align-center my-1">
-                                <div className="new-price fw-5 font-poppins fs-24 text-orange">
-                                    {formatMoney(discountedPrice, {
-                                        groupSeparator: ',',
-                                        decimalSeparator: '.',
-                                        currentcy: 'đ',
-                                        currentcyPosition: 'BACK',
-                                        currentDecimal: '0',
-                                    })}
-                                </div>
-                                <div className="discount bg-orange fs-13 text-white fw-6 font-poppins">
-                                    {product?.saleOff}% OFF
+                                <div className="flex align-center my-1">
+                                    <div className="new-price fw-5 font-poppins fs-24 text-orange">
+                                        {formatMoney(discountedPrice, {
+                                            groupSeparator: ',',
+                                            decimalSeparator: '.',
+                                            currentcy: 'đ',
+                                            currentcyPosition: 'BACK',
+                                            currentDecimal: '0',
+                                        })}
+                                    </div>
+                                    <div className="discount bg-orange fs-13 text-white fw-6 font-poppins">
+                                        {product?.saleOff}% OFF
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        ) : (
+                            <div className="price">
+                                <div className="flex align-center my-1">
+                                    <div className="new-price fw-5 font-poppins fs-24 text-orange">
+                                        {formatMoney(product?.price, {
+                                            groupSeparator: ',',
+                                            decimalSeparator: '.',
+                                            currentcy: 'đ',
+                                            currentcyPosition: 'BACK',
+                                            currentDecimal: '0',
+                                        })}
+                                    </div>
+                                    <span className="fs-14 mx-2 text-dark">Bao gồm tất cả các loại thuế</span>
+                                </div>
+                            </div>
+                        )}
 
                         <div className="qty flex align-center my-4">
                             <div className="qty-text">Quantity:</div>
@@ -226,7 +260,18 @@ const ProductSinglePage = () => {
                         </div>
 
                         <div className="btns">
-                            {product && <AddToCardButton item={product?.listProductVariant[0]?.id} quantity={quantity} />}
+                            {/* {product && <AddToCardButton onClick={() => AddToCardButton(product?.listProductVariant[0], quantity)} />} */}
+                            <button type="button" className="add-to-cart-btn btn">
+                                <i className="fas fa-shopping-cart"></i>
+                                <span
+                                    className="btn-text mx-2"
+                                    onClick={() => {
+                                        handlerDetailsModal.open();
+                                    }}
+                                >
+                                    add to cart
+                                </span>
+                            </button>
                             <button type="button" className="buy-now btn mx-3">
                                 <span className="btn-text">buy now</span>
                             </button>
@@ -238,87 +283,82 @@ const ProductSinglePage = () => {
     );
 };
 
-const saveCartInCookie = (cartItems) => {
-    // Tạo một yêu cầu POST đến endpoint của backend
+function AddToCardButton({ itemCart, quantity }) {
+    console.log('Button');
+    const [cart, setCart] = useState([]);
+    const [total, setTotal] = useState(0);
 
-};
+    useEffect(() => {
+        // Lấy giỏ hàng từ localStorage khi component được render
+        const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
+        console.log(storedCart);
+        setCart(storedCart);
+        calculateTotal(storedCart);
+    }, []);
 
-const getAllCookies = () => {
-    const cookieString = document.cookie;
-    const cookies = {};
+    useEffect(() => {
+        // Lưu giỏ hàng vào localStorage khi giỏ hàng thay đổi
+        localStorage.setItem('cart', JSON.stringify(cart));
+        calculateTotal(cart);
+    }, [cart]);
 
-    cookieString.split('; ').forEach((cookie) => {
-      const [key, value] = cookie.split('=');
-      cookies[key] = value;
-    });
+    const calculateTotal = (cartItems) => {
+        const newTotal = cartItems.reduce((acc, item) => acc + item.price, 0);
+        setTotal(newTotal);
+    };
 
-    return cookies;
-  };
+    const addToCart = (product) => {
+        const existingItem = cart.find((item) => item.id === product.id);
 
-function AddToCardButton({ item, quantity }) {
-    console.log("Button");
-    const [loading, setLoading] = useState(false);
-    // console.log(cookies);
-    const {
-        data: addcard,
-        loading: addCardLoading,
-        execute: executeAddCard,
-    } = useFetch(apiConfig.cart.add, {
-        immediate: true,
-        params: { productVariantId:item, quantity:quantity },
-        mappingData: ({ data }) => data,
-    });
-const AddProducttoCard = () => {
-    setLoading(true);
-    // Lấy tất cả cookies
-
-    // Gọi API và thêm cookie vào headers
-    // executeAddCard({
-    //     headers: {
-    //         Cookie: allCookies,
-    //     },
-    // })
-    executeAddCard().then((response, Headers) => {
-        console.log(Headers);
-        const rawCookies = response.headers ? response.headers.get('Set-cookie') : "Khong co";
-
-        if (rawCookies) {
-            // Chuyển đổi chuỗi cookies thành đối tượng cookie
-            const cookies = Object.fromEntries(
-                rawCookies.split('; ').map((cookie) => {
-                    const [key, value] = cookie.split('=');
-                    return [key, value];
-                }),
+        if (existingItem) {
+            // Nếu sản phẩm đã tồn tại trong giỏ hàng, tăng số lượng lên
+            const updatedCart = cart.map((item) =>
+                item.id === product.id ? { ...item, quantity: item?.quantity + product.quantity } : item,
             );
-
-            // Sử dụng cookie theo cách bạn muốn
-            const yourCookieValue = cookies['cart'];
-            console.log(rawCookies);
+            setCart(updatedCart);
+        } else {
+            // Nếu sản phẩm chưa có trong giỏ hàng, thêm mới
+            setCart([...cart, { ...product }]);
         }
+    };
 
-        if(response.result === true) {
-            message.success(`Sản phẩm được thêm vào giỏ hàng thành công`);
-            setLoading(false);
-        }
-        else {
-            message.error(`Thêm sản phẩm bị lỗi`);
-        }
-    });
-  };
+    const removeFromCart = (productId) => {
+        const updatedCart = cart.filter((item) => item.id !== productId);
+        setCart(updatedCart);
+    };
+    // console.log(cookies);
+    // const {
+    //     data: addcard,
+    //     loading: addCardLoading,
+    //     execute: executeAddCard,
+    // } = useFetch(apiConfig.cart.add, {
+    //     immediate: true,
+    //     params: { productVariantId:item, quantity:quantity },
+    //     mappingData: ({ data }) => data,
+    // });
+    const AddProducttoCard = () => {
+        // Lấy tất cả cookies
+        // Gọi API và thêm cookie vào headers
+        // executeAddCard({
+        //     headers: {
+        //         Cookie: allCookies,
+        //     },
+        // })
+    };
 
-    return (
-        <button type="button" className="add-to-cart-btn btn">
-            <i className="fas fa-shopping-cart"></i>
-            <span
-                className="btn-text mx-2"
-                onClick={() => {
-                    AddProducttoCard();
-                }}
-            >
-                add to cart
-            </span>
-        </button>
-    );
+    // return (
+    //     <button type="button" className="add-to-cart-btn btn">
+    //         <i className="fas fa-shopping-cart"></i>
+    //         <span
+    //             className="btn-text mx-2"
+    //             onClick={() => {
+    //                 addToCart(itemCart);
+    //             }}
+    //         >
+    //             add to cart
+    //         </span>
+    //     </button>
+    // );
 }
 
 export default ProductSinglePage;

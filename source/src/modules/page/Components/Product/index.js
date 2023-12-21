@@ -63,7 +63,6 @@ function Products({ title }) {
     // console.log(items);
     // console.log(item1);
     // window.location.reload();
-    console.log(item1);
 
     const getSortedProduct = () => {
         let sortedItem =[...item1];

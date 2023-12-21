@@ -1,4 +1,4 @@
-REACT_APP_API = http://tech-market.space/
+REACT_APP_API = https://tech-market.space/
 REACT_APP_ENV = staging
 GENERATE_SOURCEMAP = false
 CI = false
