@@ -58,29 +58,28 @@ const LoginPage = () => {
             // Nếu grant_type không rỗng, sử dụng giá trị của values
             data = values;
         }
+        // showErrorMessage('ccccccccccccccc');
         execute({
             data: { ...data },
             onCompleted: (res) => {
                 setCacheAccessToken(res.access_token);
                 executeGetProfile();
+                console.log("login");
             },
-            onError: () => showErrorMessage(translate.formatMessage(message.loginFail)),
+            onError: (error) => {
+                showErrorMessage(error.message);
+                console.log(error.message);
+            },
         });
     };
     const handleForgotPasswordClick = () => {
-        // Xử lý sự kiện khi người dùng click vào "Quên mật khẩu?"
         console.log('Người dùng đã click vào "Quên mật khẩu?"');
         handlerDetailsModal.open();
-        // Thêm logic xử lý quên mật khẩu của bạn tại đây
     };
 
     return (
         <div className="grid-container">
-            <ListDetailsForm
-                open={openedDetailsModal}
-                onCancel={() => handlerDetailsModal.close()}
-                form={form}
-            />
+            <ListDetailsForm open={openedDetailsModal} onCancel={() => handlerDetailsModal.close()} form={form} />
             <div className="area_login_1">
                 <nav className="nav">
                     <div className="nav-left">

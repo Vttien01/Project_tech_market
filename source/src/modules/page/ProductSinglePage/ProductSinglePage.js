@@ -285,11 +285,11 @@ const ProductSinglePage = () => {
                                             handlerDetailsModal.open();
                                         }}
                                     >
-                                        add to cart
+                                        Thêm giỏ hàng
                                     </span>
                                 </button>
                                 <button type="button" className="buy-now btn mx-3">
-                                    <span className="btn-text">buy now</span>
+                                    <span className="btn-text">Mua ngay</span>
                                 </button>
                             </div>
                         </div>

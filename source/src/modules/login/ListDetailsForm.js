@@ -11,7 +11,7 @@ import useBasicForm from '@hooks/useBasicForm';
 import useFetch from '@hooks/useFetch';
 import useTranslate from '@hooks/useTranslate';
 import { commonMessage } from '@locales/intl';
-import { showErrorMessage } from '@services/notifyService';
+import { showErrorMessage, showSucsessMessage } from '@services/notifyService';
 import { Alert, Button, Card, Col, Form, Input, Modal, Row } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { FormattedMessage, defineMessage } from 'react-intl';
@@ -53,33 +53,14 @@ const ListDetailsForm = ({ handleAddList, open, onCancel, data, isEditing, form,
                 navigate('/login');
                 onCancel();
             },
-            onError: () => {
-                showErrorMessage(translate.formatMessage(message.loginFail));
+            onError: (error) => {
+                showErrorMessage(error.message);
                 form.resetFields();
             },
         });
     };
     const onChange = (id, item) => {
         form.setFieldValue('projectRoleId', item);
-    };
-    const uploadFile = (file, onSuccess, onError) => {
-        executeUpFile({
-            data: {
-                type: 'AVATAR',
-                file: file,
-            },
-            onCompleted: (response) => {
-                console.log(response);
-                if (response.result === true) {
-                    onSuccess();
-                    setImageUrl(response.data.filePath);
-                    // setIsChangedFormValues(true);
-                }
-            },
-            onError: (error) => {
-                onError();
-            },
-        });
     };
 
     const handleGetOtp = () => {
@@ -91,22 +72,12 @@ const ListDetailsForm = ({ handleAddList, open, onCancel, data, isEditing, form,
         executeRequestForgetPassword({
             data: { ...data },
             onCompleted: (response) => {
-                // setCacheAccessToken(res.access_token);
-                // executeGetProfile();
-                // navigate('/login');
-                // onCancel();
                 setidHash(response.data.idHash);
-                <Alert message="OTP đã được gửi" description="Vui lòng kiểm tra email." type="success" showIcon />;
+                showSucsessMessage(response.message);
                 form.resetFields();
             },
-            onError: () => {
-                showErrorMessage(translate.formatMessage(message.loginFail));
-                <Alert
-                    message="Lỗi"
-                    description="Vui lòng kiểm tra trường email."
-                    type="error"
-                    showIcon
-                />;
+            onError: (error) => {
+                showErrorMessage(error.message);
                 form.resetFields();
             },
         });

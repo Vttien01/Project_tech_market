@@ -9,7 +9,7 @@ import { statusOptions } from '@constants/masterData';
 import useFetch from '@hooks/useFetch';
 import useTranslate from '@hooks/useTranslate';
 import { showErrorMessage } from '@services/notifyService';
-import { Button, Card, Col, Modal, Row } from 'antd';
+import { Alert, Button, Card, Col, Form, Input, Modal, Row } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { FormattedMessage, defineMessage } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
@@ -20,22 +20,24 @@ const message = defineMessage({
     login: 'Đăng nhập',
 });
 
-const ListDetailsForm = ({ handleAddList, open, onCancel, data, isEditing, form, handleEditItemList, idHash }) => {
+const ListDetailsForm = ({ open, onCancel, data, form, idHash, email }) => {
     const translate = useTranslate();
     const statusValues = translate.formatKeys(statusOptions, ['label']);
     const navigate = useNavigate();
-    console.log(idHash);
     const [imageUrl, setImageUrl] = useState(null);
     const { execute: executeUpFile } = useFetch(apiConfig.file.upload);
     const { execute, loading } = useFetch({
         ...apiConfig.user.forgetPassword,
+    });
+    const { execute: executeRequestForgetPassword, loading: loadingRequestForgetPassword } = useFetch({
+        ...apiConfig.account.requestForgetPassword,
     });
     useEffect(() => {
         if (data) form.setFieldsValue({ ...data });
     }, [data]);
     const handleFinish = (values) => {
         let data;
-        data = { otp : values.otp, idHash : idHash };
+        data = { otp: values.otp, idHash: idHash };
         execute({
             data: { ...data },
             onCompleted: (res) => {
@@ -43,35 +45,36 @@ const ListDetailsForm = ({ handleAddList, open, onCancel, data, isEditing, form,
                 // executeGetProfile();
                 navigate('/login');
                 onCancel();
+                form.resetFields();
             },
-            onError: () => {
-                showErrorMessage(translate.formatMessage(message.loginFail));
+            onError: (error) => {
+                if (error.code === 'ERROR-ACCOUNT-0005' || error.code === 'ERROR-ACCOUNT-0006')
+                    showErrorMessage('Vui lòng nhập mã khác!');
+                // console.log(error.code);
                 form.resetFields();
             },
         });
     };
-    const onChange = (id, item) => {
-        form.setFieldValue('projectRoleId', item);
-    };
-    const uploadFile = (file, onSuccess, onError) => {
-        executeUpFile({
-            data: {
-                type: 'AVATAR',
-                file: file,
-            },
+
+    const handleGetOtp = () => {
+        // Xử lý sự kiện khi người dùng click vào "Quên mật khẩu?"
+        console.log('Người dùng đã click vào "Quên mật khẩu?"');
+        // const email = form.getFieldValue('email');
+        let data;
+        data = { email: email };
+        executeRequestForgetPassword({
+            data: { ...data },
             onCompleted: (response) => {
-                console.log(response);
-                if (response.result === true) {
-                    onSuccess();
-                    setImageUrl(response.data.filePath);
-                    // setIsChangedFormValues(true);
-                }
+                <Alert message="OTP đã được gửi" description="Vui lòng kiểm tra email." type="success" showIcon />;
+                form.resetFields();
             },
             onError: (error) => {
-                onError();
+                showErrorMessage(error.message);
+                form.resetFields();
             },
         });
     };
+
     return (
         <Modal
             title={<FormattedMessage defaultMessage="Vui lòng kiểm tra email và nhập OTP" />}
@@ -81,9 +84,27 @@ const ListDetailsForm = ({ handleAddList, open, onCancel, data, isEditing, form,
         >
             <BaseForm form={form} onFinish={handleFinish} size="100%">
                 <Card>
-                    <Row gutter={16}>
-                        <TextField label={<FormattedMessage defaultMessage="OTP" />} name="otp" required />
-                    </Row>
+                    <Form.Item label="OTP" extra="Vui lòng kiểm tra email!">
+                        <Row gutter={24}>
+                            <Col span={12}>
+                                <Form.Item
+                                    name="otp"
+                                    noStyle
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'Vui lòng nhập mã otp!',
+                                        },
+                                    ]}
+                                >
+                                    <Input />
+                                </Form.Item>
+                            </Col>
+                            <Col span={12}>
+                                <Button onClick={handleGetOtp}>Lấy mã</Button>
+                            </Col>
+                        </Row>
+                    </Form.Item>
                 </Card>
             </BaseForm>
         </Modal>

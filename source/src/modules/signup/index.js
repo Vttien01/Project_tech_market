@@ -12,7 +12,7 @@ import useAuth from '@hooks/useAuth';
 import useFetch from '@hooks/useFetch';
 import useFetchAction from '@hooks/useFetchAction';
 import Title from 'antd/es/typography/Title';
-import { showErrorMessage } from '@services/notifyService';
+import { showErrorMessage, showSucsessMessage } from '@services/notifyService';
 import { appAccount, brandName, loginOptions } from '@constants';
 import { commonMessage } from '@locales/intl';
 import { Buffer } from 'buffer';
@@ -42,6 +42,7 @@ const SignupPage = () => {
     const intl = useIntl();
     const translate = useTranslate();
     const [idHash, setidHash] = useState('');
+    const [email, setEmail] = useState('');
     const [openedDetailsModal, handlerDetailsModal] = useDisclosure(false);
     const base64Credentials = Buffer.from(`${appAccount.APP_USERNAME}:${appAccount.APP_PASSWORD}`).toString('base64');
     const { execute, loading } = useFetch({
@@ -55,7 +56,7 @@ const SignupPage = () => {
     const { profile } = useAuth();
 
     const onFinish = (values) => {
-        values.birthday = values.birthday+"00:00:00" && formatDateString(values.birthday, DEFAULT_FORMAT);
+        values.birthday = values.birthday + '00:00:00' && formatDateString(values.birthday, DEFAULT_FORMAT);
         console.log(values.grant_type);
         let data;
 
@@ -79,10 +80,15 @@ const SignupPage = () => {
                 // setCacheAccessToken(res.access_token);
                 // executeGetProfile();
                 setidHash(response.data.idHash);
+                setEmail(values.email);
+                showSucsessMessage(response.message);
                 handlerDetailsModal.open();
-                console.log(response);
+                form.resetFields();
             },
-            onError: () => showErrorMessage(translate.formatMessage(message.loginFail)),
+            onError: (error) => {
+                showErrorMessage(error.message);
+                form.resetFields();
+            },
         });
     };
 
@@ -101,6 +107,7 @@ const SignupPage = () => {
                 onCancel={() => handlerDetailsModal.close()}
                 form={form}
                 idHash={idHash}
+                email={email}
             />
             <div className="area_login_1">
                 <nav className="nav">

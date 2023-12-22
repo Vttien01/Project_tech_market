@@ -1,5 +1,5 @@
 /* eslint-disable indent */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './OrderPage.scss';
 import { generatePath, useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -11,8 +11,22 @@ import Loading from '@components/common/loading';
 import apiConfig from '@constants/apiConfig';
 import useFetch from '@hooks/useFetch';
 import { formatMoney } from '@utils';
-import { IconMinus, IconPlus } from '@tabler/icons-react';
-import { Button, Checkbox, Form, Input, Result, Space, Steps, Table, Tag, Typography, message, theme } from 'antd';
+import { IconEdit, IconEditCircle, IconEditCircleOff, IconMinus, IconPlus, IconPlusMinus } from '@tabler/icons-react';
+import {
+    Button,
+    Checkbox,
+    Divider,
+    Form,
+    Input,
+    Result,
+    Space,
+    Steps,
+    Table,
+    Tag,
+    Typography,
+    message,
+    theme,
+} from 'antd';
 import axios from 'axios';
 import ListDetailsForm from './ListDetailsForm';
 import useDisclosure from '@hooks/useDisclosure';
@@ -28,6 +42,7 @@ import useAuth from '@hooks/useAuth';
 import { showErrorMessage } from '@services/notifyService';
 import useTranslate from '@hooks/useTranslate';
 const { Text } = Typography;
+let index = 0;
 
 const decription = defineMessage({
     first: 'Kiểm tra số lượng sản phẩm',
@@ -38,14 +53,52 @@ const decription = defineMessage({
 const OrderPage = () => {
     const { profile } = useAuth();
     const navigate = useNavigate();
-    const { id } = useParams();
     const dispatch = useDispatch();
     const queryParameters = new URLSearchParams(window.location.search);
-    const [detail, setDetail] = useState([]);
     const [openedDetailsModal, handlerDetailsModal] = useDisclosure(false);
     const [form] = Form.useForm();
     const translate = useTranslate();
-    // const description = 'This is a description.';
+    const [item1, setItem1] = useState(null);
+    const [name, setName] = useState('');
+    const inputRef = useRef(null);
+    const onNameChange = (event) => {
+        setName(event.target.value);
+    };
+    const renderTitle = (title, item) => (
+        <span>
+            {title}
+            <a
+                style={{
+                    float: 'right',
+                }}
+                onClick={() => handleEdit(item)}
+            >
+                <IconEdit size={17} />
+            </a>
+        </span>
+    );
+
+    const handleEdit = (item) => {
+        console.log(item);
+        setItem1(item);
+        handlerDetailsModal.open();
+    };
+    const renderItem = (title) => ({
+        value: title,
+        label: (
+            <div
+                style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                }}
+            >
+                {title}
+                <span>
+                    <IconEdit />
+                </span>
+            </div>
+        ),
+    });
 
     const { token } = theme.useToken();
     const [current, setCurrent] = useState(0);
@@ -64,10 +117,7 @@ const OrderPage = () => {
         mappingData: ({ data }) => data.cartDetailDtos,
     });
 
-    const {
-        data: order,
-        execute: createOrderForGuest,
-    } = useFetch({
+    const { data: order, execute: createOrderForGuest } = useFetch({
         ...apiConfig.order.createForUser,
     });
 
@@ -266,8 +316,43 @@ const OrderPage = () => {
                     <AutoCompleteField
                         label="Địa chỉ"
                         name="addressId"
-                        apiConfig={apiConfig.address.autocomplete}
-                        mappingOptions={(item) => ({ value: item.id, label: item.address })}
+                        apiConfig={apiConfig.address.getList}
+                        dropdownRender={(menu) => (
+                            <>
+                                {menu}
+                                <Divider
+                                    style={{
+                                        margin: '8px 0',
+                                    }}
+                                />
+                                <Space
+                                    style={{
+                                        padding: '0 8px 4px',
+                                        justifyContent: 'center',
+                                        justifyItems: 'center',
+                                    }}
+                                >
+                                    {/* <Input
+                                        placeholder="Please enter item"
+                                        ref={inputRef}
+                                        value={name}
+                                        onChange={onNameChange}
+                                        onKeyDown={(e) => e.stopPropagation()}
+                                    /> */}
+                                    <Button
+                                        type="text"
+                                        icon={<IconPlus size={10} />}
+                                        onClick={() => {
+                                            setItem1(null);
+                                            handlerDetailsModal.open();
+                                        }}
+                                    >
+                                        Thêm địa chỉ giao hàng
+                                    </Button>
+                                </Space>
+                            </>
+                        )}
+                        mappingOptions={(item) => ({ value: item.id, label: renderTitle(item.address, item) })}
                     />
 
                     <SelectField
@@ -295,9 +380,11 @@ const OrderPage = () => {
                     subTitle="Mã đơn hàng: 2017182818828182881 Vui lòng theo dõi email để biết quá trình giao hàng."
                     extra={[
                         <Button type="primary" key="console">
-                             <a href="/">Quay về trang chủ</a>
+                            <a href="/">Quay về trang chủ</a>
                         </Button>,
-                        <Button key="buy" ><a href="/all-product">Xem sản phẩm khác</a></Button>,
+                        <Button key="buy">
+                            <a href="/all-product">Xem sản phẩm khác</a>
+                        </Button>,
                     ]}
                 />
             ),
@@ -323,10 +410,7 @@ const OrderPage = () => {
 
     const [quantity, setQuantity] = useState(1);
 
-    // useEffect(() => {
-    //     if (product?.length > 0) setDetail(product);
-    //     else setDetail([]);
-    // }, [product]);
+
 
     // getting single product
     // useEffect(() => {
@@ -341,6 +425,13 @@ const OrderPage = () => {
 
     return (
         <div className="con1 py-4 bg-whitesmoke" style={{ display: 'flex', justifyContent: 'start', marginLeft: 200 }}>
+            <ListDetailsForm
+                open={openedDetailsModal}
+                onCancel={() => handlerDetailsModal.close()}
+                form={form}
+                data={item1}
+                isEditing={!!item1}
+            />
             <PageWrapper
                 routes={[
                     {

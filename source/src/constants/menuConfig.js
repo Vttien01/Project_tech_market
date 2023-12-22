@@ -70,7 +70,7 @@ export const navMenuConfig = [
                 label: <FormattedMessage defaultMessage="News" />,
                 key: 'news-list',
                 path: routes.newsListPage.path,
-                // permission: [apiConfig.news.getList.baseURL],
+                permission: [apiConfig.news.getList.baseURL],
             },
             {
                 label: <FormattedMessage defaultMessage="News category" />,

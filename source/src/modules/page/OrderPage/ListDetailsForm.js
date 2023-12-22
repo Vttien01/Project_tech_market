@@ -9,6 +9,7 @@ import { statusOptions } from '@constants/masterData';
 import useAuth from '@hooks/useAuth';
 import useFetch from '@hooks/useFetch';
 import useTranslate from '@hooks/useTranslate';
+import { commonMessage } from '@locales/intl';
 import { showErrorMessage } from '@services/notifyService';
 import { IconPlus } from '@tabler/icons-react';
 import { IconMinus } from '@tabler/icons-react';
@@ -18,13 +19,13 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { FormattedMessage, defineMessage } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 
-const message = defineMessage({
+const messages = defineMessage({
     copyRight: '{brandName} - © Copyright {year}. All Rights Reserved',
     loginFail: 'Chưa điền đủ các trường thông tin!!!',
     login: 'Đăng nhập',
 });
 
-const ListDetailsForm = ({ open, onCancel, data, form, itemCart, saleOff, nameProduct }) => {
+const ListDetailsForm = ({ open, onCancel, data, form, isEditing }) => {
     const { profile } = useAuth();
     const [cartItem, setCartItem] = useState([]);
     const [checkList, setCheckArray] = useState(false);
@@ -33,9 +34,9 @@ const ListDetailsForm = ({ open, onCancel, data, form, itemCart, saleOff, namePr
     const statusValues = translate.formatKeys(statusOptions, ['label']);
     const navigate = useNavigate();
     const [imageUrl, setImageUrl] = useState(null);
-    const { execute: executeUpFile } = useFetch(apiConfig.file.upload);
-    const { execute, loading } = useFetch({
-        ...apiConfig.cart.add,
+    const { execute: executeUpdate } = useFetch(apiConfig.address.update);
+    const { execute: executeCreate, loading } = useFetch({
+        ...apiConfig.address.create,
     });
     const [tableData, setTableData] = useState([]);
 
@@ -46,57 +47,50 @@ const ListDetailsForm = ({ open, onCancel, data, form, itemCart, saleOff, namePr
     const [cart, setCart] = useState([]);
     const [total, setTotal] = useState(0);
 
-    useEffect(() => {
-        // Lấy giỏ hàng từ localStorage khi component được render
-        const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
-        console.log(storedCart);
-        setCart(storedCart);
-        calculateTotal(storedCart);
-    }, []);
+    const [province, setProvince] = useState(null);
+    const [district, setDistrict] = useState(null);
 
     useEffect(() => {
-        // Lưu giỏ hàng vào localStorage khi giỏ hàng thay đổi
-        localStorage.setItem('cart', JSON.stringify(cart));
-        calculateTotal(cart);
-    }, [cart]);
+        if (data)
+            form.setFieldsValue({
+                ...data,
+                provinceId: data?.provinceInfo?.id,
+                districtId: data?.districtInfo?.id,
+                wardId: data?.wardInfo?.id,
+            });
+    }, [data]);
 
-    const calculateTotal = (cartItems) => {
-        const newTotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
-        setTotal(newTotal);
+    const onChange = (id, item) => {
+        form.setFieldValue('provinceId', item);
     };
 
-    const addToCart = (product) => {
-        const existingItem = cart.find((item) => item.id === product.id);
-
-        if (existingItem) {
-            // Nếu sản phẩm đã tồn tại trong giỏ hàng, tăng số lượng lên
-            const updatedCart = cart.map((item) =>
-                item.id === product.id
-                    ? { ...item, quantity: item?.quantity + product.quantity, total: item?.total + product.total }
-                    : item,
-            );
-            setCart(updatedCart);
+    const handleProvinceChange = (selectedValue, item) => {
+        if (selectedValue === null) {
+            setProvince(null);
+            console.log(1);
         } else {
-            // Nếu sản phẩm chưa có trong giỏ hàng, thêm mới
-            setCart([...cart, { ...product }]);
+            setProvince(selectedValue);
+            console.log(province);
         }
     };
 
-    const removeFromCart = (productId) => {
-        const updatedCart = cart.filter((item) => item.id !== productId);
-        setCart(updatedCart);
+    const handleDistrictChange = (selectedValue) => {
+        if (selectedValue === null) {
+            setDistrict(null);
+            console.log(1);
+        } else {
+            setDistrict(selectedValue);
+            console.log(province);
+        }
+        // Các xử lý khác dựa trên giá trị district
     };
 
-    const updateArray = () => {
-        setnewArray(itemCart ? itemCart.map((item) => ({ ...item, quantity: 0, name: nameProduct })) : []);
-    };
-
-    // Gọi hàm updateArray khi cần thiết, chẳng hạn trong useEffect hoặc một sự kiện nào đó.
     useEffect(() => {
-        // const quantity = form.getFieldValue('quantity');
-        // const price = form.getFieldValue('price');
-        updateArray();
-    }, [itemCart]);
+        if (province !== null) {
+            setDistrict(null);
+        }
+    }, [province]);
+
     useEffect(() => {
         if (skipFirstSubmit) {
             setSkipFirstSubmit(false);
@@ -105,186 +99,100 @@ const ListDetailsForm = ({ open, onCancel, data, form, itemCart, saleOff, namePr
         setnewArray((prevArray) => prevArray.filter((item) => item.quantity !== 0));
         setCheckArray(false);
     }, [checkList]);
-    useEffect(() => {
-        // console.log(newArray);
-    }, [newArray]);
 
-    const handleFinish = () => {
-        // checkArray();
-        console.log(newArray);
-        if (profile) {
-            console.log('profie');
-            let data;
-            data = { variantId: newArray[0].id, quantity: newArray[0].quantity };
-            execute({
-                data: { ...data },
+    const handleFinish = (values) => {
+        if (isEditing) {
+            executeUpdate({
+                data: { ...values, id: data.id },
                 onCompleted: (res) => {
                     // setCacheAccessToken(res.access_token);
                     // executeGetProfile();
-                    window.location.reload();
                     onCancel();
-                    message.success('Thêm vào giỏ hàng thành công');
+                    messages.success('Sửa địa chỉ thành công!');
                 },
                 onError: () => {
-                    showErrorMessage(translate.formatMessage(message.loginFail));
+                    showErrorMessage(translate.formatMessage(messages.loginFail));
                     form.resetFields();
                 },
             });
         } else {
-            newArray.forEach((product) => {
-                addToCart(product);
+            executeCreate({
+                data: { ...values },
+                onCompleted: (res) => {
+                    // setCacheAccessToken(res.access_token);
+                    // executeGetProfile();
+                    onCancel();
+                    messages.success('Thêm địa chỉ thành công!');
+                },
+                onError: () => {
+                    showErrorMessage(translate.formatMessage(messages.loginFail));
+                    form.resetFields();
+                },
             });
-            message.success('Đặt hàng thành công');
         }
         onCancel();
         // removeFromCart(7000194750545920);
     };
 
-    const onChange = (id, item) => {
-        form.setFieldValue('projectRoleId', item);
-    };
-    const uploadFile = (file, onSuccess, onError) => {
-        executeUpFile({
-            data: {
-                type: 'AVATAR',
-                file: file,
-            },
-            onCompleted: (response) => {
-                if (response.result === true) {
-                    onSuccess();
-                    setImageUrl(response.data.filePath);
-                    // setIsChangedFormValues(true);
-                }
-            },
-            onError: (error) => {
-                onError();
-            },
-        });
-    };
-    const handleParser = (value) => {
-        // Xử lý giá trị trước khi hiển thị
-        const parsedValue = value.toString().replace(/[^0-9]/g, ''); // Chỉ giữ lại số
-        return parsedValue;
-    };
-
     return (
         <Modal
-            title={<FormattedMessage defaultMessage="Vui lòng chọn sản phẩm" />}
+            title={<FormattedMessage defaultMessage="Thêm địa chỉ nhận hàng" />}
             open={open}
             onCancel={onCancel}
             onOk={() => form.submit()}
-            width={800}
+            width={700}
         >
-            <Form form={form} onFinish={handleFinish}>
-                <Table
-                    pagination={false}
-                    onChange={(extra) => {
-                        // Dữ liệu mới của Table có thể được lấy từ extra.currentDataSource
-                        setTableData(extra.currentDataSource);
-                    }}
-                    columns={[
-                        {
-                            title: 'Tên sản phẩm',
-                            dataIndex: 'name',
-                            align: 'center',
-                        },
-                        {
-                            title: 'Màu sắc',
-                            dataIndex: 'color',
-                            align: 'center',
-                        },
-                        {
-                            title: 'Giá',
-                            dataIndex: 'price',
-                            name: 'price',
-                            render: (value) => {
-                                return (
-                                    <span>
-                                        {formatMoney(value - (value * saleOff) / 100, {
-                                            groupSeparator: ',',
-                                            decimalSeparator: '.',
-                                            currentcy: 'đ',
-                                            currentcyPosition: 'BACK',
-                                            currentDecimal: '0',
-                                        })}
-                                    </span>
-                                );
-                            },
-                        },
-                        {
-                            title: 'Số lượng trong kho',
-                            dataIndex: 'totalStock',
-                            align: 'center',
-                        },
-                        {
-                            title: 'Quantity',
-                            dataIndex: 'quantity',
-                            align: 'center',
-                            render: (value, record) => {
-                                return (
-                                    <InputNumber
-                                        min={0}
-                                        max={record.totalStock}
-                                        formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                                        // parser={(value) => value.replace(/\$\s?|(,*)/g, '')}
-                                        parser={handleParser}
-                                        defaultValue={0}
-                                        onChange={(value) => {
-                                            setnewArray((pre) =>
-                                                pre.map((cart) => {
-                                                    if (record.id === cart.id) {
-                                                        cart.total =
-                                                            (cart.price - (cart.price * saleOff) / 100) * value;
-                                                        cart.quantity = value;
-                                                    }
-                                                    return cart;
-                                                }),
-                                            );
-                                            setCheckArray(true);
-                                            console.log(record.totalStock);
-                                        }}
-                                    ></InputNumber>
-                                );
-                            },
-                        },
-                        {
-                            title: 'Total',
-                            dataIndex: 'total',
-                            render: (value) => {
-                                return (
-                                    <>
-                                        {formatMoney(value, {
-                                            groupSeparator: ',',
-                                            decimalSeparator: '.',
-                                            currentcy: 'đ',
-                                            currentcyPosition: 'BACK',
-                                            currentDecimal: '0',
-                                        })}
-                                    </>
-                                );
-                            },
-                        },
-                    ]}
-                    dataSource={newArray}
-                    summary={(data) => {
-                        const total = data.reduce((pre, current) => {
-                            return pre + current.total;
-                        }, 0);
-                        return (
-                            <span>
-                                Total:{' '}
-                                {formatMoney(total, {
-                                    groupSeparator: ',',
-                                    decimalSeparator: '.',
-                                    currentcy: 'đ',
-                                    currentcyPosition: 'BACK',
-                                    currentDecimal: '0',
-                                })}
-                            </span>
-                        );
-                    }}
-                ></Table>
-            </Form>
+            <BaseForm onFinish={handleFinish} form={form} size="100%">
+                <Card style={{ width: 650 }}>
+                    <Row gutter={24}>
+                        <Col span={12}>
+                            <TextField label={translate.formatMessage(commonMessage.Name)} name="name" />
+                        </Col>
+                        <Col span={12}>
+                            <TextField label={translate.formatMessage(commonMessage.phone)} name="phone" />
+                        </Col>
+                        <Col span={12}>
+                            <TextField label={translate.formatMessage(commonMessage.address)} name="address" />
+                        </Col>
+                        <Col span={12}>
+                            <AutoCompleteField
+                                label={translate.formatMessage(commonMessage.Province)}
+                                name="provinceId"
+                                apiConfig={apiConfig.nation.autocomplete}
+                                mappingOptions={(item) => ({ value: item.id, label: item.name })}
+                                initialSearchParams={{ kind: 1 }}
+                                searchParams={(text) => ({ name: text, kind: 1 })}
+                                required
+                            />
+                        </Col>
+                        <Col span={12}>
+                            <AutoCompleteField
+                                label={translate.formatMessage(commonMessage.District)}
+                                name="districtId"
+                                apiConfig={apiConfig.nation.autocomplete}
+                                mappingOptions={(item) => ({ value: item.id, label: item.name })}
+                                initialSearchParams={{ kind: 2 }}
+                                searchParams={(text) => ({ name: text, kind: 2 })}
+                                required
+                                key={province}
+                            />
+                        </Col>
+                        <Col span={12}>
+                            <AutoCompleteField
+                                label={translate.formatMessage(commonMessage.Village)}
+                                name="wardId"
+                                apiConfig={apiConfig.nation.autocomplete}
+                                mappingOptions={(item) => ({ value: item.id, label: item.name })}
+                                initialSearchParams={{ kind: 3 }}
+                                searchParams={(text) => ({ name: text, kind: 3 })}
+                                required
+                                key={district}
+                            />
+                        </Col>
+                    </Row>
+                    {/* <div className="footer-card-form">{actions}</div> */}
+                </Card>
+            </BaseForm>
         </Modal>
     );
 };

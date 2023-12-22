@@ -34,6 +34,7 @@ function SelectField({
     onClear,
     onFocus,
     onChangeOption,
+    dropdownRender,
     ...props
 }) {
     const { placeholder, rules } = useFormField(props);
@@ -73,6 +74,7 @@ function SelectField({
                 mode={mode}
                 autoComplete={autoComplete}
                 onClear={onClear}
+                dropdownRender={dropdownRender}
                 options={options?.map(
                     (option) => renderCustomOption?.(option[optionValue], option[optionValue], option) ?? option,
                 )}

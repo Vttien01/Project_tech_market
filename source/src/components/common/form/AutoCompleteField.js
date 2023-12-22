@@ -25,6 +25,7 @@ function AutoCompleteField({
     onChange,
     disabled,
     renderCustomOption,
+    dropdownRender,
 }) {
     const { placeholder: _placeholder, rules: _rules } = useFormField({
         placeholder,
@@ -119,6 +120,7 @@ function AutoCompleteField({
             renderCustomOption={renderCustomOption}
             onChange={onChange}
             onFocus={handleFocus}
+            dropdownRender={dropdownRender}
             onClear={() => handleOnSearch('')}
         />
     );
