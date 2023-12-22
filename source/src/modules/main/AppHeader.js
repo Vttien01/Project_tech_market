@@ -16,6 +16,7 @@ import {
     InputNumber,
     Table,
     message,
+    Tag,
 } from 'antd';
 import {
     DownOutlined,
@@ -47,7 +48,9 @@ import AutoCompleteField from '@components/common/form/AutoCompleteField';
 import { commonMessage } from '@locales/intl';
 import SelectField from '@components/common/form/SelectField';
 import { paymentOptions } from '@constants/masterData';
+import { showErrorMessage } from '@services/notifyService';
 const { Search } = Input;
+const { Text } = Typography;
 
 const messages = defineMessages({
     profile: 'Profile',
@@ -163,7 +166,7 @@ const AppHeader = ({ collapsed, onCollapse }) => {
                     },
                 }}
             >
-                <Header className={styles.appHeader2} style={{ paddingLeft:150, borderBottom: '1px solid #f57e20' }}>
+                <Header className={styles.appHeader2} style={{ paddingLeft: 150, borderBottom: '1px solid #f57e20' }}>
                     <div className={styles.div_Category}>
                         <UnorderedListOutlined />
                         DANH MỤC SẢN PHẨM
@@ -219,10 +222,17 @@ function AppCart() {
 
     const {
         data: cart,
-        execute,
+        execute: getCartExcute,
         loading,
     } = useFetch({
         ...apiConfig.cart.getList,
+    });
+
+    const {
+        data: order,
+        execute: createOrderForGuest,
+    } = useFetch({
+        ...apiConfig.order.create,
     });
     useEffect(() => {
         if (!profile) {
@@ -232,11 +242,10 @@ function AppCart() {
             calculateTotal(storedCart);
         } else {
             console.log(profile);
-            execute({
+            getCartExcute({
                 onCompleted: (response) => {
                     // setCacheAccessToken(res.access_token);
                     // executeGetProfile();
-                    console.log(response.data.cartDetailDtos);
                     setCartItem(response.data.cartDetailDtos);
                 },
                 onError: () => {
@@ -257,19 +266,30 @@ function AppCart() {
         let array2 = new Array(cartItem.length).fill(null);
 
         array2 = cartItem.map((item) => ({
-            color: item.productVariantDto.color,
-            price: item.productVariantDto.price,
+            color: item.color,
+            price: item.price,
             productName: item.productName,
-            productVariantId: item.productVariantDto.id,
+            productVariantId: item.productVariantId,
             quantity: item.quantity,
         }));
         const updatedValues = {
             ...values,
             listOrderProduct: array2, // Thay yourListOrderProductArray bằng mảng thực tế của bạn
         };
-        setCheckoutDrawerOpen(false);
+        createOrderForGuest({
+            data: { ...updatedValues },
+            onCompleted: (res) => {
+                // setCacheAccessToken(res.access_token);
+                // executeGetProfile();
+                setCheckoutDrawerOpen(false);
+                message.success('Đặt hàng thành công');
+            },
+            onError: () => {
+                showErrorMessage(translate.formatMessage(message.loginFail));
+            },
+        });
         console.log(updatedValues);
-        message.success('Đặt hàng thành công');
+        // message.success('Đặt hàng thành công');
     }
     return (
         <div>
@@ -288,7 +308,7 @@ function AppCart() {
                     setCartDrawer(false);
                 }}
                 title="Giỏ hàng"
-                contentWrapperStyle={{ width: 600 }}
+                contentWrapperStyle={{ width: 650 }}
             >
                 {profile ? (
                     <Table
@@ -296,19 +316,21 @@ function AppCart() {
                         columns={[
                             {
                                 title: 'Tên sản phẩm',
-                                dataIndex: ['productName'],
+                                dataIndex: 'productName',
                                 align: 'center',
+                                width:200,
                             },
                             {
                                 title: 'Màu sắc',
-                                dataIndex: ['productVariantDto', 'color'],
+                                dataIndex: [ 'color'],
                                 align: 'center',
                             },
                             {
                                 title: 'Giá',
-                                dataIndex: ['productVariantDto', 'price'],
+                                dataIndex: [ 'price'],
                                 name: 'price',
                                 align: 'center',
+                                width:150,
                                 render: (value) => {
                                     return (
                                         <span>
@@ -330,7 +352,9 @@ function AppCart() {
                             },
                             {
                                 title: 'Tổng',
-                                dataIndex: 'total',
+                                dataIndex: 'totalPriceSell',
+                                width:150,
+                                align: 'center',
                                 render: (value) => {
                                     return (
                                         <>
@@ -349,19 +373,27 @@ function AppCart() {
                         dataSource={cartItem}
                         summary={(data) => {
                             const total = data.reduce((pre, current) => {
-                                return pre + current.total;
+                                return pre + current.totalPriceSell;
                             }, 0);
                             return (
-                                <span>
-                                    Tổng trả:{' '}
-                                    {formatMoney(total, {
-                                        groupSeparator: ',',
-                                        decimalSeparator: '.',
-                                        currentcy: 'đ',
-                                        currentcyPosition: 'BACK',
-                                        currentDecimal: '0',
-                                    })}
-                                </span>
+                                <Table.Summary.Row>
+                                    <Table.Summary.Cell index={0} colSpan={4} align="end">
+                                        <Tag color={'green'} style={{ fontSize: 18, fontWeight: 700 }}>
+                                            Tổng trả
+                                        </Tag>
+                                    </Table.Summary.Cell>
+                                    <Table.Summary.Cell index={1}>
+                                        <Text type="danger" style={{ fontWeight: 700 }}>
+                                            {formatMoney(total, {
+                                                groupSeparator: ',',
+                                                decimalSeparator: '.',
+                                                currentcy: 'đ',
+                                                currentcyPosition: 'BACK',
+                                                currentDecimal: '0',
+                                            })}
+                                        </Text>
+                                    </Table.Summary.Cell>
+                                </Table.Summary.Row>
                             );
                         }}
                     ></Table>
@@ -371,8 +403,9 @@ function AppCart() {
                         columns={[
                             {
                                 title: 'Tên sản phẩm',
-                                dataIndex: 'name',
+                                dataIndex: 'productName',
                                 align: 'center',
+                                width:200,
                             },
                             {
                                 title: 'Màu sắc',
@@ -384,6 +417,7 @@ function AppCart() {
                                 dataIndex: 'price',
                                 name: 'price',
                                 align: 'center',
+                                width:150,
                                 render: (value) => {
                                     return (
                                         <span>
@@ -405,7 +439,9 @@ function AppCart() {
                             },
                             {
                                 title: 'Tổng',
-                                dataIndex: 'total',
+                                dataIndex: 'totalPriceSell',
+                                width:150,
+                                align: 'center',
                                 render: (value) => {
                                     return (
                                         <>
@@ -424,19 +460,27 @@ function AppCart() {
                         dataSource={cartItem}
                         summary={(data) => {
                             const total = data.reduce((pre, current) => {
-                                return pre + current.total;
+                                return pre + current.totalPriceSell;
                             }, 0);
                             return (
-                                <span>
-                                    Tổng trả:{' '}
-                                    {formatMoney(total, {
-                                        groupSeparator: ',',
-                                        decimalSeparator: '.',
-                                        currentcy: 'đ',
-                                        currentcyPosition: 'BACK',
-                                        currentDecimal: '0',
-                                    })}
-                                </span>
+                                <Table.Summary.Row>
+                                    <Table.Summary.Cell index={0} colSpan={4} align="end">
+                                        <Tag color={'green'} style={{ fontSize: 18, fontWeight: 700 }}>
+                                            Tổng trả
+                                        </Tag>
+                                    </Table.Summary.Cell>
+                                    <Table.Summary.Cell index={1}>
+                                        <Text type="danger" style={{ fontWeight: 700 }}>
+                                            {formatMoney(total, {
+                                                groupSeparator: ',',
+                                                decimalSeparator: '.',
+                                                currentcy: 'đ',
+                                                currentcyPosition: 'BACK',
+                                                currentDecimal: '0',
+                                            })}
+                                        </Text>
+                                    </Table.Summary.Cell>
+                                </Table.Summary.Row>
                             );
                         }}
                     ></Table>
@@ -444,13 +488,14 @@ function AppCart() {
 
                 <Button
                     type="primary"
+                    style={{ marginTop:20 }}
                     onClick={() => {
                         console.log(profile);
                         profile ? navigate(routes.OderPage.path) : setCheckoutDrawerOpen(true);
                         setCartDrawer(false);
                     }}
                 >
-                    Thanh toán
+                    Đặt hàng
                 </Button>
             </Drawer>
             <Drawer

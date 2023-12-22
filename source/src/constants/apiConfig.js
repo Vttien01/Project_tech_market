@@ -242,6 +242,11 @@ const apiConfig = {
         },
     },
     address: {
+        autocomplete: {
+            baseURL: `${apiUrl}v1/address/auto-complete`,
+            method: 'GET',
+            headers: baseHeader,
+        },
         getList: {
             baseURL: `${apiUrl}v1/address/list`,
             method: 'GET',
@@ -494,6 +499,12 @@ const apiConfig = {
         },
         create: {
             baseURL: `${apiUrl}v1/order/create`,
+            method: 'POST',
+            headers: baseHeader,
+            isRequiredTenantId: true,
+        },
+        createForUser: {
+            baseURL: `${apiUrl}v1/order/create-for-user`,
             method: 'POST',
             headers: baseHeader,
             isRequiredTenantId: true,

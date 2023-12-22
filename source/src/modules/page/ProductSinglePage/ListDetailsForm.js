@@ -49,7 +49,6 @@ const ListDetailsForm = ({ open, onCancel, data, form, itemCart, saleOff, namePr
     useEffect(() => {
         // Lấy giỏ hàng từ localStorage khi component được render
         const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
-        console.log(storedCart);
         setCart(storedCart);
         calculateTotal(storedCart);
     }, []);
@@ -72,7 +71,7 @@ const ListDetailsForm = ({ open, onCancel, data, form, itemCart, saleOff, namePr
             // Nếu sản phẩm đã tồn tại trong giỏ hàng, tăng số lượng lên
             const updatedCart = cart.map((item) =>
                 item.id === product.id
-                    ? { ...item, quantity: item?.quantity + product.quantity, total: item?.total + product.total }
+                    ? { ...item, quantity: item?.quantity + product.quantity, totalPriceSell: item?.total + product.total }
                     : item,
             );
             setCart(updatedCart);
@@ -88,7 +87,8 @@ const ListDetailsForm = ({ open, onCancel, data, form, itemCart, saleOff, namePr
     };
 
     const updateArray = () => {
-        setnewArray(itemCart ? itemCart.map((item) => ({ ...item, quantity: 0, name: nameProduct })) : []);
+        setnewArray(itemCart ? itemCart.map((item) => ({ ...item, quantity: 0, productVariantId: item?.id,
+            productName: nameProduct })) : []);
     };
 
     // Gọi hàm updateArray khi cần thiết, chẳng hạn trong useEffect hoặc một sự kiện nào đó.
@@ -97,6 +97,7 @@ const ListDetailsForm = ({ open, onCancel, data, form, itemCart, saleOff, namePr
         // const price = form.getFieldValue('price');
         updateArray();
     }, [itemCart]);
+    console.log(newArray);
     useEffect(() => {
         if (skipFirstSubmit) {
             setSkipFirstSubmit(false);
@@ -113,7 +114,6 @@ const ListDetailsForm = ({ open, onCancel, data, form, itemCart, saleOff, namePr
         // checkArray();
         console.log(newArray);
         if (profile) {
-            console.log('profie');
             let data;
             data = { variantId: newArray[0].id, quantity: newArray[0].quantity };
             execute({
@@ -134,6 +134,8 @@ const ListDetailsForm = ({ open, onCancel, data, form, itemCart, saleOff, namePr
             newArray.forEach((product) => {
                 addToCart(product);
             });
+            window.location.reload();
+            onCancel();
             message.success('Đặt hàng thành công');
         }
         onCancel();
@@ -185,7 +187,7 @@ const ListDetailsForm = ({ open, onCancel, data, form, itemCart, saleOff, namePr
                     columns={[
                         {
                             title: 'Tên sản phẩm',
-                            dataIndex: 'name',
+                            dataIndex: 'productName',
                             align: 'center',
                         },
                         {
@@ -233,7 +235,7 @@ const ListDetailsForm = ({ open, onCancel, data, form, itemCart, saleOff, namePr
                                             setnewArray((pre) =>
                                                 pre.map((cart) => {
                                                     if (record.id === cart.id) {
-                                                        cart.total =
+                                                        cart.totalPriceSell =
                                                             (cart.price - (cart.price * saleOff) / 100) * value;
                                                         cart.quantity = value;
                                                     }
@@ -241,7 +243,6 @@ const ListDetailsForm = ({ open, onCancel, data, form, itemCart, saleOff, namePr
                                                 }),
                                             );
                                             setCheckArray(true);
-                                            console.log(record.totalStock);
                                         }}
                                     ></InputNumber>
                                 );
@@ -249,7 +250,7 @@ const ListDetailsForm = ({ open, onCancel, data, form, itemCart, saleOff, namePr
                         },
                         {
                             title: 'Total',
-                            dataIndex: 'total',
+                            dataIndex: 'totalPriceSell',
                             render: (value) => {
                                 return (
                                     <>
@@ -268,7 +269,7 @@ const ListDetailsForm = ({ open, onCancel, data, form, itemCart, saleOff, namePr
                     dataSource={newArray}
                     summary={(data) => {
                         const total = data.reduce((pre, current) => {
-                            return pre + current.total;
+                            return pre + current.totalPriceSell;
                         }, 0);
                         return (
                             <span>
@@ -296,7 +297,6 @@ function AddToCardButton(itemCart) {
     useEffect(() => {
         // Lấy giỏ hàng từ localStorage khi component được render
         const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
-        console.log(storedCart);
         setCart(storedCart);
         calculateTotal(storedCart);
     }, []);

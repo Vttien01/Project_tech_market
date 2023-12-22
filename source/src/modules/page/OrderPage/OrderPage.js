@@ -24,6 +24,9 @@ import { defineMessage } from 'react-intl';
 import AutoCompleteField from '@components/common/form/AutoCompleteField';
 import SelectField from '@components/common/form/SelectField';
 import { paymentOptions } from '@constants/masterData';
+import useAuth from '@hooks/useAuth';
+import { showErrorMessage } from '@services/notifyService';
+import useTranslate from '@hooks/useTranslate';
 const { Text } = Typography;
 
 const decription = defineMessage({
@@ -33,6 +36,7 @@ const decription = defineMessage({
 });
 
 const OrderPage = () => {
+    const { profile } = useAuth();
     const navigate = useNavigate();
     const { id } = useParams();
     const dispatch = useDispatch();
@@ -40,6 +44,7 @@ const OrderPage = () => {
     const [detail, setDetail] = useState([]);
     const [openedDetailsModal, handlerDetailsModal] = useDisclosure(false);
     const [form] = Form.useForm();
+    const translate = useTranslate();
     // const description = 'This is a description.';
 
     const { token } = theme.useToken();
@@ -59,14 +64,42 @@ const OrderPage = () => {
         mappingData: ({ data }) => data.cartDetailDtos,
     });
 
-    const sharedOnCell = (_, index) => {
-        if (index === 1) {
-            return {
-                colSpan: 0,
-            };
-        }
-        return {};
-    };
+    const {
+        data: order,
+        execute: createOrderForGuest,
+    } = useFetch({
+        ...apiConfig.order.createForUser,
+    });
+
+    function onConfirmOrder(values) {
+        let array2 = new Array(cartItem.length).fill(null);
+
+        array2 = cartItem.map((item) => ({
+            color: item.color,
+            price: item.price,
+            productName: item.productName,
+            productVariantId: item.productVariantId,
+            quantity: item.quantity,
+        }));
+        const updatedValues = {
+            ...values,
+            listOrderProduct: array2, // Thay yourListOrderProductArray bằng mảng thực tế của bạn
+        };
+        createOrderForGuest({
+            data: { ...updatedValues },
+            onCompleted: (res) => {
+                // setCacheAccessToken(res.access_token);
+                // executeGetProfile();
+                setCurrent(2);
+                message.success('Thêm vào giỏ hàng thành công');
+            },
+            onError: () => {
+                showErrorMessage(translate.formatMessage(message.loginFail));
+            },
+        });
+        console.log(updatedValues);
+        // message.success('Đặt hàng thành công');
+    }
 
     const steps = [
         {
@@ -163,10 +196,10 @@ const OrderPage = () => {
         {
             title: 'Thanh toán',
             status: 'process',
-            icon: <IconLoader />,
+            icon: <LoadingOutlined />,
             content: (
                 <Form
-                    // onFinish={onConfirmOrder}
+                    onFinish={onConfirmOrder}
                     labelCol={{
                         span: 7,
                     }}
@@ -176,7 +209,13 @@ const OrderPage = () => {
                     layout="horizontal"
                     style={{
                         maxWidth: 900,
-                        marginTop:20,
+                        marginTop: 20,
+                    }}
+                    initialValues={{
+                        receiver: profile?.fullName,
+                        email: profile?.email,
+                        address: profile?.address,
+                        phone: profile?.phone,
                     }}
                 >
                     <Form.Item
@@ -209,18 +248,6 @@ const OrderPage = () => {
                         rules={[
                             {
                                 required: true,
-                                message: 'Vui lòng điền địa chỉ',
-                            },
-                        ]}
-                        label="Địa chỉ"
-                        name="address"
-                    >
-                        <Input placeholder="Nhập địa chỉ ..." />
-                    </Form.Item>
-                    <Form.Item
-                        rules={[
-                            {
-                                required: true,
                                 message: 'Vui lòng điền số điện thoại',
                             },
                         ]}
@@ -237,28 +264,10 @@ const OrderPage = () => {
                         <Input placeholder="Nhập mã giảm giá ..." />
                     </Form.Item>
                     <AutoCompleteField
-                        label="Tỉnh"
-                        name="province"
-                        apiConfig={apiConfig.nation.autocomplete}
-                        mappingOptions={(item) => ({ value: item.name, label: item.name })}
-                        initialSearchParams={{ kind: 1 }}
-                        searchParams={(text) => ({ name: text, kind: 1 })}
-                    />
-                    <AutoCompleteField
-                        label="Quận"
-                        name="district"
-                        apiConfig={apiConfig.nation.autocomplete}
-                        mappingOptions={(item) => ({ value: item.name, label: item.name })}
-                        initialSearchParams={{ kind: 2 }}
-                        searchParams={(text) => ({ name: text, kind: 2 })}
-                    />
-                    <AutoCompleteField
-                        label="Huyện"
-                        name="ward"
-                        apiConfig={apiConfig.nation.autocomplete}
-                        mappingOptions={(item) => ({ value: item.name, label: item.name })}
-                        initialSearchParams={{ kind: 3 }}
-                        searchParams={(text) => ({ name: text, kind: 3 })}
+                        label="Địa chỉ"
+                        name="addressId"
+                        apiConfig={apiConfig.address.autocomplete}
+                        mappingOptions={(item) => ({ value: item.id, label: item.address })}
                     />
 
                     <SelectField
@@ -268,8 +277,8 @@ const OrderPage = () => {
                         options={paymentOptions}
                         required
                     />
-                    <Button type="primary" htmlType="submit" style={{ marginBottom:20 }}>
-                        Confirm Order
+                    <Button type="primary" htmlType="submit" style={{ marginBottom: 20 }}>
+                        Xác nhận đặt hàng
                     </Button>
                 </Form>
             ),
@@ -286,9 +295,9 @@ const OrderPage = () => {
                     subTitle="Mã đơn hàng: 2017182818828182881 Vui lòng theo dõi email để biết quá trình giao hàng."
                     extra={[
                         <Button type="primary" key="console">
-                            Quay về trang chủ
+                             <a href="/">Quay về trang chủ</a>
                         </Button>,
-                        <Button key="buy">Mua lại</Button>,
+                        <Button key="buy" ><a href="/all-product">Xem sản phẩm khác</a></Button>,
                     ]}
                 />
             ),
@@ -298,6 +307,8 @@ const OrderPage = () => {
     const items = steps.map((item) => ({
         key: item.title,
         title: item.title,
+        icon: item.icon,
+        status: item.status,
     }));
     const contentStyle = {
         lineHeight: '260px',
@@ -352,12 +363,12 @@ const OrderPage = () => {
                             Next
                         </Button>
                     )}
-                    {current === steps.length - 1 && (
+                    {/* {current === steps.length - 1 && (
                         <Button type="primary" onClick={() => message.success('Processing complete!')}>
                             Done
                         </Button>
-                    )}
-                    {current > 0 && (
+                    )} */}
+                    {current > 0 && current < steps.length - 1 && (
                         <Button
                             style={{
                                 margin: '0 8px',
