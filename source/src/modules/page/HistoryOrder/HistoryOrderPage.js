@@ -60,6 +60,7 @@ import { FormattedMessage } from 'react-intl';
 import { FieldTypes } from '@constants/formConfig';
 import ListPage from '@components/common/layout/ListPage';
 import BaseTable from '@components/common/table/BaseTable';
+import Search from 'antd/es/input/Search';
 const { Text } = Typography;
 let index = 0;
 
@@ -80,6 +81,7 @@ const HistoryOrderPage = () => {
     const [item1, setItem1] = useState(null);
     const [orderId, setOrderId] = useState(0);
     const stateValues = translate.formatKeys(paymentOptions, ['label']);
+    const onSearch = (value, _e, info) => console.log(info?.source, value);
     const renderTitle = (title, item) => (
         <span>
             {title}
@@ -165,7 +167,15 @@ const HistoryOrderPage = () => {
                 ]}
                 // title={title}
             ></PageWrapper>
-
+            <div style={{ justifyContent: 'center',alignItems:'center', maxWidth:500, marginBottom:20, marginLeft:300 }}>
+                <Search
+                    placeholder="Nhập mã đơn hàng"
+                    allowClear
+                    enterButton="Search"
+                    size="small"
+                    onSearch={onSearch}
+                />
+            </div>
             <div style={{ flex: '1', justifyContent: 'center', minHeight: 600 }}>
                 <Card style={{ minHeight: 600, backgroundColor: '#d8dadd' }}>
                     <Tabs defaultActiveKey="1" centered size="large" items={items} style={{ marginBottom: 20 }} />
@@ -216,7 +226,7 @@ function TableMyOrder({ stateValues, state }) {
 
     const handleCancelOrder = (id) => {
         excuteCancelOrder({
-            data: { id: id, state:3 },
+            data: { id: id, state: 3 },
             onCompleted: (response) => {
                 setCheck(!check);
             },

@@ -159,5 +159,5 @@ export const CurrentcyPositions = {
 
 export const paymentSelect = [
     { label: 'Thanh toán tiền mặt', value: 0 },
-    { label: 'Thanh toán PaAYPAL', value: 1 },
+    { label: 'Thanh toán PAYPAL', value: 1 },
 ];

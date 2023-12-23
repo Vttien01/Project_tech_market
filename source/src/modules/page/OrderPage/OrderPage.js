@@ -139,11 +139,7 @@ const OrderPage = () => {
         createOrderForUser({
             data: { ...updatedValues },
             onCompleted: ( respone ) => {
-                // setCacheAccessToken(res.access_token);
-                // executeGetProfile();
                 console.log(respone.data.orderId);
-                // setOrderId(respone.data.orderId);
-                // console.log(orderId);
                 if (values.paymentMethod === 1) {
                     createTransaction({
                         data: {
