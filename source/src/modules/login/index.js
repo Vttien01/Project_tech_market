@@ -109,7 +109,7 @@ const LoginPage = () => {
                 {/* <div className="loginForm"> */}
                 <div className="top">
                     <h2>Welcome to our website</h2>
-                    <h4>Please login</h4>
+                    <h4>Vui lòng đăng nhập</h4>
                 </div>
                 <Form
                     name="login-form"

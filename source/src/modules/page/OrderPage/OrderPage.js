@@ -39,7 +39,7 @@ import AutoCompleteField from '@components/common/form/AutoCompleteField';
 import SelectField from '@components/common/form/SelectField';
 import { paymentOptions } from '@constants/masterData';
 import useAuth from '@hooks/useAuth';
-import { showErrorMessage } from '@services/notifyService';
+import { showErrorMessage, showSucsessMessage } from '@services/notifyService';
 import useTranslate from '@hooks/useTranslate';
 const { Text } = Typography;
 let index = 0;
@@ -59,11 +59,7 @@ const OrderPage = () => {
     const [form] = Form.useForm();
     const translate = useTranslate();
     const [item1, setItem1] = useState(null);
-    const [name, setName] = useState('');
-    const inputRef = useRef(null);
-    const onNameChange = (event) => {
-        setName(event.target.value);
-    };
+    const [orderId, setOrderId] = useState(0);
     const renderTitle = (title, item) => (
         <span>
             {title}
@@ -117,8 +113,12 @@ const OrderPage = () => {
         mappingData: ({ data }) => data.cartDetailDtos,
     });
 
-    const { data: order, execute: createOrderForGuest } = useFetch({
+    const { data: order, execute: createOrderForUser } = useFetch({
         ...apiConfig.order.createForUser,
+    });
+
+    const { execute: createTransaction } = useFetch({
+        ...apiConfig.transaction.create,
     });
 
     function onConfirmOrder(values) {
@@ -135,16 +135,39 @@ const OrderPage = () => {
             ...values,
             listOrderProduct: array2, // Thay yourListOrderProductArray bằng mảng thực tế của bạn
         };
-        createOrderForGuest({
+        createOrderForUser({
             data: { ...updatedValues },
-            onCompleted: (res) => {
+            onCompleted: ( respone ) => {
                 // setCacheAccessToken(res.access_token);
                 // executeGetProfile();
-                setCurrent(2);
-                message.success('Thêm vào giỏ hàng thành công');
+                console.log(respone.data.orderId);
+                // setOrderId(respone.data.orderId);
+                // console.log(orderId);
+                if (values.paymentMethod === 1) {
+                    createTransaction({
+                        data: {
+                            orderId: respone.data.orderId,
+                            urlCancel: 'http://localhost:3000/my-order-fail',
+                            urlSuccess: 'http://localhost:3000/my-order-success',
+                        },
+                        onCompleted: (res) => {
+                            console.log(res.data);
+                            window.location.href = res.data;
+                            showSucsessMessage('Đơn hàng đang được xử lý!');
+                        },
+                        onError: () => {
+                            showErrorMessage(translate.formatMessage("Thanh toán thất bại!"));
+                            form.resetFields();
+                        },
+                    });
+                } else {
+                    showSucsessMessage('Đặt hàng thành công');
+                    setCurrent(2);
+                }
             },
-            onError: () => {
-                showErrorMessage(translate.formatMessage(message.loginFail));
+            onError: (error) => {
+                showErrorMessage('Đặt hàng thất bại');
+                console.log(error);
             },
         });
         console.log(updatedValues);
@@ -317,6 +340,7 @@ const OrderPage = () => {
                         label="Địa chỉ"
                         name="addressId"
                         apiConfig={apiConfig.address.getList}
+                        required
                         dropdownRender={(menu) => (
                             <>
                                 {menu}
@@ -376,8 +400,8 @@ const OrderPage = () => {
             content: (
                 <Result
                     status="success"
-                    title="Successfully Purchased Cloud Server ECS!"
-                    subTitle="Mã đơn hàng: 2017182818828182881 Vui lòng theo dõi email để biết quá trình giao hàng."
+                    title="Đơn hàng của bạn đang được xử lý!"
+                    subTitle="Vui lòng theo dõi email để biết quá trình giao hàng."
                     extra={[
                         <Button type="primary" key="console">
                             <a href="/">Quay về trang chủ</a>
@@ -409,8 +433,6 @@ const OrderPage = () => {
     };
 
     const [quantity, setQuantity] = useState(1);
-
-
 
     // getting single product
     // useEffect(() => {

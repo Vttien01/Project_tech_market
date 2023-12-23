@@ -90,14 +90,17 @@ const NavSider = ({ collapsed, onCollapse, width }) => {
             width={width}
             onCollapse={onCollapse}
             trigger={null}
+            theme='light'
+            style={{ backgroundColor:"#fbf9f9" }}
         >
             <div data-collapsed={collapsed} className={styles.logo} style={{ width: '100%', marginTop:'2px' }}>
                 <img src={logo} alt="Mira" />
             </div>
             <Menu
                 key={location.pathname == '/' ? 'initial' : 'navSider'}
-                theme="dark"
+                theme="light"
                 mode="inline"
+                style={{ backgroundColor:"#fbf9f9" }}
                 className={styles.menu}
                 defaultSelectedKeys={activeNav.selectedKeys}
                 defaultOpenKeys={activeNav.openKeys}

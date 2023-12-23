@@ -48,7 +48,7 @@ import AutoCompleteField from '@components/common/form/AutoCompleteField';
 import { commonMessage } from '@locales/intl';
 import SelectField from '@components/common/form/SelectField';
 import { paymentOptions } from '@constants/masterData';
-import { showErrorMessage } from '@services/notifyService';
+import { showErrorMessage, showSucsessMessage } from '@services/notifyService';
 const { Search } = Input;
 const { Text } = Typography;
 
@@ -278,14 +278,17 @@ function AppCart() {
         };
         createOrderForGuest({
             data: { ...updatedValues },
-            onCompleted: (res) => {
-                // setCacheAccessToken(res.access_token);
-                // executeGetProfile();
+            onCompleted: (respone) => {
+                localStorage.clear();
                 setCheckoutDrawerOpen(false);
-                message.success('Đặt hàng thành công');
+                showSucsessMessage('Đặt hàng thành công');
+                setTimeout(() => {
+                    window.location.reload();
+
+                }, 1800);
             },
             onError: () => {
-                showErrorMessage(translate.formatMessage(message.loginFail));
+                showErrorMessage("Đặt hàng thất bại");
             },
         });
         console.log(updatedValues);

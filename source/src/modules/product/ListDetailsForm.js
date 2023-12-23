@@ -19,12 +19,16 @@ const ListDetailsForm = ({ handleAddList, open, onCancel, data, isEditing, form,
     const [imageUrl, setImageUrl] = useState(null);
     const { execute: executeUpFile } = useFetch(apiConfig.file.upload);
 
+    // console.log(data);
+
     useEffect(() => {
-        if (data) form.setFieldsValue({ ...data });
+        if (data)
+            form.setFieldsValue({ ...data, price: data.price.toString(), totalStock: data.totalStock.toString() });
     }, [data]);
     const handleFinish = (values) => {
-        if (isEditing) handleEditItemList({ ...values, image:imageUrl , index: data?.index });
-        else handleAddList( { ...values, image:imageUrl } );
+        const updatedValues = { ...values, id: data?.id };
+        if (isEditing) handleEditItemList({ ...updatedValues, image: imageUrl, index: data?.index });
+        else handleAddList({ ...values, image: imageUrl });
         form.resetFields();
         onCancel();
     };
@@ -38,7 +42,6 @@ const ListDetailsForm = ({ handleAddList, open, onCancel, data, isEditing, form,
                 file: file,
             },
             onCompleted: (response) => {
-                console.log(response);
                 if (response.result === true) {
                     onSuccess();
                     setImageUrl(response.data.filePath);
@@ -72,11 +75,7 @@ const ListDetailsForm = ({ handleAddList, open, onCancel, data, isEditing, form,
                     </Row>
                     <Row gutter={16}>
                         <Col span={12}>
-                            <TextField
-                                label={<FormattedMessage defaultMessage="Màu sắc" />}
-                                name="color"
-                                required
-                            />
+                            <TextField label={<FormattedMessage defaultMessage="Màu sắc" />} name="color" required />
                         </Col>
                         <Col span={12}>
                             <TextField
@@ -88,10 +87,7 @@ const ListDetailsForm = ({ handleAddList, open, onCancel, data, isEditing, form,
                     </Row>
                     <Row gutter={16}>
                         <Col span={12}>
-                            <TextField
-                                label={<FormattedMessage defaultMessage="Số lượng" />}
-                                name="totalStock"
-                            />
+                            <TextField label={<FormattedMessage defaultMessage="Số lượng" />} name="totalStock" />
                         </Col>
                         <Col span={12}>
                             <SelectField

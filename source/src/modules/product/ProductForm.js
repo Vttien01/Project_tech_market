@@ -42,7 +42,6 @@ const ProductForm = ({ isEditing, formId, actions, dataDetail, onSubmit, setIsCh
     const [imageUrl, setImageUrl] = useState(null);
     const [bannerUrl, setBannerUrl] = useState(null);
     const { execute: executeUpFile } = useFetch(apiConfig.file.upload);
-    console.log(imageUrl);
     const {
         form: formRequest,
         mixinFuncs,
@@ -53,9 +52,7 @@ const ProductForm = ({ isEditing, formId, actions, dataDetail, onSubmit, setIsCh
     });
 
     const handleSubmit = (values) => {
-        console.log(values);
         console.log(listData);
-        console.log(imageUrl);
         return mixinFuncs.handleSubmit({
             ...values,
             image: imageUrl,
@@ -72,6 +69,7 @@ const ProductForm = ({ isEditing, formId, actions, dataDetail, onSubmit, setIsCh
                 dataDetail?.listProductVariant.map((item, index) => ({
                     ...item,
                     index,
+                    id:item.id,
                 })),
             );
             formRequest.setFieldsValue({
@@ -272,8 +270,8 @@ const ProductForm = ({ isEditing, formId, actions, dataDetail, onSubmit, setIsCh
                                 type="primary"
                                 onClick={(e) => {
                                     e.stopPropagation();
-                                    handlerDetailsModal.open();
                                     setItem(null);
+                                    handlerDetailsModal.open();
                                     form.resetFields();
                                 }}
                                 style={{ width: '150px' }}

@@ -1,6 +1,7 @@
 import AutoCompleteField from '@components/common/form/AutoCompleteField';
 import { BaseForm } from '@components/common/form/BaseForm';
 import CropImageField from '@components/common/form/CropImageField';
+import InputTextField from '@components/common/form/InputTextField';
 import NumericField from '@components/common/form/NumericField';
 import SelectField from '@components/common/form/SelectField';
 import TextField from '@components/common/form/TextField';
@@ -47,10 +48,12 @@ const ListDetailsForm = ({ handleAddList, open, onCancel, data, isEditing, form,
         data = { newPassword: values.newPassword, otp: values.otp, idHash: idHash };
         executeForgetPassword({
             data: { ...data },
-            onCompleted: (res) => {
+            onCompleted: (response) => {
                 // setCacheAccessToken(res.access_token);
                 // executeGetProfile();
-                navigate('/login');
+                showSucsessMessage(response.message);
+                // navigate('/login');
+                form.resetFields();
                 onCancel();
             },
             onError: (error) => {
@@ -65,7 +68,6 @@ const ListDetailsForm = ({ handleAddList, open, onCancel, data, isEditing, form,
 
     const handleGetOtp = () => {
         // Xử lý sự kiện khi người dùng click vào "Quên mật khẩu?"
-        console.log('Người dùng đã click vào "Quên mật khẩu?"');
         const email = form.getFieldValue('email');
         let data;
         data = { email: email };
@@ -74,11 +76,11 @@ const ListDetailsForm = ({ handleAddList, open, onCancel, data, isEditing, form,
             onCompleted: (response) => {
                 setidHash(response.data.idHash);
                 showSucsessMessage(response.message);
-                form.resetFields();
+                // form.resetFields();
             },
             onError: (error) => {
-                showErrorMessage(error.message);
-                form.resetFields();
+                showErrorMessage('Check your email!');
+                // form.resetFields();
             },
         });
     };
@@ -93,7 +95,18 @@ const ListDetailsForm = ({ handleAddList, open, onCancel, data, isEditing, form,
                 <Card>
                     <Row gutter={24}>
                         <Col span={24}>
-                            <TextField label={<FormattedMessage defaultMessage="Email" />} name="email" required />
+                            <InputTextField
+                                label={<FormattedMessage defaultMessage="Email" />}
+                                name="email"
+                                type="email"
+                                rules={[
+                                    {
+                                        type: 'email',
+                                        message: 'Định dạng email không hợp lệ',
+                                    },
+                                ]}
+                                required
+                            />
                         </Col>
                         <Col span={24}>
                             <TextField
@@ -126,8 +139,9 @@ const ListDetailsForm = ({ handleAddList, open, onCancel, data, isEditing, form,
                                 rules={[
                                     {
                                         validator: async () => {
-                                            const password = form.getFieldValue('password');
+                                            const password = form.getFieldValue('newPassword');
                                             const confirmPassword = form.getFieldValue('confirmPassword');
+                                            console.log(password);
                                             if (password !== confirmPassword) {
                                                 throw new Error(
                                                     translate.formatMessage(commonMessage.passwordNotMatch),
@@ -136,7 +150,7 @@ const ListDetailsForm = ({ handleAddList, open, onCancel, data, isEditing, form,
                                         },
                                     },
                                 ]}
-                                required
+                                // required
                             />
                         </Col>
                     </Row>

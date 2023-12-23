@@ -145,22 +145,17 @@ const SignupPage = () => {
             <div className="area_login_right">
                 <div className="top">
                     <h2>Welcome to our website</h2>
-                    <h4>Please signup</h4>
+                    <h4>Vui lòng đăng ký</h4>
                 </div>
                 <Form
                     name="login-form"
                     onFinish={onFinish}
-                    // initialValues={{
-                    //     phone: 'superAdmin',
-                    //     password: '123456',
-                    // }}
                     layout="vertical"
                 >
                     <div className="input">
                         <InputTextField
                             name="phone"
                             fieldProps={{ prefix: <IconPhone /> }}
-                            // label={intl.formatMessage(message.username)}
                             placeholder="Số điện thoại"
                             size="large"
                             required
@@ -170,7 +165,7 @@ const SignupPage = () => {
                         <InputTextField
                             name="email"
                             fieldProps={{ prefix: <IconMailExclamation /> }}
-                            // label={intl.formatMessage(message.username)}
+                            type="email"
                             placeholder={intl.formatMessage(commonMessage.email)}
                             size="large"
                             rules={[

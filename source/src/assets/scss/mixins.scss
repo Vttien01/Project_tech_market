@@ -11,7 +11,7 @@
 }
 
 @mixin darkMode {
-    body[data-theme="dark"] {
+    body[data-theme="light"] {
 		@content;
 	}
 }

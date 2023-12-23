@@ -38,6 +38,7 @@ const ListDetailsForm = ({ open, onCancel, data, form, itemCart, saleOff, namePr
         ...apiConfig.cart.add,
     });
     const [tableData, setTableData] = useState([]);
+    console.log(itemCart);
 
     // Kiểm tra xem itemCart có tồn tại không trước khi sử dụng map
     const [newArray, setnewArray] = useState([]);
@@ -97,7 +98,6 @@ const ListDetailsForm = ({ open, onCancel, data, form, itemCart, saleOff, namePr
         // const price = form.getFieldValue('price');
         updateArray();
     }, [itemCart]);
-    console.log(newArray);
     useEffect(() => {
         if (skipFirstSubmit) {
             setSkipFirstSubmit(false);

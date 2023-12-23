@@ -566,6 +566,27 @@ const apiConfig = {
             isRequiredTenantId: true,
         },
     },
+    transaction: {
+        cancelPay: {
+            baseURL: `${apiUrl}v1/transaction/deposit/cancel`,
+            method: 'GET',
+            headers: baseHeader,
+            isRequiredTenantId: true,
+        },
+
+        successPay: {
+            baseURL: `${apiUrl}v1/transaction/deposit/success`,
+            method: 'GET',
+            headers: baseHeader,
+            isRequiredTenantId: true,
+        },
+        create: {
+            baseURL: `${apiUrl}v1/transaction/create`,
+            method: 'POST',
+            headers: baseHeader,
+            isRequiredTenantId: true,
+        },
+    },
 };
 
 export default apiConfig;

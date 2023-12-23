@@ -37,7 +37,7 @@ export const statusOptions = [
 export const paymentOptions = [
     { value: 0, label: 'Thanh toán tiền mặt', color: '#00A648' },
     { value: 1, label: 'Thanh toán PAYPAL', color: '#FFBF00' },
-    { value: 2, label: 'Thanh toán VNPAY', color: '#CC0000' },
+    // { value: 2, label: 'Thanh toán VNPAY', color: '#CC0000' },
 ];
 
 export const formSize = {

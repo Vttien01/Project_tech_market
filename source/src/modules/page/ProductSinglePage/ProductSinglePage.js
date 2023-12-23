@@ -91,7 +91,7 @@ const ProductSinglePage = () => {
                 routes={[
                     {
                         breadcrumbName: 'Trang chủ',
-                        path: generatePath(routes.homePage.path),
+                        path: routes.homePage.path,
                     },
                     { breadcrumbName: 'Sản phẩm' },
                 ]}
