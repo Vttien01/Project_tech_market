@@ -1,4 +1,4 @@
-import { STATUS_ACTIVE, STATUS_INACTIVE, STATUS_PENDING,PROVINCE_KIND,DISTRICT_KIND,VILLAGE_KIND } from '@constants';
+import { STATUS_ACTIVE, STATUS_INACTIVE, STATUS_PENDING,PROVINCE_KIND,DISTRICT_KIND,VILLAGE_KIND, PAYPAL_METHOD, COD_METHOD } from '@constants';
 import { defineMessages } from 'react-intl';
 import {
     nationKindMessage,
@@ -8,6 +8,11 @@ const commonMessage = defineMessages({
     statusActive: 'Active',
     statusPending: 'Pending',
     statusInactive: 'Inactive',
+});
+
+const paymentMessage = defineMessages({
+    PAYPAL_METHOD: 'PayPal',
+    COD_METHOD: 'Tiền mặt',
 });
 
 export const languageOptions = [
@@ -35,9 +40,8 @@ export const statusOptions = [
 ];
 
 export const paymentOptions = [
-    { value: 0, label: 'Thanh toán tiền mặt', color: '#00A648' },
-    { value: 1, label: 'Thanh toán PAYPAL', color: '#FFBF00' },
-    // { value: 2, label: 'Thanh toán VNPAY', color: '#CC0000' },
+    { value: COD_METHOD, label: paymentMessage.COD_METHOD, color: '#00A648' },
+    { value: PAYPAL_METHOD, label: paymentMessage.PAYPAL_METHOD, color: '#FFBF00' },
 ];
 
 export const formSize = {

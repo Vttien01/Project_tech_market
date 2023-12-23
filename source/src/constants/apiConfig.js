@@ -587,6 +587,22 @@ const apiConfig = {
             isRequiredTenantId: true,
         },
     },
+    orderDetail: {
+        getByOrder: {
+            baseURL: `${apiUrl}v1/order-detail/get-by-order/:id`,
+            method: 'GET',
+            headers: baseHeader,
+            isRequiredTenantId: true,
+        },
+
+
+        getByPhoneAndOrder: {
+            baseURL: `${apiUrl}v1/order-detail/get-by-phone-orderCode`,
+            method: 'GET',
+            headers: baseHeader,
+            isRequiredTenantId: true,
+        },
+    },
 };
 
 export default apiConfig;

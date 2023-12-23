@@ -41,6 +41,7 @@ import { paymentOptions } from '@constants/masterData';
 import useAuth from '@hooks/useAuth';
 import { showErrorMessage, showSucsessMessage } from '@services/notifyService';
 import useTranslate from '@hooks/useTranslate';
+import { paymentSelect } from '@constants';
 const { Text } = Typography;
 let index = 0;
 
@@ -383,7 +384,7 @@ const OrderPage = () => {
                         name="paymentMethod"
                         label="Hình thức thanh toán"
                         allowClear={false}
-                        options={paymentOptions}
+                        options={paymentSelect}
                         required
                     />
                     <Button type="primary" htmlType="submit" style={{ marginBottom: 20 }}>

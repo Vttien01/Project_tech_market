@@ -8,6 +8,7 @@ import ProductSinglePage from './ProductSinglePage/ProductSinglePage';
 import OrderPage from './OrderPage/OrderPage';
 import ResultFail from './OrderPage/ResultFail';
 import ResultSucces from './OrderPage/ResultSucces';
+import HistoryOrderPage from './HistoryOrder/HistoryOrderPage';
 
 export default {
     ProductHomePage1: {
@@ -67,6 +68,12 @@ export default {
     ResultSuccess: {
         path: '/my-order-success',
         component: ResultSucces,
+        auth: null,
+        title: 'Đặt hàng thành công',
+    },
+    HistoryOrder: {
+        path: '/history-order',
+        component: HistoryOrderPage,
         auth: null,
         title: 'Đặt hàng thành công',
     },
