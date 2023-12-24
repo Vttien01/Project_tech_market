@@ -9,6 +9,7 @@ import OrderPage from './OrderPage/OrderPage';
 import ResultFail from './OrderPage/ResultFail';
 import ResultSucces from './OrderPage/ResultSucces';
 import HistoryOrderPage from './HistoryOrder/HistoryOrderPage';
+import HistoryOrderGuest from './HistoryOrder/HistoryOrderGuest';
 
 export default {
     ProductHomePage1: {
@@ -74,6 +75,12 @@ export default {
     HistoryOrder: {
         path: '/history-order',
         component: HistoryOrderPage,
+        auth: null,
+        title: 'Đặt hàng thành công',
+    },
+    HistoryOrderGuest: {
+        path: '/history-order-guest',
+        component: HistoryOrderGuest,
         auth: null,
         title: 'Đặt hàng thành công',
     },

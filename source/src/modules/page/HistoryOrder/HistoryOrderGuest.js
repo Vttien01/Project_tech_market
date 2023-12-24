@@ -30,6 +30,7 @@ import {
     Divider,
     Form,
     Input,
+    List,
     Result,
     Space,
     Steps,
@@ -45,7 +46,7 @@ import ListDetailsForm from './ListDetailsForm';
 import useDisclosure from '@hooks/useDisclosure';
 import PageWrapper from '@components/common/layout/PageWrapper';
 import routes from '@routes';
-import { LoadingOutlined, SmileOutlined, SolutionOutlined } from '@ant-design/icons';
+import { LoadingOutlined, SmileOutlined, SolutionOutlined, SearchOutlined } from '@ant-design/icons';
 import { IconLoader } from '@tabler/icons-react';
 import { defineMessage } from 'react-intl';
 import AutoCompleteField from '@components/common/form/AutoCompleteField';
@@ -62,6 +63,7 @@ import { FieldTypes } from '@constants/formConfig';
 import ListPage from '@components/common/layout/ListPage';
 import BaseTable from '@components/common/table/BaseTable';
 import Search from 'antd/es/input/Search';
+import Avatar from 'antd/es/avatar/avatar';
 const { Text } = Typography;
 let index = 0;
 
@@ -71,7 +73,7 @@ const decription = defineMessage({
     third: 'Hoàn thành các bước',
 });
 
-const HistoryOrderPage = () => {
+const HistoryOrderGuest = () => {
     const { profile } = useAuth();
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -82,9 +84,9 @@ const HistoryOrderPage = () => {
     const [item1, setItem1] = useState(null);
     const [orderId, setOrderId] = useState(0);
     const stateValues = translate.formatKeys(paymentOptions, ['label']);
-    const onSearch = (value, _e, info) => {
-        <TableMyOrder search={value} />;
-    };
+    const [search, setSearch] = useState('');
+    const [checkSearch, setCheckSearch] = useState(false);
+
     const renderTitle = (title, item) => (
         <span>
             {title}
@@ -100,9 +102,33 @@ const HistoryOrderPage = () => {
     );
 
     const handleEdit = (item) => {
-        console.log(item);
         setItem1(item);
         handlerDetailsModal.open();
+    };
+
+    const { data: myOrder, execute: executeSearchOrder } = useFetch({
+        ...apiConfig.orderDetail.getByPhoneAndOrder,
+    });
+
+    const onSearch = (value, _e, info) => {
+        // setSearch(value.orderCode);
+        if (value.orderCode !== '') {
+            executeSearchOrder({
+                params: { orderCode: value.orderCode },
+                onCompleted: (response) => {
+                    // console.log(response.data.content);
+                    if (response !== null) {
+                        setCheckSearch(true);
+                        const data = response.data.content;
+                        console.log(data);
+                        setSearch(response.data.content);
+                    } else {
+                        setCheckSearch(false);
+                    }
+                },
+            });
+        }
+        else  setCheckSearch(false);
     };
 
     const { token } = theme.useToken();
@@ -112,24 +138,21 @@ const HistoryOrderPage = () => {
 
     const steps = [
         {
-            label: `Đang Xử Lý`,
+            label: `Chi tiết đơn hàng`,
             key: 1,
-            children: <TableMyOrder stateValues={stateValues} state={1} />,
-        },
-        {
-            label: `Đang Vận chuyển`,
-            key: 2,
-            children: <TableMyOrder stateValues={stateValues} state={2} />,
-        },
-        {
-            label: `Hoàn Thành`,
-            key: 3,
-            children: <TableMyOrder stateValues={stateValues} state={4} />,
-        },
-        {
-            label: `Đã Hủy`,
-            key: 4,
-            children: <TableMyOrder stateValues={stateValues} state={3} />,
+            children: checkSearch ? (
+                <TableMyOrder search={myOrder} />
+            ) : (
+                <Result
+                    icon={<SearchOutlined />}
+                    title="Vui lòng nhập mã đơn hàng!"
+                    extra={
+                        <Button type="primary">
+                            <a href="/">Quay về trang chủ</a>
+                        </Button>
+                    }
+                />
+            ),
         },
     ];
     const items = steps.map((item) => ({
@@ -166,7 +189,7 @@ const HistoryOrderPage = () => {
                         breadcrumbName: 'Trang chủ',
                         path: generatePath(routes.homePage.path),
                     },
-                    { breadcrumbName: 'Lịch sử đơn hàng' },
+                    { breadcrumbName: 'Tìm kiếm đơn hàng' },
                 ]}
                 // title={title}
             ></PageWrapper>
@@ -200,7 +223,7 @@ const HistoryOrderPage = () => {
                     </Form>
                 </div>
             </div>
-            <div style={{ flex: '1', justifyContent: 'center', minHeight: 600 }}>
+            <div style={{ flex: '1', justifyContent: 'center', minHeight: 300 }}>
                 <Card style={{ minHeight: 600, backgroundColor: '#d8dadd' }}>
                     <Tabs defaultActiveKey="1" centered size="large" items={items} style={{ marginBottom: 20 }} />
                 </Card>
@@ -215,28 +238,22 @@ function TableMyOrder({ stateValues, state, search }) {
     const [detail, setDetail] = useState([]);
     const [check, setCheck] = useState(false);
 
-    const {
-        data: myOrder,
-        loading: loadingMyOrder,
-        execute: executeMyOrder,
-    } = useFetch(apiConfig.order.myOrder, {
-        immediate: true,
-        mappingData: ({ data }) => data.content,
-        params: { state: state },
-    });
+    console.log(search);
 
     // const {
-    //     execute: executeDetailOrder,
-    // } = useFetch(apiConfig.orderDetail.getByOrder, {
+    //     data: myOrder,
+    //     loading: loadingMyOrder,
+    //     execute: executeMyOrder,
+    // } = useFetch(apiConfig.order.myOrder, {
     //     immediate: true,
+    //     mappingData: ({ data }) => data.content,
+    //     params: { state: state },
     // });
-    const { execute: executeDetailOrder } = useFetch({
-        ...apiConfig.orderDetail.getByOrder,
-    });
 
-    // const { execute: executeSearchOrder } = useFetch({
-    //     ...apiConfig.orderDetail.getByPhoneAndOrder,
+    // const { execute: executeDetailOrder } = useFetch({
+    //     ...apiConfig.orderDetail.getByOrder,
     // });
+
     // if (search !== null) {
     //     executeSearchOrder({
     //         params: { orderCode: search },
@@ -245,33 +262,6 @@ function TableMyOrder({ stateValues, state, search }) {
     //         },
     //     });
     // }
-
-    const handleFetchDetail = (id) => {
-        executeDetailOrder({
-            pathParams: { id: id },
-            onCompleted: (response) => {
-                setDetail(response.data);
-            },
-            // onError: mixinFuncs.handleGetDetailError,
-        });
-    };
-
-    const { execute: excuteCancelOrder } = useFetch({
-        ...apiConfig.order.cancelMyOrder,
-    });
-
-    const handleCancelOrder = (id) => {
-        excuteCancelOrder({
-            data: { id: id, state: 3 },
-            onCompleted: (response) => {
-                setCheck(!check);
-            },
-            // onError: mixinFuncs.handleGetDetailError,
-        });
-    };
-    useEffect(() => {
-        executeMyOrder();
-    }, [check]);
 
     return (
         <div>
@@ -282,87 +272,55 @@ function TableMyOrder({ stateValues, state, search }) {
                 detail={detail}
                 isEditing={!!detail}
             />
-            <Table
-                pagination={false}
-                onRow={(record, rowIndex) => ({
-                    onClick: (e) => {
-                        e.stopPropagation();
-                        handleFetchDetail(record.id);
-                        handlerDetailsModal.open();
-                    },
-                })}
-                columns={[
-                    {
-                        title: 'Mã đơn hàng',
-                        dataIndex: 'orderCode',
-                        align: 'center',
-                    },
-                    {
-                        title: 'Ngày tạo',
-                        dataIndex: 'createdDate',
-                        align: 'center',
-                        render: (createdDate) => {
-                            const result = convertUtcToLocalTime(createdDate, DEFAULT_FORMAT, DATE_FORMAT_VALUE);
-                            return <div>{result}</div>;
-                        },
-                    },
-                    {
-                        title: 'Người nhận',
-                        dataIndex: 'receiver',
-                        align: 'center',
-                    },
-                    {
-                        title: 'Hình thức trả tiền',
-                        dataIndex: 'paymentMethod',
-                        align: 'center',
-                        width: 120,
-                        render(dataRow) {
-                            const state = stateValues.find((item) => item.value == dataRow);
-                            return (
-                                <Tag color={state.color}>
-                                    <div style={{ padding: '0 4px', fontSize: 14 }}>{state.label}</div>
-                                </Tag>
-                            );
-                        },
-                    },
-                    {
-                        title: 'Tổng tiền',
-                        dataIndex: ['totalMoney'],
-                        name: 'totalMoney',
-                        align: 'center',
-                        render: (value) => {
-                            return (
-                                <span>
-                                    {formatMoney(value, {
-                                        groupSeparator: ',',
-                                        decimalSeparator: '.',
-                                        currentcy: 'đ',
-                                        currentcyPosition: 'BACK',
-                                        currentDecimal: '0',
-                                    })}
-                                </span>
-                            );
-                        },
-                    },
-                    {
-                        title: 'Hành động',
-                        key: 'action',
-                        align: 'center',
-                        render: (_, record) => (
-                            <Button
-                                style={{ padding: 0, display: 'table-cell', verticalAlign: 'middle' }}
-                                onClick={() => handleCancelOrder(record.id)}
-                            >
-                                <IconTrash color="#f32020" />
-                            </Button>
-                        ),
-                    },
-                ]}
-                dataSource={myOrder}
-                bordered
-            ></Table>
+            <Card>
+                <List
+                    className="demo-loadmore-list"
+                    itemLayout="horizontal"
+                    dataSource={search.data.content}
+                    style={{ marginBottom: 10 }}
+                    renderItem={(item) => (
+                        <Card style={{ backgroundColor: '#eff0f1', marginTop: 10 }}>
+                            <List.Item key={item?.id}>
+                                <List.Item.Meta
+                                    avatar={<Avatar src={item?.image} />}
+                                    title={<a href="https://ant.design">{item?.name}</a>}
+                                    // description={item?.price}
+                                    description={
+                                        <div
+                                            style={{
+                                                display: 'flex',
+                                                justifyContent: 'center',
+                                                flexDirection: 'column',
+                                            }}
+                                        >
+                                            <div style={{ flex: '1', justifyContent: 'center' }}>
+                                                Số lượng: {item.amount}
+                                            </div>
+                                            <div style={{ flex: '1', justifyContent: 'center' }}>Màu: {item.color}</div>
+                                            <div style={{ flex: '1', justifyContent: 'center' }}>
+                                                {' '}
+                                                Tổng tiền:{' '}
+                                                {formatMoney(item?.price, {
+                                                    groupSeparator: ',',
+                                                    decimalSeparator: '.',
+                                                    currentcy: 'đ',
+                                                    currentcyPosition: 'BACK',
+                                                    currentDecimal: '0',
+                                                })}
+                                            </div>
+                                        </div>
+                                    }
+                                />
+                                <div>
+                                    <IconTrash color="#f32020" />
+                                </div>
+                            </List.Item>
+                        </Card>
+                    )}
+                />
+            </Card>
         </div>
     );
 }
 
-export default HistoryOrderPage;
+export default HistoryOrderGuest;

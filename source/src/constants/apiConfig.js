@@ -597,7 +597,7 @@ const apiConfig = {
 
 
         getByPhoneAndOrder: {
-            baseURL: `${apiUrl}v1/order-detail/get-by-phone-orderCode`,
+            baseURL: `${apiUrl}v1/order-detail/get-by-orderCode`,
             method: 'GET',
             headers: baseHeader,
             isRequiredTenantId: true,

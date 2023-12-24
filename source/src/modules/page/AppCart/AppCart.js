@@ -66,11 +66,9 @@ const AppCart = () => {
     useEffect(() => {
         if (!profile) {
             const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
-            console.log(storedCart);
             setCartItem(storedCart);
             calculateTotal(storedCart);
         } else {
-            console.log(profile);
             getCartExcute({
                 onCompleted: (response) => {
                     // setCacheAccessToken(res.access_token);
@@ -78,14 +76,12 @@ const AppCart = () => {
                     setCartItem(response.data.cartDetailDtos);
                 },
                 onError: () => {
-                    // showErrorMessage(translate.formatMessage(message.loginFail));
+                    showErrorMessage("Không lấy được giả hàng!");
                     // form.resetFields();
-                    console.log('Lỗi');
                 },
             });
         }
     }, []);
-    console.log(cartItem);
 
     const calculateTotal = (cartItems) => {
         const newTotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
@@ -121,7 +117,6 @@ const AppCart = () => {
                             urlSuccess: 'http://localhost:3000/my-order-success',
                         },
                         onCompleted: (res) => {
-                            console.log(res.data);
                             window.location.href = res.data;
                             // setCheckoutDrawerOpen(false);
                             // showSucsessMessage('Đặt hàng thành công');
@@ -143,7 +138,6 @@ const AppCart = () => {
                 showErrorMessage('Đặt hàng thất bại');
             },
         });
-        console.log(updatedValues);
         // message.success('Đặt hàng thành công');
     }
     return (
@@ -345,7 +339,6 @@ const AppCart = () => {
                     type="primary"
                     style={{ marginTop: 20 }}
                     onClick={() => {
-                        console.log(profile);
                         profile ? navigate(routes.OderPage.path) : setCheckoutDrawerOpen(true);
                         setCartDrawer(false);
                     }}

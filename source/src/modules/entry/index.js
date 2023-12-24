@@ -25,7 +25,7 @@ const Dashboard = () => {
 
     useEffect(() => {
         if (kind == 3) {
-            navigate(routes.ProductHomePage1.path);
+            navigate(routes.homePage.path);
         } else if (kind == 2) {
             navigate(routes.brandListPage.path);
         } else {

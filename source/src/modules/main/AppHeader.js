@@ -152,9 +152,9 @@ const AppHeader = ({ collapsed, onCollapse }) => {
                     onClick: () => navigate(routes.loginPage.path),
                 },
                 {
-                    key: 'histoy_order',
+                    key: 'histoy_order_guest',
                     label: <span>Đơn hàng</span>,
-                    onClick: () => navigate(routes.HistoryOrder.path),
+                    onClick: () => navigate(routes.HistoryOrderGuest.path),
                 },
             );
         }

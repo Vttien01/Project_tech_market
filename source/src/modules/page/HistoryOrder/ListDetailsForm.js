@@ -39,7 +39,6 @@ const ListDetailsForm = ({ open, onCancel, detail, form, isEditing }) => {
     const { execute: executeCreate, loading } = useFetch({
         ...apiConfig.address.create,
     });
-    console.log(detail);
     const [tableData, setTableData] = useState([]);
 
     // Kiểm tra xem itemCart có tồn tại không trước khi sử dụng map
