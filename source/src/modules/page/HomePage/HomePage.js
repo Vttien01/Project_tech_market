@@ -75,7 +75,7 @@ const HomePage = () => {
             <div className="siderHome" >
                 <NavSiderCommon collapsed={collapsed} onCollapse={toggleCollapsed} />
             </div>
-            <div className="BannerHome">
+            <div className="BannerHome" style={{ marginLeft:14 }}>
                 <Row justify="space-around" align="middle" style={{ paddingTop: 0 }}>
                     <Col span={17}>
                         <Carousel autoplay>

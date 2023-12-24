@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import useBasicForm from '@hooks/useBasicForm';
 import TextField from '@components/common/form/TextField';
 import CropImageField from '@components/common/form/CropImageField';
-import { AppConstants, DATE_FORMAT_VALUE, DEFAULT_FORMAT } from '@constants';
+import { AppConstants, DATE_FORMAT_VALUE, DEFAULT_FORMAT, paymentSelect } from '@constants';
 import useFetch from '@hooks/useFetch';
 import apiConfig from '@constants/apiConfig';
 import { defineMessages } from 'react-intl';
@@ -14,6 +14,8 @@ import SelectField from '@components/common/form/SelectField';
 import DatePickerField from '@components/common/form/DatePickerField';
 import dayjs from 'dayjs';
 import { formatDateString } from '@utils';
+import { FormattedMessage } from 'react-intl';
+import { orderStateOption, paymentOptions, statusOptions, userSateteOptions } from '@constants/masterData';
 
 const message = defineMessages({
     objectName: 'group permission',
@@ -24,6 +26,8 @@ const UserForm = (props) => {
     const { formId, actions, dataDetail, onSubmit, setIsChangedFormValues, groups, branchs, isEditing } = props;
     const { execute: executeUpFile } = useFetch(apiConfig.file.upload);
     const [imageUrl, setImageUrl] = useState(null);
+    const stateValues = translate.formatKeys(userSateteOptions, ['label']);
+    // const orderStateValues = translate.formatKeys(orderStateOption, ['label']);
 
     const { form, mixinFuncs, onValuesChange } = useBasicForm({
         onSubmit,
@@ -96,7 +100,7 @@ const UserForm = (props) => {
                             disabled={isEditing}
                             name="birthday"
                             placeholder="Ngày sinh"
-                            style={{ width: '100%' }}
+                            style={{ width: '100%', height: 40 }}
                             label={translate.formatMessage(commonMessage.birthday)}
                             format={DATE_FORMAT_VALUE}
                             required={isEditing ? false : true}
@@ -169,6 +173,15 @@ const UserForm = (props) => {
                                     },
                                 },
                             ]}
+                        />
+                    </Col>
+                    <Col span={12}>
+                        <SelectField
+                            // disabled={isEditing}
+                            name="status"
+                            label={<FormattedMessage defaultMessage="Trạng thái người dùng" />}
+                            allowClear={false}
+                            options={stateValues}
                         />
                     </Col>
                 </Row>

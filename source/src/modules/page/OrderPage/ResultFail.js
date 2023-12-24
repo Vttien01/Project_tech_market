@@ -56,6 +56,8 @@ const ResultFail = () => {
     const navigate = useNavigate();
     const [form] = Form.useForm();
     const translate = useTranslate();
+    const queryParameters = new URLSearchParams(window.location.search);
+    const orderId = queryParameters.get('orderId');
     const [item1, setItem1] = useState(null);
 
     const { token } = theme.useToken();
@@ -66,6 +68,21 @@ const ResultFail = () => {
     const prev = () => {
         setCurrent(current - 1);
     };
+
+    const { execute: executeSuccessPay } = useFetch({
+        ...apiConfig.transaction.cancelPay,
+    });
+
+    useEffect(() => {
+      executeSuccessPay({
+        params:{
+            orderId  : orderId,
+        },
+        onCompleted: (respone) => {
+
+        },
+      });
+    }, []);
 
     const steps = [
         {

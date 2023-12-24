@@ -13,6 +13,8 @@ import {
     STATE_CANCELED,
     STATE_NOPAID,
     STATE_PAIDED,
+    ACTIVE_USER,
+    LOCKED_USER,
 } from '@constants';
 import { defineMessages } from 'react-intl';
 import { nationKindMessage } from './intl';
@@ -26,6 +28,11 @@ const commonMessage = defineMessages({
 const paymentMessage = defineMessages({
     PAYPAL_METHOD: 'PayPal',
     COD_METHOD: 'Tiền mặt',
+});
+
+const userStateMessage = defineMessages({
+    LOCKED_USER: 'Khóa',
+    ACTIVE_USER: 'Kích hoạt',
 });
 
 const orderStateMessage = defineMessages({
@@ -80,6 +87,16 @@ export const statusOptions = [
 export const paymentOptions = [
     { value: COD_METHOD, label: paymentMessage.COD_METHOD, color: '#00A648' },
     { value: PAYPAL_METHOD, label: paymentMessage.PAYPAL_METHOD, color: '#FFBF00' },
+];
+
+export const userSateteOptions = [
+    { value: LOCKED_USER, label: userStateMessage.LOCKED_USER, color: 'red' },
+    { value: ACTIVE_USER, label: userStateMessage.ACTIVE_USER, color: 'green' },
+];
+
+export const userStatusOptions = [
+    { value: LOCKED_USER, label: userStateMessage.LOCKED_USER },
+    { value: ACTIVE_USER, label: userStateMessage.ACTIVE_USER },
 ];
 
 export const formSize = {

@@ -37,7 +37,6 @@ const UserSavePage = ({ pageOptions }) => {
         override: (funcs) => {
             funcs.prepareUpdateData = (data) => {
                 return {
-                    status: STATUS_ACTIVE,
                     avatarPath: data.avatar,
                     ...data,
                     id: id,

@@ -1,6 +1,6 @@
 import apiConfig from '@constants/apiConfig';
 import useListBase from '@hooks/useListBase';
-import { Avatar, Button } from 'antd';
+import { Avatar, Button, Tag } from 'antd';
 import React from 'react';
 import BaseTable from '@components/common/table/BaseTable';
 import { FieldTypes } from '@constants/formConfig';
@@ -14,7 +14,7 @@ import AvatarField from '@components/common/form/AvatarField';
 import { commonMessage } from '@locales/intl';
 import useAuth from '@hooks/useAuth';
 import { convertUtcToLocalTime } from '@utils/index';
-import { statusOptions } from '@constants/masterData';
+import { statusOptions, userSateteOptions } from '@constants/masterData';
 import { BaseTooltip } from '@components/common/form/BaseTooltip';
 import { useLocation,useNavigate } from 'react-router-dom';
 import routes from '@routes';
@@ -25,7 +25,7 @@ const UserListPage = ({ pageOptions }) => {
     const navigate = useNavigate();
 
     // const { isCustomer } = useAuth();
-    const statusValues = translate.formatKeys(statusOptions, ['label']);
+    const stateValues = translate.formatKeys(userSateteOptions, ['label']);
     const { data, mixinFuncs, queryFilter, loading, pagination } = useListBase({
         apiConfig: apiConfig.user,
         options: {
@@ -91,6 +91,20 @@ const UserListPage = ({ pageOptions }) => {
             },
             width: '180px',
         },
+        {
+            title: 'Trạng thái',
+            dataIndex: ['account','status'],
+            align: 'center',
+            width: 120,
+            render(dataRow) {
+                const state = stateValues.find((item) => item.value == dataRow);
+                return (
+                    <Tag color={state.color} style={{ minWidth:90, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <div style={{ padding: '0 0px', fontSize: 14 }}>{state.label}</div>
+                    </Tag>
+                );
+            },
+        },
         // {
         //     title: translate.formatMessage(commonMessage.createdDate),
         //     dataIndex: 'createdDate',
@@ -104,7 +118,7 @@ const UserListPage = ({ pageOptions }) => {
 
     const searchFields = [
         {
-            key: 'name',
+            key: 'fullName',
             placeholder: translate.formatMessage(commonMessage.fullName),
         },
         // {

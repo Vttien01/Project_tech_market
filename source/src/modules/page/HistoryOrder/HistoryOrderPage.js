@@ -30,6 +30,8 @@ import {
     Divider,
     Form,
     Input,
+    Modal,
+    Popconfirm,
     Result,
     Space,
     Steps,
@@ -295,14 +297,14 @@ function TableMyOrder({ stateValues, state, search }) {
                 align: 'center',
             },
             {
-                title: 'Hình thức trả tiền',
+                title: 'Phương thức thanh toán',
                 dataIndex: 'paymentMethod',
                 align: 'center',
                 width: 120,
                 render(dataRow) {
                     const state = stateValues.find((item) => item.value == dataRow);
                     return (
-                        <Tag color={state.color}>
+                        <Tag color={state.color} style={{ width: 80, display: 'flex', justifyContent: 'center' }}>
                             <div style={{ padding: '0 4px', fontSize: 14 }}>{state.label}</div>
                         </Tag>
                     );
@@ -335,16 +337,35 @@ function TableMyOrder({ stateValues, state, search }) {
                 key: 'action',
                 align: 'center',
                 render: (_, record) => (
-                    <Button
-                        style={{ padding: 0, display: 'table-cell', verticalAlign: 'middle' }}
-                        onClick={(e) => {
+                    <Popconfirm
+                        title="Hủy đơn hàng"
+                        description="Bạn có chắc muốn hủy đơn hàng này?"
+                        onConfirm={(e) => {
                             e.stopPropagation();
                             handleCancelOrder(record.id);
                         }}
-
+                        // onCancel={cancel}
+                        okText="Xóa"
+                        cancelText="Hủy"
                     >
-                        <IconTrash color="#f32020" />
-                    </Button>
+                        <Button
+                            style={{
+                                padding: 3,
+                                display: 'table-cell',
+                                verticalAlign: 'middle',
+                                backgroundColor: '#e70d0d',
+                                fontWeight: 600,
+                                color: 'white',
+                                fontSize: 12,
+                            }}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                // handleCancelOrder(record.id);
+                            }}
+                        >
+                            HỦY ĐƠN HÀNG
+                        </Button>
+                    </Popconfirm>
                 ),
             });
         }
@@ -353,6 +374,11 @@ function TableMyOrder({ stateValues, state, search }) {
 
     return (
         <div>
+            {/* <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+                <p>Some contents...</p>
+                <p>Some contents...</p>
+                <p>Some contents...</p>
+            </Modal> */}
             <ListDetailsForm
                 open={openedDetailsModal}
                 onCancel={() => handlerDetailsModal.close()}

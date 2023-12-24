@@ -1,6 +1,6 @@
 import apiConfig from '@constants/apiConfig';
 import useListBase from '@hooks/useListBase';
-import { Avatar } from 'antd';
+import { Avatar, Tag } from 'antd';
 import React from 'react';
 import BaseTable from '@components/common/table/BaseTable';
 
@@ -13,6 +13,7 @@ import useTranslate from '@hooks/useTranslate';
 import AvatarField from '@components/common/form/AvatarField';
 import { commonMessage } from '@locales/intl';
 import useAuth from '@hooks/useAuth';
+import { userSateteOptions } from '@constants/masterData';
 
 const UserAdminListPage = ({ pageOptions }) => {
     const translate = useTranslate();

@@ -70,7 +70,7 @@ function Dashboard() {
     }, []);
 
     return (
-        <Space size={20} direction="vertical">
+        <Space size={20} direction="vertical" style={{ marginLeft:20 }}>
             <Typography.Title level={4}>Thông số</Typography.Title>
             <Space direction="vertical">
                 <Space direction="horizontal">

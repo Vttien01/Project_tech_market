@@ -12,6 +12,7 @@ import apiConfig from '@constants/apiConfig';
 import { defineMessages } from 'react-intl';
 import { Button, Tag } from 'antd';
 import { commonMessage } from '@locales/intl';
+import { useParams } from 'react-router-dom';
 
 const message = defineMessages({
     objectName: 'Brand',

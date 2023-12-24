@@ -118,11 +118,13 @@ const AppCart = () => {
                         },
                         onCompleted: (res) => {
                             window.location.href = res.data;
+                            localStorage.removeItem('cart');
                             // setCheckoutDrawerOpen(false);
-                            // showSucsessMessage('Đặt hàng thành công');
+                            showSucsessMessage("Đặt hàng thành công");
                         },
                         onError: () => {
-                            showErrorMessage(translate.formatMessage('Thanh toán thất bại!'));
+                            localStorage.removeItem('cart');
+                            showErrorMessage("Thanh toán thất bại!");
                         },
                     });
                 } else {
@@ -140,6 +142,21 @@ const AppCart = () => {
         });
         // message.success('Đặt hàng thành công');
     }
+    const [loadings, setLoadings] = useState([]);
+    const enterLoading = (index) => {
+        setLoadings((prevLoadings) => {
+            const newLoadings = [...prevLoadings];
+            newLoadings[index] = true;
+            return newLoadings;
+        });
+        setTimeout(() => {
+            setLoadings((prevLoadings) => {
+                const newLoadings = [...prevLoadings];
+                newLoadings[index] = false;
+                return newLoadings;
+            });
+        }, 4000);
+    };
     return (
         <div>
             <Badge
@@ -462,7 +479,7 @@ const AppCart = () => {
                         </Checkbox>
                         <Typography.Paragraph type="secondary">More method coming soom</Typography.Paragraph>
                     </Form.Item>
-                    <Button type="primary" htmlType="submit">
+                    <Button type="primary" htmlType="submit" onClick={() => enterLoading(0)}>
                         Confirm Order
                     </Button>
                 </Form>

@@ -98,7 +98,7 @@ export const STATUS_DELETE = -2;
 export const STATE_PENDING = 1;
 export const STATE_CONFIRMED = 2;
 export const STATE_CANCELED = 3;
-export const STATE_COMPLETED = -4;
+export const STATE_COMPLETED = 4;
 
 export const STATE_NOPAID = false;
 export const STATE_PAIDED = true;
@@ -108,6 +108,9 @@ export const DEFAULT_TABLE_PAGE_START = 0;
 
 export const PAYPAL_METHOD = 1;
 export const COD_METHOD = 0;
+
+export const LOCKED_USER = -1;
+export const ACTIVE_USER = 1;
 // export const VNPAY_METHOD = 3;
 
 export const commonStatus = {

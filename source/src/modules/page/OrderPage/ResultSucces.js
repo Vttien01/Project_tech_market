@@ -56,7 +56,10 @@ const ResultSuccess = () => {
     const [form] = Form.useForm();
     const translate = useTranslate();
     const [item1, setItem1] = useState(null);
-
+    const queryParameters = new URLSearchParams(window.location.search);
+    const payerId = queryParameters.get('PayerID');
+    const paymentId = queryParameters.get('paymentId');
+    const orderId = queryParameters.get('orderId');
 
     const { token } = theme.useToken();
     const [current, setCurrent] = useState(2);
@@ -67,6 +70,22 @@ const ResultSuccess = () => {
         setCurrent(current - 1);
     };
 
+    const { execute: executeSuccessPay } = useFetch({
+        ...apiConfig.transaction.successPay,
+    });
+
+    useEffect(() => {
+      executeSuccessPay({
+        params:{
+            PayerID : payerId,
+            paymentId :paymentId,
+            orderId  : orderId,
+        },
+        onCompleted: (respone) => {
+
+        },
+      });
+    }, []);
 
 
     const steps = [

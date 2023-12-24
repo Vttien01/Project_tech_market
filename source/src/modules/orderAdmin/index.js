@@ -99,7 +99,7 @@ const OrderAdminPage = () => {
             },
         },
         {
-            title: 'Tình trạng đơn hàng',
+            title: 'Trạng thái đơn hàng',
             dataIndex: 'state',
             align: 'center',
             width: 120,
@@ -139,6 +139,10 @@ const OrderAdminPage = () => {
         {
             key: 'orderCode',
             placeholder: "Mã đơn hàng",
+        },
+        {
+            key: 'userId',
+            placeholder: "Mã người dùng",
         },
         {
             key: 'state',

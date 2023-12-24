@@ -14,6 +14,8 @@ import ProductHomePageRoutes from '@modules/page/routes';
 import BrandRoutes from '@modules/brand/routes';
 import ProductRoutes from '@modules/product/routes';
 import SignupPage from '@modules/signup';
+import ProfileForm from '@modules/profileUser/ProfileForm';
+import ProfileUserPage from '@modules/profileUser';
 
 /*
 	auth
@@ -57,6 +59,12 @@ const routes = {
         component: ProfilePage,
         auth: true,
         title: 'Profile page',
+    },
+    profilePageUser: {
+        path: '/profile-user',
+        component: ProfileUserPage,
+        auth: null,
+        title: 'Profile User page',
     },
     groupPermissionPage: {
         path: '/group-permission',

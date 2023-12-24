@@ -128,7 +128,7 @@ const OrderAdminForm = (props) => {
                         <SelectField
                             disabled={isEditing}
                             name="paymentMethod"
-                            label={<FormattedMessage defaultMessage="Hình thức thanh toán" />}
+                            label={<FormattedMessage defaultMessage="Phương thức thanh toán" />}
                             allowClear={false}
                             options={paymentValues}
                             style={{ width: '100%', height: 45 }}
@@ -164,7 +164,7 @@ const OrderAdminForm = (props) => {
                         <SelectField
                             // disabled={isEditing}
                             name="state"
-                            label={<FormattedMessage defaultMessage="Tình trạng đơn hàng" />}
+                            label={<FormattedMessage defaultMessage="Trạng thái đơn hàng" />}
                             allowClear={false}
                             options={orderStateValues}
                         />
@@ -173,7 +173,7 @@ const OrderAdminForm = (props) => {
                         <SelectField
                             // disabled={isEditing}
                             name="isPaid"
-                            label={<FormattedMessage defaultMessage="Tình trạng thanh toán" />}
+                            label={<FormattedMessage defaultMessage="Trạng thái thanh toán" />}
                             allowClear={false}
                             options={isPaidValues}
                         />
