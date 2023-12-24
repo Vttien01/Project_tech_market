@@ -595,9 +595,30 @@ const apiConfig = {
             isRequiredTenantId: true,
         },
 
-
         getByPhoneAndOrder: {
             baseURL: `${apiUrl}v1/order-detail/get-by-orderCode`,
+            method: 'GET',
+            headers: baseHeader,
+            isRequiredTenantId: true,
+        },
+    },
+    revenue: {
+        getRevenue: {
+            baseURL: `${apiUrl}v1/revenue/get-revenue`,
+            method: 'GET',
+            headers: baseHeader,
+            isRequiredTenantId: true,
+        },
+
+        getRevenueMonth: {
+            baseURL: `${apiUrl}v1/revenue/get-revenue-month`,
+            method: 'GET',
+            headers: baseHeader,
+            isRequiredTenantId: true,
+        },
+
+        getRevenueOfEachProduct: {
+            baseURL: `${apiUrl}v1/revenue/get-revenue-of-each-product`,
             method: 'GET',
             headers: baseHeader,
             isRequiredTenantId: true,

@@ -75,6 +75,7 @@ const OrderAdminForm = (props) => {
     // console.log(dataDetail);
     useEffect(() => {
         dataDetail.createdDate = dataDetail?.createdDate && dayjs(dataDetail?.createdDate, DATE_FORMAT_VALUE);
+        dataDetail.expectedDeliveryDate = dataDetail?.expectedDeliveryDate && dayjs(dataDetail?.expectedDeliveryDate, DATE_FORMAT_VALUE);
         if (dataDetail ) form.setFieldsValue({ ...dataDetail  });
     }, [dataDetail]);
 

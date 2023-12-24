@@ -12,6 +12,7 @@ import HistoryOrderPage from './HistoryOrder/HistoryOrderPage';
 import HistoryOrderGuest from './HistoryOrder/HistoryOrderGuest';
 import OrderAdminPage from '@modules/orderAdmin';
 import OrderAdminSavePage from '@modules/orderAdmin/OrderAdminSavePage';
+import DashboardPage from './Components/Dashbaord/DashBoardPage';
 
 export default {
     ProductHomePage1: {
@@ -98,5 +99,12 @@ export default {
         auth: true,
         title: 'Oder Admin Save Page',
         permissions: [apiConfig.order.create.baseURL, apiConfig.order.update.baseURL],
+    },
+    DashboardPage: {
+        path: '/statistical',
+        component: DashboardPage,
+        auth: true,
+        title: 'Statistical Page',
+        // permissions: [apiConfig.order.create.baseURL, apiConfig.order.update.baseURL],
     },
 };

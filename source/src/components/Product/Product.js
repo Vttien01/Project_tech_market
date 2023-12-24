@@ -19,7 +19,7 @@ const Product = ({ product }) => {
                 <div className="product-item-info fs-14">
                     <div className="brand">
                         <span>Brand: </span>
-                        <span className="fw-7">{product?.brandDto.name}</span>
+                        <span className="fw-7">{product?.brandDto?.name}</span>
                     </div>
                     <div className="title py-2">{truncateText(product?.name, 40)}</div>
                     <div className="price flex align-center justify-center">

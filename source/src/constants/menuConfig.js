@@ -27,12 +27,12 @@ export const navMenuConfig = [
                 path: routes.userListPage.path,
                 permission: [apiConfig.user.getList.baseURL],
             },
-            // {
-            //     label: <FormattedMessage  defaultMessage='Admins Leader'/>,
-            //     key: 'admin-leader',
-            //     path: routes.adminsLeaderListPage.path,
-            //     permission: [apiConfig.user.getList.baseURL],
-            // },
+            {
+                label: <FormattedMessage  defaultMessage='Thống kê'/>,
+                key: 'statistical',
+                path: routes.DashboardPage.path,
+                // permission: [apiConfig.user.getList.baseURL],
+            },
         ],
     },
     {
