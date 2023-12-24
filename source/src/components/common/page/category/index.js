@@ -74,7 +74,7 @@ const CategoryListPageCommon = ({ routes, kind }) => {
     const searchFields = [
         {
             key: 'name',
-            placeholder: translate.formatMessage(commonMessage.name),
+            placeholder: "Tên loại",
         },
     ];
 

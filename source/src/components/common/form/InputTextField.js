@@ -10,6 +10,7 @@ const InputTextField = ({
     fieldProps,
     size,
     type,
+    readOnly,
     ...props
 }) => {
     const {
@@ -30,6 +31,7 @@ const InputTextField = ({
                 placeholder={placeholder}
                 size={size}
                 type={type}
+                readOnly={readOnly}
             />
         </Form.Item>
     );

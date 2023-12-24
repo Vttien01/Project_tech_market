@@ -73,19 +73,19 @@ const ResultSuccess = () => {
         {
             title: 'Đơn hàng',
             status: 'finish',
-            icon: <SolutionOutlined />,
+            // icon: <SolutionOutlined />,
             decription: decription.first,
         },
         {
             title: 'Thanh toán',
-            status: 'process',
-            icon: <LoadingOutlined />,
+            status: 'finish',
+            // icon: <LoadingOutlined />,
             decription: decription.second,
         },
         {
             title: 'Hoàn thành',
-            status: 'wait',
-            icon: <SmileOutlined />,
+            status: 'finish',
+            // icon: <SmileOutlined />,
             content: (
                 <Result
                     status="success"
@@ -155,11 +155,11 @@ const ResultSuccess = () => {
                         marginTop: 24,
                     }}
                 >
-                    {current < steps.length - 1 && (
+                    {/* {current < steps.length - 1 && (
                         <Button type="primary" onClick={() => next()}>
                             Next
                         </Button>
-                    )}
+                    )} */}
                     {/* {current === steps.length - 1 && (
                         <Button type="primary" onClick={() => message.success('Processing complete!')}>
                             Done

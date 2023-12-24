@@ -71,51 +71,33 @@ const ResultFail = () => {
         {
             title: 'Đơn hàng',
             status: 'finish',
-            icon: <SolutionOutlined />,
+            // icon: <SolutionOutlined />,
             decription: decription.first,
         },
         {
             title: 'Thanh toán',
-            status: 'process',
-            icon: <LoadingOutlined />,
+            status: 'error',
+            // icon: <LoadingOutlined />,
             decription: decription.second,
         },
         {
             title: 'Hoàn thành',
-            status: 'wait',
-            icon: <SmileOutlined />,
+            status: 'finish',
+            // icon: <SmileOutlined />,
             content: (
                 <Result
-                    status="error"
-                    title="Đặt hàng thất bại"
+                    status="warning"
+                    title="Đơn hàng của bạn đã được đặt!"
                     subTitle="Vui lòng kiểm tra thông tin đặt hàng."
                     extra={[
                         <Button type="primary" key="console">
-                            Go Console
+                            <a href="/">Quay về trang chủ</a>
                         </Button>,
-                        <Button key="buy">Buy Again</Button>,
+                        <Button key="buy">
+                            <a href="/all-product">Xem sản phẩm khác</a>
+                        </Button>,
                     ]}
                 >
-                    <div className="desc">
-                        <Paragraph>
-                            <Text
-                                strong
-                                style={{
-                                    fontSize: 16,
-                                }}
-                            >
-                                The content you submitted has the following error:
-                            </Text>
-                        </Paragraph>
-                        <Paragraph>
-                            <IconError404 className="site-result-demo-error-icon" /> Your account has been
-                            frozen. <a>Thaw immediately &gt;</a>
-                        </Paragraph>
-                        <Paragraph>
-                            <IconError404 className="site-result-demo-error-icon" /> Your account is not yet
-                            eligible to apply. <a>Apply Unlock &gt;</a>
-                        </Paragraph>
-                    </div>
                 </Result>
             ),
             decription: decription.third,

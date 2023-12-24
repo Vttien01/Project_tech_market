@@ -190,7 +190,7 @@ const SignupPage = () => {
                     <div className="input">
                         <DatePickerField
                             fieldProps={{ prefix: <IconCake /> }}
-                            showTime={true}
+                            // showTime={true}
                             name="birthday"
                             placeholder="Ngày sinh"
                             format={DATE_FORMAT_DISPLAY}

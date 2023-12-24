@@ -138,7 +138,7 @@ const OrderPage = () => {
         };
         createOrderForUser({
             data: { ...updatedValues },
-            onCompleted: ( respone ) => {
+            onCompleted: (respone) => {
                 console.log(respone.data.orderId);
                 if (values.paymentMethod === 1) {
                     createTransaction({
@@ -153,7 +153,7 @@ const OrderPage = () => {
                             showSucsessMessage('Đơn hàng đang được xử lý!');
                         },
                         onError: () => {
-                            showErrorMessage(translate.formatMessage("Thanh toán thất bại!"));
+                            showErrorMessage(translate.formatMessage('Thanh toán thất bại!'));
                             form.resetFields();
                         },
                     });
@@ -170,12 +170,26 @@ const OrderPage = () => {
         console.log(updatedValues);
         // message.success('Đặt hàng thành công');
     }
-
+    const [loadings, setLoadings] = useState([]);
+    const enterLoading = (index) => {
+        setLoadings((prevLoadings) => {
+            const newLoadings = [...prevLoadings];
+            newLoadings[index] = true;
+            return newLoadings;
+        });
+        setTimeout(() => {
+            setLoadings((prevLoadings) => {
+                const newLoadings = [...prevLoadings];
+                newLoadings[index] = false;
+                return newLoadings;
+            });
+        }, 4000);
+    };
     const steps = [
         {
             title: 'Đơn hàng',
             status: 'finish',
-            icon: <SolutionOutlined />,
+            // icon: <SolutionOutlined />,
             content: (
                 <Table
                     pagination={false}
@@ -265,8 +279,8 @@ const OrderPage = () => {
         },
         {
             title: 'Thanh toán',
-            status: 'process',
-            icon: <LoadingOutlined />,
+            // status: 'process',
+            // icon: <LoadingOutlined />,
             content: (
                 <Form
                     onFinish={onConfirmOrder}
@@ -383,7 +397,13 @@ const OrderPage = () => {
                         options={paymentSelect}
                         required
                     />
-                    <Button type="primary" htmlType="submit" style={{ marginBottom: 20 }}>
+                    <Button
+                        type="primary"
+                        htmlType="submit"
+                        loading={loadings[0]}
+                        onClick={() => enterLoading(0)}
+                        style={{ marginBottom: 20 }}
+                    >
                         Xác nhận đặt hàng
                     </Button>
                 </Form>
@@ -392,8 +412,8 @@ const OrderPage = () => {
         },
         {
             title: 'Hoàn thành',
-            status: 'wait',
-            icon: <SmileOutlined />,
+            // status: 'wait',
+            // icon: <SmileOutlined />,
             content: (
                 <Result
                     status="success"
@@ -468,24 +488,9 @@ const OrderPage = () => {
                         marginTop: 24,
                     }}
                 >
-                    {current < steps.length - 1 && (
+                    {current < steps.length - 2 && (
                         <Button type="primary" onClick={() => next()}>
                             Next
-                        </Button>
-                    )}
-                    {/* {current === steps.length - 1 && (
-                        <Button type="primary" onClick={() => message.success('Processing complete!')}>
-                            Done
-                        </Button>
-                    )} */}
-                    {current > 0 && current < steps.length - 1 && (
-                        <Button
-                            style={{
-                                margin: '0 8px',
-                            }}
-                            onClick={() => prev()}
-                        >
-                            Previous
                         </Button>
                     )}
                 </div>

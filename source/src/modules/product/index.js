@@ -124,7 +124,7 @@ const ProductListPage = () => {
 
     const searchFields = [
         {
-            key: 'title',
+            key: 'name',
             placeholder: translate.formatMessage(message.product),
         },
         {

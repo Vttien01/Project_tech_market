@@ -101,14 +101,14 @@ const NewsForm = ({ formId, actions, dataDetail, onSubmit, setIsChangedFormValue
                     <Col span={24}>
                         <TextField required label={<FormattedMessage defaultMessage="Title" />} name="title" />
                     </Col>
-                    
+
                 </Row>
                 <Row gutter={10}>
 
                     <Col span={12}>
                         <AutoCompleteField
                             required
-                            label={<FormattedMessage defaultMessage="Danh mục tin tức" />}
+                            label={<FormattedMessage defaultMessage="Loại" />}
                             name="categoryId"
                             apiConfig={apiConfig.category.autocomplete}
                             mappingOptions={(item) => ({ value: item.id, label: item.name })}

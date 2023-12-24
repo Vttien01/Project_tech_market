@@ -273,6 +273,84 @@ function TableMyOrder({ stateValues, state, search }) {
         executeMyOrder();
     }, [check]);
 
+    const itemHeader = () => {
+        const items = [
+            {
+                title: 'Mã đơn hàng',
+                dataIndex: 'orderCode',
+                align: 'center',
+            },
+            {
+                title: 'Ngày tạo',
+                dataIndex: 'createdDate',
+                align: 'center',
+                render: (createdDate) => {
+                    const result = convertUtcToLocalTime(createdDate, DEFAULT_FORMAT, DATE_FORMAT_VALUE);
+                    return <div>{result}</div>;
+                },
+            },
+            {
+                title: 'Người nhận',
+                dataIndex: 'receiver',
+                align: 'center',
+            },
+            {
+                title: 'Hình thức trả tiền',
+                dataIndex: 'paymentMethod',
+                align: 'center',
+                width: 120,
+                render(dataRow) {
+                    const state = stateValues.find((item) => item.value == dataRow);
+                    return (
+                        <Tag color={state.color}>
+                            <div style={{ padding: '0 4px', fontSize: 14 }}>{state.label}</div>
+                        </Tag>
+                    );
+                },
+            },
+            {
+                title: 'Tổng tiền',
+                dataIndex: ['totalMoney'],
+                name: 'totalMoney',
+                align: 'center',
+                render: (value) => {
+                    return (
+                        <span>
+                            {formatMoney(value, {
+                                groupSeparator: ',',
+                                decimalSeparator: '.',
+                                currentcy: 'đ',
+                                currentcyPosition: 'BACK',
+                                currentDecimal: '0',
+                            })}
+                        </span>
+                    );
+                },
+            },
+        ];
+
+        if (state !== 3) {
+            items.push({
+                title: 'Hành động',
+                key: 'action',
+                align: 'center',
+                render: (_, record) => (
+                    <Button
+                        style={{ padding: 0, display: 'table-cell', verticalAlign: 'middle' }}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            handleCancelOrder(record.id);
+                        }}
+
+                    >
+                        <IconTrash color="#f32020" />
+                    </Button>
+                ),
+            });
+        }
+        return items;
+    };
+
     return (
         <div>
             <ListDetailsForm
@@ -291,73 +369,7 @@ function TableMyOrder({ stateValues, state, search }) {
                         handlerDetailsModal.open();
                     },
                 })}
-                columns={[
-                    {
-                        title: 'Mã đơn hàng',
-                        dataIndex: 'orderCode',
-                        align: 'center',
-                    },
-                    {
-                        title: 'Ngày tạo',
-                        dataIndex: 'createdDate',
-                        align: 'center',
-                        render: (createdDate) => {
-                            const result = convertUtcToLocalTime(createdDate, DEFAULT_FORMAT, DATE_FORMAT_VALUE);
-                            return <div>{result}</div>;
-                        },
-                    },
-                    {
-                        title: 'Người nhận',
-                        dataIndex: 'receiver',
-                        align: 'center',
-                    },
-                    {
-                        title: 'Hình thức trả tiền',
-                        dataIndex: 'paymentMethod',
-                        align: 'center',
-                        width: 120,
-                        render(dataRow) {
-                            const state = stateValues.find((item) => item.value == dataRow);
-                            return (
-                                <Tag color={state.color}>
-                                    <div style={{ padding: '0 4px', fontSize: 14 }}>{state.label}</div>
-                                </Tag>
-                            );
-                        },
-                    },
-                    {
-                        title: 'Tổng tiền',
-                        dataIndex: ['totalMoney'],
-                        name: 'totalMoney',
-                        align: 'center',
-                        render: (value) => {
-                            return (
-                                <span>
-                                    {formatMoney(value, {
-                                        groupSeparator: ',',
-                                        decimalSeparator: '.',
-                                        currentcy: 'đ',
-                                        currentcyPosition: 'BACK',
-                                        currentDecimal: '0',
-                                    })}
-                                </span>
-                            );
-                        },
-                    },
-                    {
-                        title: 'Hành động',
-                        key: 'action',
-                        align: 'center',
-                        render: (_, record) => (
-                            <Button
-                                style={{ padding: 0, display: 'table-cell', verticalAlign: 'middle' }}
-                                onClick={() => handleCancelOrder(record.id)}
-                            >
-                                <IconTrash color="#f32020" />
-                            </Button>
-                        ),
-                    },
-                ]}
+                columns={itemHeader()}
                 dataSource={myOrder}
                 bordered
             ></Table>

@@ -36,7 +36,6 @@ const ProductSavePage = () => {
                 return {
                     ...data,
                     id: detail.id,
-                    status: 1,
                 };
             };
             funcs.prepareCreateData = (data) => {

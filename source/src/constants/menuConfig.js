@@ -16,13 +16,13 @@ export const navMenuConfig = [
         icon: <UsergroupAddOutlined />,
         children: [
             {
-                label: <FormattedMessage defaultMessage="Admins" />,
+                label: <FormattedMessage defaultMessage="Quản lý" />,
                 key: 'admin',
                 path: routes.adminsListPage.path,
                 permission: [apiConfig.account.getList.baseURL],
             },
             {
-                label: <FormattedMessage defaultMessage="Users" />,
+                label: <FormattedMessage defaultMessage="Người dùng" />,
                 key: 'user',
                 path: routes.userListPage.path,
                 permission: [apiConfig.user.getList.baseURL],
@@ -66,18 +66,18 @@ export const navMenuConfig = [
         key: 'news-management',
         icon: <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-news" width="18" height="18" viewBox="0 0 24 24" stroke-width="1.5" stroke="#0b0101" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M16 6h3a1 1 0 0 1 1 1v11a2 2 0 0 1 -4 0v-13a1 1 0 0 0 -1 -1h-10a1 1 0 0 0 -1 1v12a3 3 0 0 0 3 3h11" /><path d="M8 8l4 0" /><path d="M8 12l4 0" /><path d="M8 16l4 0" /></svg>,
         children: [
-            {
-                label: <FormattedMessage defaultMessage="News" />,
-                key: 'news-list',
-                path: routes.newsListPage.path,
-                permission: [apiConfig.news.getList.baseURL],
-            },
-            {
-                label: <FormattedMessage defaultMessage="News category" />,
-                key: 'news-category',
-                path: routes.newsCategoryListPage.path,
-                permission: [apiConfig.category.getList.baseURL],
-            },
+            // {
+            //     label: <FormattedMessage defaultMessage="News" />,
+            //     key: 'news-list',
+            //     path: routes.newsListPage.path,
+            //     permission: [apiConfig.news.getList.baseURL],
+            // },
+            // {
+            //     label: <FormattedMessage defaultMessage="News category" />,
+            //     key: 'news-category',
+            //     path: routes.newsCategoryListPage.path,
+            //     permission: [apiConfig.category.getList.baseURL],
+            // },
         ],
     },
     {
@@ -89,19 +89,13 @@ export const navMenuConfig = [
             {
                 label: <FormattedMessage defaultMessage="Đơn hàng" />,
                 key: 'order',
-                // path: routes.orderListPage.path,
+                path: routes.OrderPageAdmin.path,
                 permission: [apiConfig.order.getList.baseURL],
             },
         ],
     },
     {
-        label: <FormattedMessage defaultMessage="Quản lý đơn hàng" />,
-        key: 'order-management',
-        icon: <UsergroupAddOutlined />,
-        children: [],
-    },
-    {
-        label: <FormattedMessage defaultMessage="Systems" />,
+        label: <FormattedMessage defaultMessage="Hệ thống" />,
         key: 'system-management',
         icon: <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-settings" width="18" height="18" viewBox="0 0 24 24" stroke-width="1.5" stroke="#0b0101" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M12 10.5v1.5" /><path d="M12 16v1.5" /><path d="M15.031 12.25l-1.299 .75" /><path d="M10.268 15l-1.3 .75" /><path d="M15 15.803l-1.285 -.773" /><path d="M10.285 12.97l-1.285 -.773" /><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" /></svg>,
         children: [

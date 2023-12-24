@@ -282,8 +282,8 @@ function TableMyOrder({ stateValues, state, search }) {
                         <Card style={{ backgroundColor: '#eff0f1', marginTop: 10 }}>
                             <List.Item key={item?.id}>
                                 <List.Item.Meta
-                                    avatar={<Avatar src={item?.image} />}
-                                    title={<a href="https://ant.design">{item?.name}</a>}
+                                    avatar={<Avatar src={item?.image} size={100} />}
+                                    title={<a style={{ fontSize:25 }} href="https://ant.design">{item?.name}</a>}
                                     // description={item?.price}
                                     description={
                                         <div
@@ -297,7 +297,7 @@ function TableMyOrder({ stateValues, state, search }) {
                                                 Số lượng: {item.amount}
                                             </div>
                                             <div style={{ flex: '1', justifyContent: 'center' }}>Màu: {item.color}</div>
-                                            <div style={{ flex: '1', justifyContent: 'center' }}>
+                                            <div style={{ flex: '1', justifyContent: 'center', fontSize:20 }}>
                                                 {' '}
                                                 Tổng tiền:{' '}
                                                 {formatMoney(item?.price, {
@@ -311,9 +311,9 @@ function TableMyOrder({ stateValues, state, search }) {
                                         </div>
                                     }
                                 />
-                                <div>
+                                {/* <div>
                                     <IconTrash color="#f32020" />
-                                </div>
+                                </div> */}
                             </List.Item>
                         </Card>
                     )}

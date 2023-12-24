@@ -67,7 +67,7 @@ const LoginPage = () => {
                 console.log("login");
             },
             onError: (error) => {
-                showErrorMessage(error.message);
+                showErrorMessage("Tên đăng nhập hoặc mật khẩu không chính xác!");
                 console.log(error.message);
             },
         });
@@ -115,7 +115,7 @@ const LoginPage = () => {
                     name="login-form"
                     onFinish={onFinish}
                     initialValues={{
-                        username: 'superAdmin',
+                        username: '0965456023',
                         password: '123456',
                     }}
                     layout="vertical"
