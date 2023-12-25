@@ -14,12 +14,14 @@ import {
     Drawer,
     Form,
     Input,
+    Popconfirm,
     Result,
     Space,
     Steps,
     Table,
     Tabs,
     Tag,
+    Tooltip,
     Typography,
     message,
     theme,
@@ -35,6 +37,9 @@ import useTranslate from '@hooks/useTranslate';
 const { Text } = Typography;
 import { ShoppingCartOutlined } from '@ant-design/icons';
 import { paymentSelect } from '@constants';
+import { IconPlus, IconTrash } from '@tabler/icons-react';
+import './AppCart.scss';
+import { IconMinus } from '@tabler/icons-react';
 
 const decription = defineMessage({
     first: 'Kiểm tra số lượng sản phẩm',
@@ -51,6 +56,7 @@ const AppCart = () => {
     const [checkoutDrawerOpen, setCheckoutDrawerOpen] = useState(false);
     const [cartItem, setCartItem] = useState([]);
     const [total, setTotal] = useState(0);
+    const [check, setCheck] = useState(false);
 
     const {
         data: cart,
@@ -67,30 +73,52 @@ const AppCart = () => {
         if (!profile) {
             const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
             setCartItem(storedCart);
-            calculateTotal(storedCart);
         } else {
             getCartExcute({
                 onCompleted: (response) => {
-                    // setCacheAccessToken(res.access_token);
-                    // executeGetProfile();
+                    const data = response.data.cartDetailDtos;
                     setCartItem(response.data.cartDetailDtos);
                 },
                 onError: () => {
-                    showErrorMessage("Không lấy được giả hàng!");
+                    showErrorMessage('Không lấy được giả hàng!');
                     // form.resetFields();
                 },
             });
         }
     }, []);
 
-    const calculateTotal = (cartItems) => {
-        const newTotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
-        setTotal(newTotal);
-    };
-
     const { execute: createTransaction } = useFetch({
         ...apiConfig.transaction.create,
     });
+
+    const { execute: executeDeleteCart } = useFetch({
+        ...apiConfig.cart.delete,
+    });
+
+    const handleDeleteCart = (id) => {
+        executeDeleteCart({
+            pathParams: { id: id },
+            onCompleted: () => {
+                setCheck(!check);
+                // window.location.reload();
+            },
+        });
+    };
+
+    useEffect(() => {
+        getCartExcute({
+            onCompleted: (response) => {
+                // setCacheAccessToken(res.access_token);
+                // executeGetProfile();
+                const data = response.data.cartDetailDtos;
+                setCartItem(response.data.cartDetailDtos);
+            },
+            onError: () => {
+                showErrorMessage('Không lấy được giả hàng!');
+                // form.resetFields();
+            },
+        });
+    }, [check]);
 
     function onConfirmOrder(values) {
         let array2 = new Array(cartItem.length).fill(null);
@@ -120,11 +148,11 @@ const AppCart = () => {
                             window.location.href = res.data;
                             localStorage.removeItem('cart');
                             // setCheckoutDrawerOpen(false);
-                            showSucsessMessage("Đặt hàng thành công");
+                            showSucsessMessage('Đặt hàng thành công');
                         },
                         onError: () => {
                             localStorage.removeItem('cart');
-                            showErrorMessage("Thanh toán thất bại!");
+                            showErrorMessage('Thanh toán thất bại!');
                         },
                     });
                 } else {
@@ -157,6 +185,102 @@ const AppCart = () => {
             });
         }, 4000);
     };
+
+    const QuantityComponent = ({ value, record }) => {
+        const isInitialRender = useRef(true);
+        const [quantity, setQuantity] = useState(record.quantity);
+        const [triggerEffect, setTriggerEffect] = useState(false);
+        const [updatedCart, setUpdatedCart] = useState({});
+        const { execute: executeUpdateCart } = useFetch({
+            ...apiConfig.cart.updateItemCart,
+        });
+        const increaseQty = () => {
+            setQuantity((prevQty) => {
+                setTriggerEffect(!triggerEffect);
+                let tempQty = prevQty + 1;
+                // if (tempQty > product?.totalInStock) tempQty = product?.totalInStock;
+                return tempQty;
+            });
+        };
+
+        const decreaseQty = () => {
+            setQuantity((prevQty) => {
+                setTriggerEffect(!triggerEffect);
+                let tempQty = prevQty - 1;
+                if (tempQty < 1) tempQty = 1;
+                return tempQty;
+            });
+        };
+        const updateCartItemById = (idToUpdate, newValues) => {
+            setCartItem((prevCart) =>
+                prevCart.map((item) => (item.id === idToUpdate ? { ...item, ...newValues } : item)),
+            );
+        };
+
+        useEffect(() => {
+            const updatedCart = { ...record, quantity: quantity, totalPriceSell: record.price * quantity };
+            // updateCartItemById(record.cartDetailId, updatedCart);
+            // console.log(updatedCart);
+            setUpdatedCart(updatedCart);
+            console.log(1);
+            executeUpdateCart({
+                data: { ...updatedCart },
+                onCompleted: (respone) => {
+                    console.log(respone);
+                 },
+                 onError: (error) => {
+                    console.log(error);
+                 },
+            });
+            // getCartExcute({
+            //     onCompleted: (response) => {
+            //         // setCacheAccessToken(res.access_token);
+            //         // executeGetProfile();
+            //         const data = response.data.cartDetailDtos;[]
+            //         setCartItem(response.data.cartDetailDtos);
+            //     },
+            //     onError: () => {
+            //         showErrorMessage('Không lấy được giả hàng!');
+            //         // form.resetFields();
+            //     },
+            // });
+            // console.log(triggerEffect);
+        }, [triggerEffect]);
+
+        console.log(updatedCart);
+
+        return (
+            <div className="qty flex align-center my-4">
+                <div className="qty-change flex align-center mx-3">
+                    <button
+                        type="button"
+                        className="qty-decrease flex align-center justify-center"
+                        onClick={() => decreaseQty(record)}
+                    >
+                        <i className="fas fa-minus"></i>
+                        <IconMinus />
+                    </button>
+
+                    <div className="qty-value flex align-center justify-center">
+                        {/* {record.quantity > 5 && (
+                <span style={{ color: 'red' }}>Quantity is greater than 5</span>
+              )} */}
+                        {quantity}
+                    </div>
+
+                    <button
+                        type="button"
+                        className="qty-increase flex align-center justify-center"
+                        onClick={() => increaseQty(record)}
+                    >
+                        <i className="fas fa-plus"></i>
+                        <IconPlus />
+                    </button>
+                </div>
+            </div>
+        );
+    };
+
     return (
         <div>
             <Badge
@@ -215,6 +339,12 @@ const AppCart = () => {
                                 title: 'Số lượng',
                                 dataIndex: 'quantity',
                                 align: 'center',
+                                render: (value, record) => (
+                                    <QuantityComponent
+                                        value={value}
+                                        record={record}
+                                    />
+                                ),
                             },
                             {
                                 title: 'Tổng',
@@ -234,6 +364,32 @@ const AppCart = () => {
                                         </>
                                     );
                                 },
+                            },
+                            {
+                                title: 'Hành động',
+                                key: 'action',
+                                align: 'center',
+                                render: (_, record) => (
+                                    <Tooltip title="Xóa giỏ hàng">
+                                        <Button
+                                            style={{
+                                                padding: 3,
+                                                display: 'table-cell',
+                                                verticalAlign: 'middle',
+                                                backgroundColor: '#e70d0d',
+                                                fontWeight: 600,
+                                                color: 'white',
+                                                fontSize: 12,
+                                            }}
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                handleDeleteCart(record.cartDetailId);
+                                            }}
+                                        >
+                                            <IconTrash />
+                                        </Button>
+                                    </Tooltip>
+                                ),
                             },
                         ]}
                         dataSource={cartItem}
@@ -489,3 +645,5 @@ const AppCart = () => {
 };
 
 export default AppCart;
+
+

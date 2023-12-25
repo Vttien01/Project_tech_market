@@ -22,9 +22,10 @@ const ListDetailsForm = ({ handleAddList, open, onCancel, data, isEditing, form,
     console.log(data);
 
     useEffect(() => {
-        if (data)
+        if (data) {
             form.setFieldsValue({ ...data, price: data.price.toString(), totalStock: data.totalStock.toString() });
-        setImageUrl(data.image);
+            setImageUrl(data.image);
+        }
     }, [data]);
     const handleFinish = (values) => {
         const updatedValues = { ...values, id: data?.id };
