@@ -80,7 +80,7 @@ const AppCart = () => {
                     setCartItem(response.data.cartDetailDtos);
                 },
                 onError: () => {
-                    showErrorMessage('Không lấy được giả hàng!');
+                    // showErrorMessage('Không lấy được giả hàng!');
                     // form.resetFields();
                 },
             });
@@ -114,7 +114,7 @@ const AppCart = () => {
                 setCartItem(response.data.cartDetailDtos);
             },
             onError: () => {
-                showErrorMessage('Không lấy được giả hàng!');
+                // showErrorMessage('Không lấy được giả hàng!');
                 // form.resetFields();
             },
         });
@@ -153,6 +153,9 @@ const AppCart = () => {
                         onError: () => {
                             localStorage.removeItem('cart');
                             showErrorMessage('Thanh toán thất bại!');
+                            setTimeout(() => {
+                                window.location.reload();
+                            }, 1800);
                         },
                     });
                 } else {
@@ -187,7 +190,7 @@ const AppCart = () => {
     };
 
     const QuantityComponent = ({ value, record }) => {
-        const isInitialRender = useRef(true);
+        const [isInitialRender, setIsInitialRender] = useState(true);
         const [quantity, setQuantity] = useState(record.quantity);
         const [triggerEffect, setTriggerEffect] = useState(false);
         const [updatedCart, setUpdatedCart] = useState({});
@@ -217,8 +220,13 @@ const AppCart = () => {
             );
         };
 
+
         useEffect(() => {
-            const updatedCart = { ...record, quantity: quantity, totalPriceSell: record.price * quantity };
+            if (isInitialRender) {
+                setIsInitialRender(false);
+                return;
+              }
+            const updatedCart = { cartDetailId:record.cartDetailId, quantity: quantity, totalPriceSell: record.price * quantity };
             // updateCartItemById(record.cartDetailId, updatedCart);
             // console.log(updatedCart);
             setUpdatedCart(updatedCart);
@@ -226,25 +234,12 @@ const AppCart = () => {
             executeUpdateCart({
                 data: { ...updatedCart },
                 onCompleted: (respone) => {
-                    console.log(respone);
+                    setCheck(!check);
                  },
                  onError: (error) => {
                     console.log(error);
                  },
             });
-            // getCartExcute({
-            //     onCompleted: (response) => {
-            //         // setCacheAccessToken(res.access_token);
-            //         // executeGetProfile();
-            //         const data = response.data.cartDetailDtos;[]
-            //         setCartItem(response.data.cartDetailDtos);
-            //     },
-            //     onError: () => {
-            //         showErrorMessage('Không lấy được giả hàng!');
-            //         // form.resetFields();
-            //     },
-            // });
-            // console.log(triggerEffect);
         }, [triggerEffect]);
 
         console.log(updatedCart);
@@ -298,7 +293,7 @@ const AppCart = () => {
                     setCartDrawer(false);
                 }}
                 title="Giỏ hàng"
-                contentWrapperStyle={{ width: 650 }}
+                contentWrapperStyle={{ width: 700 }}
             >
                 {profile ? (
                     <Table
@@ -339,6 +334,7 @@ const AppCart = () => {
                                 title: 'Số lượng',
                                 dataIndex: 'quantity',
                                 align: 'center',
+                                width: 200,
                                 render: (value, record) => (
                                     <QuantityComponent
                                         value={value}
@@ -349,7 +345,7 @@ const AppCart = () => {
                             {
                                 title: 'Tổng',
                                 dataIndex: 'totalPriceSell',
-                                width: 150,
+                                width: 200,
                                 align: 'center',
                                 render: (value) => {
                                     return (
@@ -635,8 +631,8 @@ const AppCart = () => {
                         </Checkbox>
                         <Typography.Paragraph type="secondary">More method coming soom</Typography.Paragraph>
                     </Form.Item>
-                    <Button type="primary" htmlType="submit" onClick={() => enterLoading(0)}>
-                        Confirm Order
+                    <Button type="primary" htmlType="submit" loading={loadings[0]} onClick={() => enterLoading(0)}>
+                        Xác nhận đơn hàng
                     </Button>
                 </Form>
             </Drawer>

@@ -84,7 +84,7 @@ function Products({ title }) {
                 <Typography.Text style={{ fontSize: '30px', fontWeight: 'bolder' }}> {title} </Typography.Text>
             </div>
             <div style={{ marginTop: 10 }}>
-                <Typography.Text>View item Sort By: </Typography.Text>
+                <Typography.Text>Sắp xếp các mục theo: </Typography.Text>
                 <Select
                     onChange={(value) => {
                         setSortProduct(value);
@@ -100,11 +100,11 @@ function Products({ title }) {
                             value: 'za',
                         },
                         {
-                            label: 'Price Low to High',
+                            label: 'Giá từ thấp đến cao',
                             value: 'lowHigh',
                         },
                         {
-                            label: 'Price High to Low',
+                            label: 'Giá từ cao đên thấp',
                             value: 'highLow',
                         },
                     ]}

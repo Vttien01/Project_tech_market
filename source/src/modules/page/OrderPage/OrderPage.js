@@ -155,17 +155,25 @@ const OrderPage = () => {
                             urlSuccess: 'http://localhost:3000/my-order-success',
                         },
                         onCompleted: (res) => {
-                            // window.location.href = res.data;
+                            window.location.href = res.data;
                             showSucsessMessage('Đơn hàng đang được xử lý!');
                         },
                         onError: () => {
-                            showErrorMessage(translate.formatMessage('Thanh toán thất bại!'));
+                            showErrorMessage("Thanh toán PAYPAL thất bại");
+                            setCurrent(2);
                             form.resetFields();
+                            setTimeout(() => {
+                                window.location.reload();
+                            }, 2000);
                         },
                     });
                 } else {
                     showSucsessMessage('Đặt hàng thành công');
                     setCurrent(2);
+
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 2000);
                 }
             },
             onError: (error) => {
