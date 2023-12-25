@@ -128,7 +128,7 @@ const SignupPage = () => {
                                 <a href="/all-product">Sản phẩm</a>
                             </li>
                             <li>
-                                <a href="/contact">Liên hệ</a>
+                                <a href="#">Liên hệ</a>
                             </li>
                         </ul>
                     </div>

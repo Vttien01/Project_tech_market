@@ -52,7 +52,7 @@ import { IconLoader } from '@tabler/icons-react';
 import { defineMessage } from 'react-intl';
 import AutoCompleteField from '@components/common/form/AutoCompleteField';
 import SelectField from '@components/common/form/SelectField';
-import { paymentOptions, statusOptions } from '@constants/masterData';
+import { paidOptions, paidValues, paymentOptions, statusOptions } from '@constants/masterData';
 import useAuth from '@hooks/useAuth';
 import { showErrorMessage, showSucsessMessage } from '@services/notifyService';
 import useTranslate from '@hooks/useTranslate';
@@ -212,10 +212,14 @@ const HistoryOrderPage = () => {
 };
 
 function TableMyOrder({ stateValues, state, search }) {
+    const translate = useTranslate();
     const [form] = Form.useForm();
     const [openedDetailsModal, handlerDetailsModal] = useDisclosure(false);
     const [detail, setDetail] = useState([]);
     const [check, setCheck] = useState(false);
+    const [orderId, setOrderId] = useState(null);
+    const isPaidValues = translate.formatKeys(paidValues, ['label']);
+
 
     const {
         data: myOrder,
@@ -235,18 +239,6 @@ function TableMyOrder({ stateValues, state, search }) {
     const { execute: executeDetailOrder } = useFetch({
         ...apiConfig.orderDetail.getByOrder,
     });
-
-    // const { execute: executeSearchOrder } = useFetch({
-    //     ...apiConfig.orderDetail.getByPhoneAndOrder,
-    // });
-    // if (search !== null) {
-    //     executeSearchOrder({
-    //         params: { orderCode: search },
-    //         onCompleted: (response) => {
-    //             setDetail(response.data);
-    //         },
-    //     });
-    // }
 
     const handleFetchDetail = (id) => {
         executeDetailOrder({
@@ -304,7 +296,21 @@ function TableMyOrder({ stateValues, state, search }) {
                 render(dataRow) {
                     const state = stateValues.find((item) => item.value == dataRow);
                     return (
-                        <Tag color={state.color} style={{ width: 80, display: 'flex', justifyContent: 'center' }}>
+                        <Tag color={state.color} style={{ width: 65, display: 'flex', justifyContent: 'center' }}>
+                            <div style={{ padding: '0 4px', fontSize: 14 }}>{state.label}</div>
+                        </Tag>
+                    );
+                },
+            },
+            {
+                title: 'Trạng thái thanh toán',
+                dataIndex: 'isPaid',
+                align: 'center',
+                width: 120,
+                render(dataRow) {
+                    const state = isPaidValues.find((item) => item.value == dataRow);
+                    return (
+                        <Tag color={state.color} style={{ width: 110, display: 'flex', justifyContent: 'center' }}>
                             <div style={{ padding: '0 4px', fontSize: 14 }}>{state.label}</div>
                         </Tag>
                     );
@@ -385,12 +391,14 @@ function TableMyOrder({ stateValues, state, search }) {
                 form={form}
                 detail={detail}
                 isEditing={!!detail}
+                orderId={orderId}
             />
             <Table
                 pagination={false}
                 onRow={(record, rowIndex) => ({
                     onClick: (e) => {
                         e.stopPropagation();
+                        setOrderId(record.id);
                         handleFetchDetail(record.id);
                         handlerDetailsModal.open();
                     },

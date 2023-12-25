@@ -78,6 +78,11 @@ export const paidOptions = [
     { value: STATE_PAIDED, label: isPaidMessage.STATE_PAIDEDD },
 ];
 
+export const paidValues = [
+    { value: STATE_NOPAID, label: isPaidMessage.STATE_NOPAID, color:'yellow' },
+    { value: STATE_PAIDED, label: isPaidMessage.STATE_PAIDEDD, color:'green' },
+];
+
 export const statusOptions = [
     { value: STATUS_ACTIVE, label: commonMessage.statusActive, color: '#00A648' },
     { value: STATUS_PENDING, label: commonMessage.statusPending, color: '#FFBF00' },

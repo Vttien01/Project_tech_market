@@ -10,7 +10,7 @@ import useAuth from '@hooks/useAuth';
 import useFetch from '@hooks/useFetch';
 import useTranslate from '@hooks/useTranslate';
 import { commonMessage } from '@locales/intl';
-import { showErrorMessage } from '@services/notifyService';
+import { showErrorMessage, showSucsessMessage } from '@services/notifyService';
 import { IconPlus, IconRecycle, IconTrash } from '@tabler/icons-react';
 import { IconMinus } from '@tabler/icons-react';
 import { formatMoney } from '@utils';
@@ -26,7 +26,7 @@ const messages = defineMessage({
     login: 'Đăng nhập',
 });
 
-const ListDetailsForm = ({ open, onCancel, detail, form, isEditing }) => {
+const ListDetailsForm = ({ open, onCancel, detail, form, isEditing, orderId }) => {
     const { profile } = useAuth();
     const [cartItem, setCartItem] = useState([]);
     const [checkList, setCheckArray] = useState(false);
@@ -36,10 +36,12 @@ const ListDetailsForm = ({ open, onCancel, detail, form, isEditing }) => {
     const navigate = useNavigate();
     const [imageUrl, setImageUrl] = useState(null);
     const { execute: executeUpdate } = useFetch(apiConfig.address.update);
-    const { execute: executeCreate, loading } = useFetch({
-        ...apiConfig.address.create,
+    const { execute: createTransaction, loading } = useFetch({
+        ...apiConfig.transaction.create,
     });
     const [tableData, setTableData] = useState([]);
+
+    console.log(detail);
 
     // Kiểm tra xem itemCart có tồn tại không trước khi sử dụng map
     const [newArray, setnewArray] = useState([]);
@@ -69,14 +71,34 @@ const ListDetailsForm = ({ open, onCancel, detail, form, isEditing }) => {
         setnewArray((prevArray) => prevArray.filter((item) => item.quantity !== 0));
         setCheckArray(false);
     }, [checkList]);
+    const handleFinish = () => {
+        createTransaction({
+            data: {
+                orderId: orderId,
+                urlCancel: 'http://localhost:3000/my-order-fail',
+                urlSuccess: 'http://localhost:3000/my-order-success',
+            },
+            onCompleted: (res) => {
+                window.location.href = res.data;
+                showSucsessMessage('Đơn hàng đang được xử lý!');
+            },
+            onError: () => {
+                showErrorMessage("Thanh toán PAYPAL thất bại");
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+            },
+        });
+    };
 
     return (
         <Modal
             title={<FormattedMessage defaultMessage="Chi tiết đơn hàng" />}
             open={open}
             onCancel={onCancel}
-            onOk={() => form.submit()}
+            onOk={handleFinish}
             width={700}
+            okText="Tiến hành thanh toán"
         >
             <Card>
                 <List
@@ -90,8 +112,9 @@ const ListDetailsForm = ({ open, onCancel, detail, form, isEditing }) => {
                                 <List.Item.Meta
                                     avatar={
                                         <Avatar
-                                            src={'https://cdn.tgdd.vn/Products/Images/42/292780/oppo-a77s-den-1.jpg'}
+                                            src={item?.image}
                                             size={100}
+                                            alt=''
                                         />
                                     }
                                     title={<a href="https://ant.design"  style={{ fontSize:25 }}>{item?.name}</a>}

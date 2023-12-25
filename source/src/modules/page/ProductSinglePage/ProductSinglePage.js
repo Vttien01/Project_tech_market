@@ -113,14 +113,16 @@ const ProductSinglePage = () => {
                                 <img
                                     src={product ? (product?.image ? product?.image : '') : ''}
                                     alt=""
+                                    className="img-cover"
                                 />
                             </div>
 
-                            {/* <div className="product-img-thumbs flex align-center my-2">
+                            <div className="product-img-thumbs flex align-center my-2">
                                 <div className="thumb-item">
                                     <img
                                         src={product ? (product?.image ? product?.image : '') : ''}
                                         alt=""
+                                        className="img-cover"
                                     />
                                 </div>
                                 {product?.listProductVariant[0]?.image && (
@@ -134,7 +136,7 @@ const ProductSinglePage = () => {
                                                     : ''
                                             }
                                             alt=""
-                                            // className="img-cover"
+                                            className="img-cover"
                                         />
                                     </div>
                                 )}
@@ -149,7 +151,7 @@ const ProductSinglePage = () => {
                                                     : ''
                                             }
                                             alt=""
-                                            // className="img-cover"
+                                            className="img-cover"
                                         />
                                     </div>
                                 )}
@@ -164,11 +166,11 @@ const ProductSinglePage = () => {
                                                     : ''
                                             }
                                             alt=""
-                                            // className="img-cover"
+                                            className="img-cover"
                                         />
                                     </div>
                                 )}
-                            </div> */}
+                            </div>
                         </div>
                     </div>
 

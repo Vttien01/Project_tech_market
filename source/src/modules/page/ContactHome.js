@@ -12,7 +12,7 @@ const ContactHome = () => {
     const translate = useTranslate();
     return (
         <div className="container2">
-            <Space style={{ margin: 100 }}>
+            {/* <Space style={{ margin: 100 }}>
                 <div className="areaContact1">
                     <Image
                         src={imgContact}
@@ -91,11 +91,11 @@ const ContactHome = () => {
                                 {<FormattedMessage defaultMessage="Gửi liên hệ" />}
                             </Button>
 
-                            {/* <div className="footer-card-form">{actions}</div> */}
+                            <div className="footer-card-form"></div>
                         </Card>
                     </BaseForm>
                 </div>
-            </Space>
+            </Space> */}
         </div>
     );
 };

@@ -65,7 +65,7 @@ const ProfileForm = (props) => {
     };
 
     return (
-        <Card className="card-form" bordered={false} style={{ minHeight: 'calc(100vh - 190px)' }}>
+        <Card className="card-form" bordered={false} style={{ minHeight: 'calc(100vh - 190px)', minWidth:1200, marginBottom:20 }}>
             <Form
                 style={{ width: '50%' }}
                 labelCol={{ span: 8 }}

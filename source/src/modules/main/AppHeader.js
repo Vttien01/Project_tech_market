@@ -148,7 +148,7 @@ const AppHeader = ({ collapsed, onCollapse }) => {
             items.push(
                 {
                     key: 'Log_in',
-                    label: <span>Đăng nhập/Đăng ký</span>,
+                    label: <span>Đăng nhập</span>,
                     onClick: () => navigate(routes.loginPage.path),
                 },
                 {

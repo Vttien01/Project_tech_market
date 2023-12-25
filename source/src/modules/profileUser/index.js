@@ -49,21 +49,21 @@ const ProfileUserPage = () => {
     }, []);
 
     return (
-        <PageWrapper
-            loading={loading}
-            routes={[
-                { breadcrumbName: translate.formatMessage(commonMessage.profile) },
-            ]}
-        >
-            <ProfileForm
-                setIsChangedFormValues={setIsChangedFormValues}
-                dataDetail={detail ? detail : {}}
-                formId={mixinFuncs.getFormId()}
-                isEditing={isEditing}
-                actions={mixinFuncs.renderActions()}
-                onSubmit={onSave}
-            />
-        </PageWrapper>
+        <div style={{ width: 1500, display:'flex', justifyContent: 'center' }}>
+            <PageWrapper
+                loading={loading}
+                routes={[{ breadcrumbName: translate.formatMessage(commonMessage.profile) }]}
+            >
+                <ProfileForm
+                    setIsChangedFormValues={setIsChangedFormValues}
+                    dataDetail={detail ? detail : {}}
+                    formId={mixinFuncs.getFormId()}
+                    isEditing={isEditing}
+                    actions={mixinFuncs.renderActions()}
+                    onSubmit={onSave}
+                />
+            </PageWrapper>
+        </div>
     );
 };
 
