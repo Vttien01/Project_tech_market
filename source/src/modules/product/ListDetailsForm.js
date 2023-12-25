@@ -19,11 +19,12 @@ const ListDetailsForm = ({ handleAddList, open, onCancel, data, isEditing, form,
     const [imageUrl, setImageUrl] = useState(null);
     const { execute: executeUpFile } = useFetch(apiConfig.file.upload);
 
-    // console.log(data);
+    console.log(data);
 
     useEffect(() => {
         if (data)
             form.setFieldsValue({ ...data, price: data.price.toString(), totalStock: data.totalStock.toString() });
+        setImageUrl(data.image);
     }, [data]);
     const handleFinish = (values) => {
         const updatedValues = { ...values, id: data?.id };

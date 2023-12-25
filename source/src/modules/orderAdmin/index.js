@@ -93,7 +93,7 @@ const OrderAdminPage = () => {
                 const state = stateValues.find((item) => item.value == dataRow);
                 return (
                     <Tag color={state.color} style={{ minWidth:80, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <div style={{ padding: '0px', fontSize: 14 }}>{state.label}</div>
+                        <div style={{ padding: '3px 0px 3px 0px', fontSize: 14 }}>{state.label}</div>
                     </Tag>
                 );
             },

@@ -17,7 +17,9 @@ import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Toolti
 import { Bar } from 'react-chartjs-2';
 import useFetch from '@hooks/useFetch';
 import apiConfig from '@constants/apiConfig';
-import { formatMoney } from '@utils';
+import { formatDateString, formatMoney } from '@utils';
+import DateRangePickerField from '@components/common/form/DateRangePickerField';
+import { DATE_FORMAT_VALUE } from '@constants';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -26,6 +28,9 @@ function Dashboard() {
     const [inventory, setInventory] = useState(0);
     const [customers, setCustomers] = useState(0);
     const [revenue, setRevenue] = useState(0);
+    const [startDate, setStartDate] = useState(null);
+    const [endDate, setEndDate] = useState(null);
+    const [change, setChange] = useState(false);
 
     const { data: dataOrder, execute: executeOrder } = useFetch({
         ...apiConfig.order.getList,
@@ -68,12 +73,67 @@ function Dashboard() {
         // setRevenue(dataProduct?.data?.totalElements);
         // setCustomers(dataUser?.data?.totalElements);
     }, []);
+    const onChange = (date, dateString) => {
+        console.log(1);
+        console.log(date[0].$d);
+        // const startDate = formatDateString(date[0]?.$d, DATE_FORMAT_VALUE) + ' 00:00:00';
+        if (date) {
+            setStartDate(formatDateString(date[0]?.$d, DATE_FORMAT_VALUE) + ' 00:00:00');
+            setEndDate(formatDateString(date[1]?.$d, DATE_FORMAT_VALUE) + ' 00:00:00');
+            setChange(!change);
+        }
+        else {
+            setStartDate(null);
+            setEndDate(null);
+            setChange(!change);
+        }
+    };
+    useEffect(() => {
+        executeRevenue({
+            params: { startDate: startDate, endDate: endDate },
+            onCompleted: (response) => {
+                setInventory(response.data?.revenue);
+            },
+        });
+    }, [change]);
 
     return (
-        <Space size={20} direction="vertical" style={{ marginLeft:20 }}>
+        <Space size={20} direction="vertical" style={{ marginLeft: 20 }}>
             <Typography.Title level={4}>Thông số</Typography.Title>
             <Space direction="vertical">
+                <DateRangePickerField showTime onChange={onChange} />
                 <Space direction="horizontal">
+                    <DashboardCard
+                        icon={
+                            <DollarCircleOutlined
+                                style={{
+                                    // color: 'red',
+                                    backgroundColor: 'rgba(255,0,0,0.25)',
+                                    borderRadius: 20,
+                                    fontSize: 24,
+                                    padding: 8,
+                                }}
+                            />
+                        }
+                        icon1={
+                            <RiseOutlined
+                                style={{
+                                    color: 'red',
+                                    fontSize: 20,
+                                    paddingRight: 4,
+                                }}
+                            />
+                        }
+                        number="12"
+                        title={'Doanh thu'}
+                        value={formatMoney(inventory, {
+                            groupSeparator: ',',
+                            decimalSeparator: '.',
+                            currentcy: 'đ',
+                            currentcyPosition: 'BACK',
+                            currentDecimal: '0',
+                        })}
+                    />
                     <DashboardCard
                         icon={
                             <ShoppingCartOutlined
@@ -99,32 +159,6 @@ function Dashboard() {
                         title={'Đơn hàng'}
                         value={orders}
                         number="18"
-                    />
-                    <DashboardCard
-                        icon={
-                            <UserOutlined
-                                style={{
-                                    // color: 'purple',
-                                    // backgroundColor: 'rgba(0,255,255,0.25)',
-                                    backgroundColor: 'rgba(255,0,0,0.25)',
-                                    borderRadius: 20,
-                                    fontSize: 24,
-                                    padding: 8,
-                                }}
-                            />
-                        }
-                        icon1={
-                            <RiseOutlined
-                                style={{
-                                    color: 'red',
-                                    fontSize: 20,
-                                    paddingRight: 4,
-                                }}
-                            />
-                        }
-                        title={'Khách hàng'}
-                        value={customers}
-                        number="11"
                     />
                 </Space>
                 <Space direction="horizontal">
@@ -157,9 +191,10 @@ function Dashboard() {
                     />
                     <DashboardCard
                         icon={
-                            <DollarCircleOutlined
+                            <UserOutlined
                                 style={{
-                                    // color: 'red',
+                                    // color: 'purple',
+                                    // backgroundColor: 'rgba(0,255,255,0.25)',
                                     backgroundColor: 'rgba(255,0,0,0.25)',
                                     borderRadius: 20,
                                     fontSize: 24,
@@ -176,15 +211,9 @@ function Dashboard() {
                                 }}
                             />
                         }
-                        number="12"
-                        title={'Doanh thu'}
-                        value={formatMoney(inventory, {
-                            groupSeparator: ',',
-                            decimalSeparator: '.',
-                            currentcy: 'đ',
-                            currentcyPosition: 'BACK',
-                            currentDecimal: '0',
-                        })}
+                        title={'Khách hàng'}
+                        value={customers}
+                        number="11"
                     />
                 </Space>
             </Space>
@@ -256,17 +285,17 @@ function RecentOrders() {
                     {
                         title: 'Mã đơn hàng',
                         dataIndex: 'orderCode',
-                        align:'center',
+                        align: 'center',
                     },
                     {
                         title: 'Số điện thoại',
                         dataIndex: 'phone',
-                        align:'center',
+                        align: 'center',
                     },
                     {
                         title: 'Tổng tiền',
                         dataIndex: 'totalMoney',
-                        align:'center',
+                        align: 'center',
                         render: (value) => {
                             return (
                                 <span>
@@ -285,7 +314,7 @@ function RecentOrders() {
                 loading={loading}
                 dataSource={dataSource}
                 pagination={false}
-                style={{ width:400 }}
+                style={{ width: 400 }}
             ></Table>
         </>
     );
@@ -306,7 +335,6 @@ function DashboardChart() {
         executeRevenue({
             params: { year: year },
             onCompleted: (response) => {
-
                 const labels = response.data.map((cart) => {
                     return `Tháng ${cart.month}`;
                 });

@@ -559,6 +559,12 @@ const apiConfig = {
             headers: baseHeader,
             isRequiredTenantId: true,
         },
+        updateItemCart: {
+            baseURL: `${apiUrl}v1/cart/update-item-inCart`,
+            method: 'PUT',
+            headers: baseHeader,
+            isRequiredTenantId: true,
+        },
         delete: {
             baseURL: `${apiUrl}v1/cart/delete/:id`,
             method: 'DELETE',
