@@ -11,6 +11,10 @@ import {
     STATE_CONFIRMED,
     STATE_COMPLETED,
     STATE_CANCELED,
+    STATE_PENDING_ADMIN,
+    STATE_CONFIRMED_ADMIN,
+    STATE_COMPLETED_ADMIN,
+    STATE_CANCELED_ADMIN,
     STATE_NOPAID,
     STATE_PAIDED,
     ACTIVE_USER,
@@ -49,6 +53,13 @@ const orderStateMessage = defineMessages({
     STATE_CANCELED: 'Đã hủy',
 
 });
+const orderStateAdMessage = defineMessages({
+    STATE_PENDING_ADMIN: 'Đang xử lý',
+    STATE_CONFIRMED_ADMIN: 'Duyệt',
+    STATE_COMPLETED_ADMIN: 'Hoàn thành',
+    STATE_CANCELED_ADMIN: 'Hủy',
+
+});
 
 const isPaidMessage = defineMessages({
     STATE_NOPAID: 'Chưa thanh toán',
@@ -81,10 +92,10 @@ export const orderStateOption = [
 ];
 
 export const orderStateValue = [
-    { value: 1, label: 'Đang xử lý' },
-    { value: 2, label: 'Duyệt' },
-    { value: 3, label: 'Hoàn thành' },
-    { value: 4, label: 'Hủy' },
+    { value: STATE_PENDING_ADMIN, label: orderStateAdMessage.STATE_PENDING_ADMIN, color: '#d4d61d' },
+    { value: STATE_CONFIRMED_ADMIN, label: orderStateAdMessage.STATE_CONFIRMED_ADMIN, color: '#46c956' },
+    { value: STATE_COMPLETED_ADMIN, label: orderStateAdMessage.STATE_COMPLETED_ADMIN, color: '#9af099' },
+    { value: STATE_CANCELED_ADMIN, label: orderStateAdMessage.STATE_CANCELED_ADMIN, color: '#f52828' },
 ];
 
 export const paidOptions = [

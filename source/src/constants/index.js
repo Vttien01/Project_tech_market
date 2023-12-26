@@ -100,6 +100,11 @@ export const STATE_CONFIRMED = 2;
 export const STATE_CANCELED = 3;
 export const STATE_COMPLETED = 4;
 
+export const STATE_PENDING_ADMIN = 1;
+export const STATE_CONFIRMED_ADMIN = 2;
+export const STATE_CANCELED_ADMIN = 3;
+export const STATE_COMPLETED_ADMIN = 4;
+
 export const STATE_NOPAID = false;
 export const STATE_PAIDED = true;
 
