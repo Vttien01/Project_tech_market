@@ -105,6 +105,12 @@ const AppCart = () => {
         });
     };
 
+    const removeFromCart = (productId) => {
+        const updatedCart = cartItem.filter((item) => item.productVariantId !== productId);
+        setCartItem(updatedCart);
+        // window.location.reload();
+    };
+
     useEffect(() => {
         getCartExcute({
             onCompleted: (response) => {
@@ -473,6 +479,34 @@ const AppCart = () => {
                                         </>
                                     );
                                 },
+                            },
+                            {
+                                title: 'Hành động',
+                                key: 'action',
+                                align: 'center',
+                                render: (_, record) => (
+                                    <Tooltip title="Xóa giỏ hàng">
+                                        <Button
+                                            style={{
+                                                padding: 3,
+                                                display: 'table-cell',
+                                                verticalAlign: 'middle',
+                                                backgroundColor: '#e70d0d',
+                                                fontWeight: 600,
+                                                color: 'white',
+                                                fontSize: 12,
+                                            }}
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                // handleDeleteCart(record.cartDetailId);
+                                                removeFromCart(record.productVariantId);
+                                                console.log(record);
+                                            }}
+                                        >
+                                            <IconTrash />
+                                        </Button>
+                                    </Tooltip>
+                                ),
                             },
                         ]}
                         dataSource={cartItem}

@@ -72,7 +72,7 @@ const ListDetailsForm = ({ open, onCancel, data, form, itemCart, saleOff, namePr
             // Nếu sản phẩm đã tồn tại trong giỏ hàng, tăng số lượng lên
             const updatedCart = cart.map((item) =>
                 item.id === product.id
-                    ? { ...item, quantity: item?.quantity + product.quantity, totalPriceSell: item?.total + product.total }
+                    ? { ...item, quantity: item?.quantity + product.quantity, totalPriceSell: item?.totalPriceSell + product.totalPriceSell }
                     : item,
             );
             setCart(updatedCart);

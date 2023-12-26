@@ -13,7 +13,7 @@ import dayjs from 'dayjs';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { formSize, orderStateOption, paidOptions, paymentOptions, statusOptions } from '@constants/masterData';
+import { formSize, orderStateOption, orderStateValue, paidOptions, paymentOptions, statusOptions } from '@constants/masterData';
 import useTranslate from '@hooks/useTranslate';
 import NumericField from '@components/common/form/NumericField';
 import CropImageField from '@components/common/form/CropImageField';
@@ -27,7 +27,7 @@ const OrderAdminForm = (props) => {
     // const [lectureStateFilter, setLectureStateFilter] = useState([lectureStateOptions[0]]);
     const statusValues = translate.formatKeys(statusOptions, ['label']);
     const paymentValues = translate.formatKeys(paymentOptions, ['label']);
-    const orderStateValues = translate.formatKeys(orderStateOption, ['label']);
+    const orderStateValues = translate.formatKeys(orderStateValue, ['label']);
     const isPaidValues = translate.formatKeys(paidOptions, ['label']);
 
     const [bannerUrl, setBannerUrl] = useState(null);

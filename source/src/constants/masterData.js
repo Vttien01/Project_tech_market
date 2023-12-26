@@ -80,6 +80,13 @@ export const orderStateOption = [
     { value: STATE_CANCELED, label: orderStateMessage.STATE_CANCELED, color: '#f52828' },
 ];
 
+export const orderStateValue = [
+    { value: 1, label: 'Đang xử lý' },
+    { value: 2, label: 'Duyệt' },
+    { value: 3, label: 'Hoàn thành' },
+    { value: 4, label: 'Hủy' },
+];
+
 export const paidOptions = [
     { value: STATE_NOPAID, label: isPaidMessage.STATE_NOPAID },
     { value: STATE_PAIDED, label: isPaidMessage.STATE_PAIDEDD },
