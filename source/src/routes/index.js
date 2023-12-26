@@ -16,6 +16,7 @@ import ProductRoutes from '@modules/product/routes';
 import SignupPage from '@modules/signup';
 import ProfileForm from '@modules/profileUser/ProfileForm';
 import ProfileUserPage from '@modules/profileUser';
+import PersonInfo from '@modules/profileUser/PersonInfo';
 
 /*
 	auth
@@ -62,7 +63,7 @@ const routes = {
     },
     profilePageUser: {
         path: '/profile-user',
-        component: ProfileUserPage,
+        component: PersonInfo,
         auth: null,
         title: 'Profile User page',
     },

@@ -89,6 +89,9 @@ const AddressForm = (props) => {
     useEffect(() => {
         form.setFieldsValue({
             ...dataDetail,
+            provinceId: dataDetail?.provinceInfo?.id,
+            districtId: dataDetail?.districtInfo?.id,
+            wardId: dataDetail?.wardInfo?.id,
         });
         setImageUrl(dataDetail.avatar);
     }, [dataDetail]);

@@ -51,16 +51,19 @@ const AddressListPage = ({ pageOptions }) => {
             title: translate.formatMessage(commonMessage.Name),
             dataIndex: 'name',
             width: '150',
+            align:'center',
         },
         {
             title: translate.formatMessage(commonMessage.phone),
             dataIndex: 'phone',
             width: '30',
+            align:'center',
         },
         {
             title: translate.formatMessage(commonMessage.address),
             dataIndex: 'address',
-            width: '280',
+            align:'center',
+            // align: 'center',
             render: (address, dataRow) => {
                 return (
                     <div>
@@ -70,7 +73,7 @@ const AddressListPage = ({ pageOptions }) => {
             },
         },
 
-        mixinFuncs.renderStatusColumn({ width: '150px' }),
+        // mixinFuncs.renderStatusColumn({ width: '150px' }),
         mixinFuncs.renderActionColumn({ edit: true, delete: true }, { width: '130px' }),
     ];
 

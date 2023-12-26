@@ -53,6 +53,7 @@ import IconOrder from '@assets/icons/icon';
 import { IconAlignBoxBottomLeft } from '@tabler/icons-react';
 import { IconAlignBoxBottomCenter } from '@tabler/icons-react';
 import AppCart from '@modules/page/AppCart/AppCart';
+import SearchBox from '@modules/searchBox/SearchBox';
 const { Search } = Input;
 const { Text } = Typography;
 
@@ -126,7 +127,7 @@ const AppHeader = ({ collapsed, onCollapse }) => {
                         key: 'histoy_order',
                         label: (
                             <div style={{ display: 'flex', gap: '5px', alignItems: 'center' }}>
-                                <IconAlignBoxBottomCenter size={16}/>
+                                <IconAlignBoxBottomCenter size={16} />
                                 <span>Đơn hàng</span>
                             </div>
                         ),
@@ -167,13 +168,10 @@ const AppHeader = ({ collapsed, onCollapse }) => {
                 <a href="" title="Tech-Market" rel="home" style={{ marginLeft: 100, marginTop: 35 }}>
                     <img width="200" height="60" src={logo} alt="Tech-market" />
                 </a>
-                {/* <Input.Search
-                    placeholder="Bạn muốn tìm gì?"
-                    size="500"
-                    style={{ fontSize:5, marginTop: 15, width: 400, alignItems: 'center', marginLeft: 150 }}
-                /> */}
-
-                <Menu mode="horizontal" className={styles.rightMenu} selectedKeys={[]} items={itemHeader()} />
+                <Space style={{ minWidth:1000, justifyContent:'space-between' }}>
+                    <SearchBox />
+                    <Menu mode="horizontal" className={styles.rightMenu} selectedKeys={[]} items={itemHeader()} />
+                </Space>
             </Header>
             <ConfigProvider
                 theme={{

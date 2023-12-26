@@ -22,8 +22,8 @@ const PublicLayoutOther = ({ children }) => {
     return (
         <Layout>
             <AppHeader collapsed={collapsed} onCollapse={toggleCollapsed} />
-            <Layout>
-                <Content>
+            <Layout >
+                <Content className={styles.appContentAdmin}>
                     <div className={styles.wrapper}>{children}</div>
                 </Content>
             </Layout>
