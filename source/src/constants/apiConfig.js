@@ -94,7 +94,12 @@ const apiConfig = {
             headers: baseHeader,
         },
         update: {
-            baseURL: `${apiUrl}v1/user/update`,
+            baseURL: `${apiUrl}v1/user/update-profile`,
+            method: `PUT`,
+            headers: baseHeader,
+        },
+        updateProfile: {
+            baseURL: `${apiUrl}v1/user/update-profile`,
             method: `PUT`,
             headers: baseHeader,
         },
@@ -105,6 +110,11 @@ const apiConfig = {
         },
         autocomplete: {
             baseURL: `${apiUrl}v1/user/auto-complete`,
+            method: `GET`,
+            headers: baseHeader,
+        },
+        getProfile: {
+            baseURL: `${apiUrl}v1/user/get-myprofile`,
             method: `GET`,
             headers: baseHeader,
         },
@@ -270,6 +280,11 @@ const apiConfig = {
         delete: {
             baseURL: `${apiUrl}v1/address/delete/:id`,
             method: 'DELETE',
+            headers: baseHeader,
+        },
+        getMyAddress: {
+            baseURL: `${apiUrl}v1/address/get-myAddress`,
+            method: 'GET',
             headers: baseHeader,
         },
     },

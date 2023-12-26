@@ -16,7 +16,7 @@ export const navMenuConfig = [
         icon: <UsergroupAddOutlined />,
         children: [
             {
-                label: <FormattedMessage defaultMessage="Quản lý" />,
+                label: <FormattedMessage defaultMessage="Nhân viên" />,
                 key: 'admin',
                 path: routes.adminsListPage.path,
                 permission: [apiConfig.account.getList.baseURL],

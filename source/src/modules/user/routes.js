@@ -14,7 +14,8 @@ const paths = {
     userListPage: '/user',
     userSavePage: '/user/:id',
     addressListPage:'/user/address',
-    addressSavePage: '/user/address/:id',
+    personInfo:'/profile-user',
+    addressSavePage: '/profile-user/address/:id',
 };
 export default {
     adminsListPage: {
@@ -129,15 +130,13 @@ export default {
         path: paths.addressSavePage,
         component: AddressSavePage,
         separateCheck: true,
-        auth: true,
+        auth: null,
         permission: [apiConfig.address.create.baseURL, apiConfig.address.update.baseURL],
         pageOptions: {
             objectName: commonMessage.address,
-            listPageUrl: paths.addressListPage,
+            listPageUrl: paths.personInfo,
             renderBreadcrumbs: (messages, t, title, options = {}) => {
                 return [
-                    { breadcrumbName: t.formatMessage(messages.user), path: paths.userListPage },
-                    { breadcrumbName: t.formatMessage(commonMessage.address), path: paths.addressListPage+`?userId=${options.userId}` },
                     { breadcrumbName: title },
                 ];
             },

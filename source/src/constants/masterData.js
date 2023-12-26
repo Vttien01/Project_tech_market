@@ -15,6 +15,8 @@ import {
     STATE_PAIDED,
     ACTIVE_USER,
     LOCKED_USER,
+    LOCKED_ACCOUNT,
+    ACTIVE_ACCOUNT,
 } from '@constants';
 import { defineMessages } from 'react-intl';
 import { nationKindMessage } from './intl';
@@ -33,6 +35,11 @@ const paymentMessage = defineMessages({
 const userStateMessage = defineMessages({
     LOCKED_USER: 'Khóa',
     ACTIVE_USER: 'Kích hoạt',
+});
+
+const accountStatusMessage = defineMessages({
+    LOCKED_ACCOUNT: 'Khóa',
+    ACTIVE_ACCOUNT: 'Đang hoạt động',
 });
 
 const orderStateMessage = defineMessages({
@@ -99,9 +106,14 @@ export const userSateteOptions = [
     { value: ACTIVE_USER, label: userStateMessage.ACTIVE_USER, color: 'green' },
 ];
 
+export const accountStatusOptions = [
+    { value: LOCKED_ACCOUNT, label: userStateMessage.LOCKED_USER, color: 'red' },
+    { value: ACTIVE_ACCOUNT, label: userStateMessage.ACTIVE_USER, color: 'green' },
+];
+
 export const userStatusOptions = [
-    { value: LOCKED_USER, label: userStateMessage.LOCKED_USER },
-    { value: ACTIVE_USER, label: userStateMessage.ACTIVE_USER },
+    { value: LOCKED_USER, label: accountStatusMessage.LOCKED_ACCOUNT },
+    { value: ACTIVE_USER, label: accountStatusMessage.ACTIVE_ACCOUNT },
 ];
 
 export const formSize = {

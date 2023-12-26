@@ -5,31 +5,34 @@ import useFetchAction from '@hooks/useFetchAction';
 import useSaveBase from '@hooks/useSaveBase';
 import { accountActions } from '@store/actions';
 import React, { useEffect, useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { defineMessages } from 'react-intl';
 import useTranslate from '@hooks/useTranslate';
 import { commonMessage } from '@locales/intl';
-import { Avatar, Card, Divider, Space, Statistic, Tag, Typography } from 'antd';
+import { Avatar, Card, Divider, Space, Statistic, Tag, Tooltip, Typography } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import './PersonInfo.scss';
-import { IconEdit, IconEditCircle } from '@tabler/icons-react';
+import { IconEdit, IconEditCircle, IconStar } from '@tabler/icons-react';
 import useListBase from '@hooks/useListBase';
 import { DEFAULT_TABLE_ITEM_SIZE } from '@constants';
 import useAuth from '@hooks/useAuth';
 import ListPage from '@components/common/layout/ListPage';
 import BaseTable from '@components/common/table/BaseTable';
-import { userSateteOptions } from '@constants/masterData';
+import { userSateteOptions, accountStatusOptions } from '@constants/masterData';
+import routes from '@routes';
 
 const message = defineMessages({
-    objectName: 'profile',
+    objectName: 'Profile',
 });
 
 const PersonInfo = () => {
+    const navigate = useNavigate();
     const { profile } = useAuth();
     const translate = useTranslate();
     const [detail, setDetail] = useState({});
     const { pathname: pagePath } = useLocation();
-    console.log(profile);
+    // const { execute, data: infoUser } = useFetch({ ...apiConfig.user.getProfile }, { immediate: false });
+    // console.log(infoUser);
     // const { execute, loading } = useFetch({ ...apiConfig.account.getProfile }, { immediate: false });
     // const { execute: executeGetProfile } = useFetchAction(accountActions.getProfile);
 
@@ -43,7 +46,13 @@ const PersonInfo = () => {
     // }, []);
 
     const { data, mixinFuncs, queryFilter, loading, pagination } = useListBase({
-        apiConfig: apiConfig.address,
+        // apiConfig: apiConfig.address,
+        apiConfig: {
+            getList: apiConfig.address.getMyAddress,
+            delete: apiConfig.address.delete,
+            update: apiConfig.address.update,
+            getById: apiConfig.address.getById,
+        },
         options: {
             pageSize: DEFAULT_TABLE_ITEM_SIZE,
             objectName: 'Thông tin cá nhân',
@@ -62,10 +71,10 @@ const PersonInfo = () => {
             };
 
             funcs.getCreateLink = () => {
-                // return `${pagePath}/create?userId=${profile.id}`;
+                return `${pagePath}/address/create?userId=${profile.id}`;
             };
             funcs.getItemDetailLink = (dataRow) => {
-                // return `${pagePath}/${dataRow.id}?userId=${userId}`;
+                return `${pagePath}/address/${dataRow.id}?userId=${profile.id}`;
                 // params:{},
             };
         },
@@ -101,48 +110,74 @@ const PersonInfo = () => {
         // mixinFuncs.renderStatusColumn({ width: '150px' }),
         mixinFuncs.renderActionColumn({ edit: true, delete: true }, { width: '130px' }),
     ];
+    const handleEdit = () => {
+        navigate(routes.PersonInfo.path + `/${profile.id}`);
+    };
+
+    const breadRoutes = [{ breadcrumbName: translate.formatMessage(message.objectName) }];
 
     return (
-        <div style={{ display: 'flex', justifyContent: 'center', margin: '30px 0px' }}>
-            {/* <Card  style={{ minHeight: 800, width: 400, backgroundColor: '#ffd400', marginRight:0 }}></Card>
+        <div style={{ width: 1500, display: 'flex', justifyContent: 'center', marginTop:20 }}>
+            <PageWrapper routes={breadRoutes}>
+                <div style={{ display: 'flex', justifyContent: 'center', margin: '30px 0px' }}>
+                    {/* <Card  style={{ minHeight: 800, width: 400, backgroundColor: '#ffd400', marginRight:0 }}></Card>
             <Card  style={{ minHeight: 800, width: 400, backgroundColor: '#ffd400', marginLeft:0 }}></Card> */}
-            <Space className="rounded-square-left" direction="vertical">
-                <Avatar size={200} icon={<UserOutlined />} />
-                <Typography.Title level={6}>Người dùng</Typography.Title>
-                <Typography.Title level={4}>{profile?.username}</Typography.Title>
-                <IconEdit size={40} color="#282a36" />
-            </Space>
-            <Space className="rounded-square-right" direction="vertical">
-                <div className="box-with-border">
-                    <Divider orientation="left" style={{ fontSize: 30 }}>
-                        Thông tin cá nhân
-                    </Divider>
-                </div>
-                <Space direction="horizontal">
-                    <DashboardCard title={'Họ và tên'} value={profile?.fullName} />
-                    <DashboardCard title={'Email'} value={profile?.email} />
-                </Space>
-                <Space direction="horizontal">
-                    <DashboardCard title={'Số điện thoại'} value={profile?.phone} />
-                    <DashboardCardStatus title={'Trạng thái hoạt động'} value={profile?.status} />
-                </Space>
-                <Divider orientation="left" style={{ fontSize: 30 }}>
-                    Thông tin địa chỉ
-                </Divider>
-                <ListPage
-                    actionBar={mixinFuncs.renderActionBar()}
-                    style={{ backgroundColor: '#fcd8bc', borderRadius: '0px' }}
-                    baseTable={
-                        <BaseTable
-                            onChange={mixinFuncs.changePagination}
-                            columns={columns}
-                            dataSource={data}
-                            loading={loading}
-                            pagination={pagination}
+                    <Space className="rounded-square-left" direction="vertical">
+                        <Avatar size={200} icon={<UserOutlined />} />
+                        <Typography.Title style={{ fontSize: 35 }}>Người dùng</Typography.Title>
+                        <Typography.Title level={3}>{profile?.username}</Typography.Title>
+                        <Space>
+                            <Tooltip placement="bottom" title="Sửa thông tin cá nhân">
+                                <IconEdit
+                                    size={40}
+                                    color="#282a36"
+                                    onClick={handleEdit}
+                                    style={{ fontSize: 40, color: '#282a36', cursor: 'pointer' }}
+                                />
+                            </Tooltip>
+                            <Tooltip placement="bottom" title="Đánh giá sản phẩm">
+                                <IconStar
+                                    size={40}
+                                    color="#282a36"
+                                    onClick={handleEdit}
+                                    style={{ marginLeft: 20, fontSize: 40, color: '#282a36', cursor: 'pointer' }}
+                                />
+                            </Tooltip>
+                        </Space>
+                    </Space>
+                    <Space className="rounded-square-right" direction="vertical">
+                        <div className="box-with-border">
+                            <Divider orientation="left" style={{ fontSize: 25 }}>
+                                Thông tin cá nhân
+                            </Divider>
+                        </div>
+                        <Space direction="horizontal">
+                            <DashboardCard title={'Họ và tên'} value={profile?.fullName} />
+                            <DashboardCard title={'Email'} value={profile?.email} />
+                        </Space>
+                        <Space direction="horizontal">
+                            <DashboardCard title={'Số điện thoại'} value={profile?.phone} />
+                            <DashboardCardStatus title={'Trạng thái hoạt động'} value={profile?.status} />
+                        </Space>
+                        <Divider orientation="left" style={{ fontSize: 25 }}>
+                            Thông tin địa chỉ
+                        </Divider>
+                        <ListPage
+                            actionBar={mixinFuncs.renderActionBar()}
+                            style={{ backgroundColor: '#fcd8bc', borderRadius: '0px' }}
+                            baseTable={
+                                <BaseTable
+                                    onChange={mixinFuncs.changePagination}
+                                    columns={columns}
+                                    dataSource={data}
+                                    loading={loading}
+                                    pagination={pagination}
+                                />
+                            }
                         />
-                    }
-                />
-            </Space>
+                    </Space>
+                </div>
+            </PageWrapper>
         </div>
     );
 };
@@ -151,7 +186,7 @@ function DashboardCard({ title, value, icon, icon1, number }) {
     return (
         <Card style={{ minWidth: 350, backgroundColor: '#e7e7e7' }}>
             <Space direction="vertical">
-                <Typography.Title level={5}>{title}</Typography.Title>
+                <Typography.Title style={{ fontSize: 16 }}>{title}</Typography.Title>
                 <Typography.Text>{value}</Typography.Text>
             </Space>
         </Card>
@@ -160,7 +195,7 @@ function DashboardCard({ title, value, icon, icon1, number }) {
 
 function DashboardCardStatus({ title, value, icon, icon1, number }) {
     const translate = useTranslate();
-    const stateValues = translate.formatKeys(userSateteOptions, ['label']);
+    const stateValues = translate.formatKeys(accountStatusOptions, ['label']);
     const state = stateValues.find((item) => item.value == value);
     return (
         <Card style={{ minWidth: 350, backgroundColor: '#e7e7e7' }}>

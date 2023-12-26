@@ -1,24 +1,32 @@
 import TextField from '@components/common/form/TextField';
-import { Card, Form } from 'antd';
+import { Card, Col, Form, Row } from 'antd';
 import React, { useEffect, useState } from 'react';
 import useBasicForm from '@hooks/useBasicForm';
 import CropImageField from '@components/common/form/CropImageField';
 import useFetch from '@hooks/useFetch';
 import apiConfig from '@constants/apiConfig';
-import { AppConstants } from '@constants';
-import { defineMessages } from 'react-intl';
+import { AppConstants, DATE_FORMAT_DISPLAY, DATE_FORMAT_VALUE, genderValues } from '@constants';
+import { FormattedMessage, defineMessages } from 'react-intl';
 import useTranslate from '@hooks/useTranslate';
 import { commonMessage } from '@locales/intl';
+import SelectField from '@components/common/form/SelectField';
+import useAuth from '@hooks/useAuth';
+import DatePickerField from '@components/common/form/DatePickerField';
+import { formatDateString } from '@utils';
+import dayjs from 'dayjs';
 
 const message = defineMessages({
     objectName: 'group permission',
 });
 
 const ProfileForm = (props) => {
+    const { profile } = useAuth();
     const translate = useTranslate();
     const { formId, dataDetail, onSubmit, setIsChangedFormValues, actions } = props;
     const [imageUrl, setImageUrl] = useState(null);
     const { execute: executeUpFile } = useFetch(apiConfig.file.upload);
+
+    console.log(profile);
 
     const { form, mixinFuncs, onValuesChange } = useBasicForm({
         onSubmit,
@@ -43,86 +51,134 @@ const ProfileForm = (props) => {
     };
 
     useEffect(() => {
+        dataDetail.birthday = dataDetail?.birthday && dayjs(dataDetail?.birthday, DATE_FORMAT_VALUE);
         form.setFieldsValue({
             ...dataDetail,
-            city: dataDetail.info?.city,
-            country: dataDetail.info?.country,
-            jobTitle: dataDetail.info?.jobTitle,
-            department: dataDetail.info?.department,
-            employeeId: dataDetail.info?.employeeId,
-            postalCode: dataDetail.info?.postalCode,
+            fullName: dataDetail?.account?.fullName,
+            email: dataDetail?.account?.email,
+            phone: dataDetail?.account?.phone,
+            gender: dataDetail?.gender,
         });
         setImageUrl(dataDetail.avatar);
     }, [dataDetail]);
 
     const handleFinish = (values) => {
         mixinFuncs.handleSubmit({
+            ...values,
+            phone:values.phone,
             fullName: values.fullName,
             oldPassword: values.oldPassword,
             password: values.password,
+            birthday: formatDateString(values?.birthday, DATE_FORMAT_VALUE) + ' 00:00:00',
             avatar: imageUrl,
         });
     };
 
     return (
-        <Card className="card-form" bordered={false} style={{ minHeight: 'calc(100vh - 190px)', minWidth:1200, marginBottom:20 }}>
+        <Card
+            className="card-form"
+            bordered={false}
+            style={{ minHeight: 'calc(100vh - 190px)', minWidth: 1200, marginBottom: 20 }}
+        >
             <Form
-                style={{ width: '50%' }}
-                labelCol={{ span: 8 }}
+                style={{ width: '90%' }}
+                labelCol={{ span: 9 }}
                 id={formId}
                 onFinish={handleFinish}
                 form={form}
-                layout="horizontal"
+                // layout="horizontal"
                 onValuesChange={onValuesChange}
             >
                 <CropImageField
                     label={translate.formatMessage(commonMessage.avatar)}
-                    name="avatar"
-                    imageUrl={imageUrl && `${AppConstants.contentRootUrl}${imageUrl}`}
+                    name="avatarPath"
+                    imageUrl={imageUrl}
                     aspect={1 / 1}
                     uploadFile={uploadFile}
                 />
-                <TextField readOnly label={translate.formatMessage(commonMessage.username)} name="username" />
-                <TextField label={translate.formatMessage(commonMessage.fullName)} name="fullName" />
-                <TextField
-                    type="password"
-                    label={translate.formatMessage(commonMessage.currentPassword)}
-                    required
-                    name="oldPassword"
-                />
-                <TextField
-                    type="password"
-                    label={translate.formatMessage(commonMessage.newPassword)}
-                    name="password"
-                    rules={[
-                        {
-                            validator: async () => {
-                                const isTouched = form.isFieldTouched('newPassword');
-                                if (isTouched) {
-                                    const value = form.getFieldValue('newPassword');
-                                    if (value.length < 6) {
-                                        throw new Error(translate.formatMessage(commonMessage.validatePassword));
-                                    }
-                                }
-                            },
-                        },
-                    ]}
-                />
-                <TextField
-                    type="password"
-                    label={translate.formatMessage(commonMessage.confirmPassword)}
-                    rules={[
-                        {
-                            validator: async () => {
-                                const password = form.getFieldValue('newPassword');
-                                const confirmPassword = form.getFieldValue('confirmPassword');
-                                if (password !== confirmPassword) {
-                                    throw new Error(translate.formatMessage(commonMessage.passwordNotMatch));
-                                }
-                            },
-                        },
-                    ]}
-                />
+                <Row gutter={16}>
+                    <Col span={12}>
+                        <TextField label={translate.formatMessage(commonMessage.fullName)} name="fullName" required/>
+                    </Col>
+                    <Col span={12}>
+                        <DatePickerField
+                            label="Ngày sinh"
+                            showTime={false}
+                            name="birthday"
+                            format={DATE_FORMAT_DISPLAY}
+                            style={{ width: '100%', height: 45 }}
+                            size="small"
+                        />
+                    </Col>
+                </Row>
+                <Row gutter={16}>
+                    <Col span={12}>
+                        <TextField label={translate.formatMessage(commonMessage.email)} name="email" />
+                    </Col>
+                    <Col span={12}>
+                        <TextField label={translate.formatMessage(commonMessage.phone)} name="phone" required/>
+                    </Col>
+                </Row>
+                <Row gutter={16}>
+                    <Col span={12}>
+                        <TextField
+                            type="password"
+                            label={<FormattedMessage defaultMessage="Mật khẩu cũ" />}
+                            required
+                            name="oldPassword"
+                        />
+                    </Col>
+                    <Col span={12}>
+                        <SelectField
+                            // disabled={dataDetail?.state === 3 || (dataDetail?.state === 4 && true)}
+                            name="gender"
+                            label={<FormattedMessage defaultMessage="Giới tính" />}
+                            allowClear={false}
+                            options={genderValues}
+                        />
+                    </Col>
+                </Row>
+                <Row gutter={16}>
+                    <Col span={12}>
+                        <TextField
+                            type="password"
+                            label={<FormattedMessage defaultMessage="Mật khẩu mới" />}
+                            name="password"
+                            rules={[
+                                {
+                                    validator: async () => {
+                                        const isTouched = form.isFieldTouched('newPassword');
+                                        if (isTouched) {
+                                            const value = form.getFieldValue('newPassword');
+                                            if (value.length < 6) {
+                                                throw new Error(
+                                                    translate.formatMessage(commonMessage.validatePassword),
+                                                );
+                                            }
+                                        }
+                                    },
+                                },
+                            ]}
+                        />
+                    </Col>
+                    <Col span={12}>
+                        <TextField
+                            type="password"
+                            label={translate.formatMessage(commonMessage.confirmPassword)}
+                            rules={[
+                                {
+                                    validator: async () => {
+                                        const password = form.getFieldValue('newPassword');
+                                        const confirmPassword = form.getFieldValue('confirmPassword');
+                                        if (password !== confirmPassword) {
+                                            throw new Error(translate.formatMessage(commonMessage.passwordNotMatch));
+                                        }
+                                    },
+                                },
+                            ]}
+                        />
+                    </Col>
+                </Row>
 
                 <div className="footer-card-form">{actions}</div>
             </Form>

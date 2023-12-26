@@ -5,7 +5,7 @@ import { UserOutlined, DeleteOutlined } from '@ant-design/icons';
 import PageWrapper from '@components/common/layout/PageWrapper';
 import ListPage from '@components/common/layout/ListPage';
 import BaseTable from '@components/common/table/BaseTable';
-import { orderStateOption, paymentOptions, statusOptions } from '@constants/masterData';
+import { orderStateOption, paidValues, paymentOptions, statusOptions } from '@constants/masterData';
 import useTranslate from '@hooks/useTranslate';
 import { FieldTypes } from '@constants/formConfig';
 import apiConfig from '@constants/apiConfig';
@@ -30,6 +30,7 @@ const OrderAdminPage = () => {
     const statusValues = translate.formatKeys(statusOptions, ['label']);
     const stateValues = translate.formatKeys(paymentOptions, ['label']);
     const orderStatetateValues = translate.formatKeys(orderStateOption, ['label']);
+    const isPaidValues = translate.formatKeys(paidValues, ['label']);
 
     const { data, mixinFuncs, queryFilter, loading, pagination, changePagination } = useListBase({
         apiConfig: apiConfig.order,
@@ -110,6 +111,29 @@ const OrderAdminPage = () => {
             width: 120,
             render(dataRow) {
                 const state = orderStatetateValues.find((item) => item.value == dataRow);
+                return (
+                    <Tag
+                        color={state.color}
+                        style={{
+                            minWidth: 80,
+                            height: 28,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                        }}
+                    >
+                        <div style={{ padding: '0 0px', fontSize: 14 }}>{state.label}</div>
+                    </Tag>
+                );
+            },
+        },
+        {
+            title: 'Trạng thái thanh toán',
+            dataIndex: 'isPaid',
+            align: 'center',
+            width: 120,
+            render(dataRow) {
+                const state = isPaidValues.find((item) => item.value == dataRow);
                 return (
                     <Tag
                         color={state.color}

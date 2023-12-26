@@ -1,8 +1,8 @@
 // @import "../../../App.scss";
 
 .rounded-square-left {
-    width: 400px;
-    min-height: 800px;
+    width: 300px;
+    min-height: 400px;
     background-color: #f8c66f; /* Màu nền của hình vuông */
     border-radius: 15px 0px 0 15px; /* Bo góc ở cả hai góc trên */
     display: flex;
@@ -10,8 +10,8 @@
     justify-content: center; /* Màu chữ */
   }
   .rounded-square-right {
-    width: 800px;
-    min-height: 800px;
+    width: 900px;
+    min-height: 400px;
     background-color: #fcd8bc; /* Màu nền của hình vuông */
     border-radius: 0 15px 15px 0; /* Bo góc ở cả hai góc trên */
     display: flex;

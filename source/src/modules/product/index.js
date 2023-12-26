@@ -107,7 +107,7 @@ const ProductListPage = () => {
             },
         },
         {
-            title: <FormattedMessage defaultMessage="Tổng số lượng" />,
+            title: <FormattedMessage defaultMessage="Đã bán" />,
             dataIndex: ['soldAmount'],
             align: 'center',
             width: 140,

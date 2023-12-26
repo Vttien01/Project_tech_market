@@ -15,19 +15,19 @@ const message = defineMessages({
     objectName: 'profile',
 });
 
-const ProfileUserPage = () => {
+const ProfileUserSavePage = () => {
     const translate = useTranslate();
     const [detail, setDetail] = useState({});
-    const { execute, loading } = useFetch({ ...apiConfig.account.getProfile }, { immediate: false });
+    const { execute, loading } = useFetch({ ...apiConfig.user.getProfile }, { immediate: false });
     const { execute: executeGetProfile } = useFetchAction(accountActions.getProfile);
     const { mixinFuncs, onSave, setIsChangedFormValues, isEditing } = useSaveBase({
         options: {
-            getListUrl: `/admins`,
+            getListUrl: `/profile-user`,
             objectName: translate.formatMessage(message.objectName),
         },
         apiConfig: {
-            getById: apiConfig.account.getProfile,
-            update: apiConfig.account.updateProfile,
+            getById: apiConfig.user.getProfile,
+            update: apiConfig.user.updateProfile,
         },
         override: (funcs) => {
             const onSaveCompleted = funcs.onSaveCompleted;
@@ -67,4 +67,4 @@ const ProfileUserPage = () => {
     );
 };
 
-export default ProfileUserPage;
+export default ProfileUserSavePage;

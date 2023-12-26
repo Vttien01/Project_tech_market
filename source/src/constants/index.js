@@ -111,6 +111,9 @@ export const COD_METHOD = 0;
 
 export const LOCKED_USER = -1;
 export const ACTIVE_USER = 1;
+
+export const LOCKED_ACCOUNT = -1;
+export const ACTIVE_ACCOUNT = 1;
 // export const VNPAY_METHOD = 3;
 
 export const commonStatus = {
@@ -142,10 +145,20 @@ export const GROUP_KIND_USER = 3;
 export const GROUP_ROLE_MANAGER = 15;
 export const GROUP_ROLE_EMPLOYEE = 14;
 
+export const GENDER_MAN = 0;
+export const GENDER_WOWAN = 1;
+export const GENDER_OTHER = 2;
+
 
 export const groupPermissionKindsOptions = [
     { label: 'Admin', value: GROUP_KIND_ADMIN },
     { label: 'User', value: GROUP_KIND_USER },
+];
+
+export const genderValues = [
+    { label: 'Nam', value: GENDER_MAN },
+    { label: 'Nữ', value: GENDER_WOWAN },
+    { label: 'kHÁC', value: GENDER_OTHER },
 ];
 
 export const isSystemSettingOptions = [

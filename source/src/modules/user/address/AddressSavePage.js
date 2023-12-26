@@ -26,7 +26,7 @@ const AddressSavePage = ({ pageOptions }) => {
             update: apiConfig.address.update,
         },
         options: {
-            getListUrl: pageOptions.listPageUrl +`?userId=${userId}`,
+            getListUrl: pageOptions.listPageUrl + `?userId=${userId}`,
             objectName: translate.formatMessage(pageOptions.objectName),
         },
         override: (funcs) => {
@@ -51,16 +51,21 @@ const AddressSavePage = ({ pageOptions }) => {
     });
 
     return (
-        <PageWrapper loading={loading} routes={pageOptions.renderBreadcrumbs(commonMessage, translate, title,{ userId:userId })}>
-            <AddressForm
-                setIsChangedFormValues={setIsChangedFormValues}
-                dataDetail={detail ? detail : {}}
-                formId={mixinFuncs.getFormId()}
-                isEditing={isEditing}
-                actions={mixinFuncs.renderActions()}
-                onSubmit={onSave}
-            />
-        </PageWrapper>
+        <div style={{ width: 1500, display: 'flex', justifyContent: 'center' }}>
+            <PageWrapper
+                loading={loading}
+                routes={pageOptions.renderBreadcrumbs(commonMessage, translate, title, { userId: userId })}
+            >
+                <AddressForm
+                    setIsChangedFormValues={setIsChangedFormValues}
+                    dataDetail={detail ? detail : {}}
+                    formId={mixinFuncs.getFormId()}
+                    isEditing={isEditing}
+                    actions={mixinFuncs.renderActions()}
+                    onSubmit={onSave}
+                />
+            </PageWrapper>
+        </div>
     );
 };
 

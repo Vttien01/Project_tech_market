@@ -62,7 +62,7 @@ const CategoryFormCommon = (props) => {
                     <CropImageField
                         label={<FormattedMessage defaultMessage="Avatar" />}
                         name="avatar"
-                        imageUrl={imageUrl && `${AppConstants.contentRootUrl}${imageUrl}`}
+                        imageUrl={imageUrl}
                         aspect={1 / 1}
                         uploadFile={uploadFile}
                     />
