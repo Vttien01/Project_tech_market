@@ -17,6 +17,8 @@ import SignupPage from '@modules/signup';
 import ProfileForm from '@modules/profileUser/ProfileForm';
 import ProfileUserPage from '@modules/profileUser';
 import PersonInfo from '@modules/profileUser/PersonInfo';
+import OrderAdmin from '@modules/orderAdmin/routes';
+
 
 /*
 	auth
@@ -97,6 +99,7 @@ const routes = {
     ...ProductHomePageRoutes,
     ...BrandRoutes,
     ...ProductRoutes,
+    ...OrderAdmin,
 
 
     // keep this at last

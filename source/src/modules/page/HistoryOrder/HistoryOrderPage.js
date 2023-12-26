@@ -119,7 +119,7 @@ const HistoryOrderPage = () => {
             children: <TableMyOrder stateValues={stateValues} state={1} />,
         },
         {
-            label: `Đang Vận chuyển`,
+            label: `Đã được duyệt`,
             key: 2,
             children: <TableMyOrder stateValues={stateValues} state={2} />,
         },
@@ -164,44 +164,11 @@ const HistoryOrderPage = () => {
         >
             <PageWrapper
                 routes={[
-                    {
-                        breadcrumbName: 'Trang chủ',
-                        path: generatePath(routes.homePage.path),
-                    },
                     { breadcrumbName: 'Lịch sử đơn hàng' },
                 ]}
                 // title={title}
+                style={{ backgroundColor:'#282a36' }}
             ></PageWrapper>
-            <div
-                style={{
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    maxWidth: 500,
-                    marginBottom: 20,
-                    marginLeft: 300,
-                }}
-            >
-                <div style={{ flex: '1', justifyContent: 'center' }}>
-                    <Form onFinish={onSearch}>
-                        <div style={{ display: 'flex' }}>
-                            <Form.Item name="orderCode" contentWrapperStyle={{ width: 800 }}>
-                                <Input
-                                    placeholder="Nhập mã đơn hàng ..."
-                                    addonAfter={<IconSearch />}
-                                    style={{ minWidth: 500 }}
-                                />
-                            </Form.Item>
-                            <Button
-                                type="primary"
-                                htmlType="submit"
-                                style={{ marginTop: 5, marginLeft: 5, backgroundColor: '#f57e20' }}
-                            >
-                                Tìm kiếm
-                            </Button>
-                        </div>
-                    </Form>
-                </div>
-            </div>
             <div style={{ flex: '1', justifyContent: 'center', minHeight: 600 }}>
                 <Card style={{ minHeight: 600, backgroundColor: '#d8dadd' }}>
                     <Tabs defaultActiveKey="1" centered size="large" items={items} style={{ marginBottom: 20 }} />
@@ -275,7 +242,7 @@ function TableMyOrder({ stateValues, state, search }) {
                 align: 'center',
             },
             {
-                title: 'Ngày tạo',
+                title: 'Ngày đặt',
                 dataIndex: 'createdDate',
                 align: 'center',
                 render: (createdDate) => {
@@ -394,7 +361,7 @@ function TableMyOrder({ stateValues, state, search }) {
                 orderId={orderId}
             />
             <Table
-                pagination={false}
+                pagination={true}
                 onRow={(record, rowIndex) => ({
                     onClick: (e) => {
                         e.stopPropagation();

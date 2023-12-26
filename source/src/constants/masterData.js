@@ -37,7 +37,7 @@ const userStateMessage = defineMessages({
 
 const orderStateMessage = defineMessages({
     STATE_PENDING: 'Đang xử lý',
-    STATE_CONFIRMED: 'Đang vận chuyển',
+    STATE_CONFIRMED: 'Đã được duyệt',
     STATE_COMPLETED: 'Đã hoàn thành',
     STATE_CANCELED: 'Đã hủy',
 
@@ -91,7 +91,7 @@ export const statusOptions = [
 
 export const paymentOptions = [
     { value: COD_METHOD, label: paymentMessage.COD_METHOD, color: '#00A648' },
-    { value: PAYPAL_METHOD, label: paymentMessage.PAYPAL_METHOD, color: '#FFBF00' },
+    { value: PAYPAL_METHOD, label: paymentMessage.PAYPAL_METHOD, color: '#00adf9' },
 ];
 
 export const userSateteOptions = [

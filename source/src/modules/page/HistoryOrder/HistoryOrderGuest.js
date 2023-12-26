@@ -191,6 +191,7 @@ const HistoryOrderGuest = () => {
                     },
                     { breadcrumbName: 'Tìm kiếm đơn hàng' },
                 ]}
+                style={{ backgroundColor:'#282a36' }}
                 // title={title}
             ></PageWrapper>
             <div
@@ -204,18 +205,18 @@ const HistoryOrderGuest = () => {
             >
                 <div style={{ flex: '1', justifyContent: 'center' }}>
                     <Form onFinish={onSearch}>
-                        <div style={{ display: 'flex' }}>
+                        <div style={{ display: 'flex', justifyContent:'center', marginTop:10 }}>
                             <Form.Item name="orderCode" contentWrapperStyle={{ width: 800 }}>
                                 <Input
                                     placeholder="Nhập mã đơn hàng ..."
-                                    addonAfter={<IconSearch />}
+                                    // addonAfter={<IconSearch />}
                                     style={{ minWidth: 500 }}
                                 />
                             </Form.Item>
                             <Button
                                 type="primary"
                                 htmlType="submit"
-                                style={{ marginTop: 5, marginLeft: 5, backgroundColor: '#f57e20' }}
+                                style={{ marginTop: 10, marginLeft: 8, backgroundColor: '#f57e20' }}
                             >
                                 Tìm kiếm
                             </Button>

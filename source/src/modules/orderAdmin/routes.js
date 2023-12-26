@@ -1,18 +1,27 @@
 import apiConfig from '@constants/apiConfig';
 import BrandListPage from '.';
 import BrandSavePage from './OrderAdminSavePage';
+import OrderAdminPage from '.';
+import OrderAdminSavePage from './OrderAdminSavePage';
+import DetailOrder from './DetailOrder';
 export default {
-    brandListPage: {
-        path: '/brand',
-        title: 'Brand List Page',
+    OrderPageAdmin: {
+        path: '/order-admin',
+        component: OrderAdminPage,
         auth: true,
-        component: BrandListPage,
+        title: 'Quản lý đơn hàng',
     },
-    brandSavePage: {
-        path: '/brand/:id',
-        title: 'Brand Save Page',
+    DetailOrderAdmin: {
+        path: '/order-admin/detai-order',
+        component: DetailOrder,
         auth: true,
-        component: BrandSavePage,
-        // permissions: [apiConfig.brand.create.baseURL, apiConfig.brandSavePage.update.baseURL],
+        title: 'Quản lý chi tiết đơn hàng',
+    },
+    OrderPageAdminSavePage: {
+        path: '/order-admin/:id',
+        component: OrderAdminSavePage,
+        auth: true,
+        title: 'Oder Admin Save Page',
+        permissions: [apiConfig.order.create.baseURL, apiConfig.order.update.baseURL],
     },
 };

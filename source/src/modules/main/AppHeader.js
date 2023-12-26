@@ -74,7 +74,7 @@ const AppHeader = ({ collapsed, onCollapse }) => {
     const onLogout = () => {
         removeCacheToken();
         dispatch(accountActions.logout());
-        // navigate(routes.ProductHomePage1.path);
+        navigate(routes.loginPage.path);
     };
 
     // const { execute, data } = useFetch({

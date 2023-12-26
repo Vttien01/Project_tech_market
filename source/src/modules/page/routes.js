@@ -87,19 +87,6 @@ export default {
         auth: null,
         title: 'Đặt hàng thành công',
     },
-    OrderPageAdmin: {
-        path: '/order-admin',
-        component: OrderAdminPage,
-        auth: true,
-        title: 'Quản lý đơn hàng',
-    },
-    OrderPageAdminSavePage: {
-        path: '/order-admin/:id',
-        component: OrderAdminSavePage,
-        auth: true,
-        title: 'Oder Admin Save Page',
-        permissions: [apiConfig.order.create.baseURL, apiConfig.order.update.baseURL],
-    },
     DashboardPage: {
         path: '/statistical',
         component: DashboardPage,
