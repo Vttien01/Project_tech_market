@@ -85,9 +85,9 @@ export const commonStatus = [
 ];
 
 export const orderStateOption = [
-    { value: STATE_PENDING, label: orderStateMessage.STATE_PENDING, color: '#d4d61d' },
-    { value: STATE_CONFIRMED, label: orderStateMessage.STATE_CONFIRMED, color: '#46c956' },
-    { value: STATE_COMPLETED, label: orderStateMessage.STATE_COMPLETED, color: '#9af099' },
+    { value: STATE_PENDING, label: orderStateMessage.STATE_PENDING, color: '#07c1be' },
+    { value: STATE_CONFIRMED, label: orderStateMessage.STATE_CONFIRMED, color: '#d9d208' },
+    { value: STATE_COMPLETED, label: orderStateMessage.STATE_COMPLETED, color: '#25f221' },
     { value: STATE_CANCELED, label: orderStateMessage.STATE_CANCELED, color: '#f52828' },
 ];
 

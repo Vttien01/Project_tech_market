@@ -156,7 +156,7 @@ const ListDetailsForm = ({ open, onCancel, data, form, isEditing }) => {
                         </Col>
                         <Col span={12}>
                             <AutoCompleteField
-                                label={translate.formatMessage(commonMessage.Province)}
+                                label="Tỉnh/Thành phố"
                                 name="provinceId"
                                 apiConfig={apiConfig.nation.autocomplete}
                                 mappingOptions={(item) => ({ value: item.id, label: item.name })}
@@ -167,7 +167,7 @@ const ListDetailsForm = ({ open, onCancel, data, form, isEditing }) => {
                         </Col>
                         <Col span={12}>
                             <AutoCompleteField
-                                label={translate.formatMessage(commonMessage.District)}
+                                label="Quận/Huyện"
                                 name="districtId"
                                 apiConfig={apiConfig.nation.autocomplete}
                                 mappingOptions={(item) => ({ value: item.id, label: item.name })}
@@ -179,7 +179,7 @@ const ListDetailsForm = ({ open, onCancel, data, form, isEditing }) => {
                         </Col>
                         <Col span={12}>
                             <AutoCompleteField
-                                label={translate.formatMessage(commonMessage.Village)}
+                                label="Phường/Xã"
                                 name="wardId"
                                 apiConfig={apiConfig.nation.autocomplete}
                                 mappingOptions={(item) => ({ value: item.id, label: item.name })}

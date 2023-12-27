@@ -26,7 +26,7 @@ const messages = defineMessage({
     login: 'Đăng nhập',
 });
 
-const ListDetailsForm = ({ open, onCancel, detail, form, isEditing, orderId }) => {
+const ListDetailsForm = ({ open, onCancel, detail, form, isEditing, orderId, state, dataOrder }) => {
     const { profile } = useAuth();
     const [cartItem, setCartItem] = useState([]);
     const [checkList, setCheckArray] = useState(false);
@@ -40,8 +40,12 @@ const ListDetailsForm = ({ open, onCancel, detail, form, isEditing, orderId }) =
         ...apiConfig.transaction.create,
     });
     const [tableData, setTableData] = useState([]);
+    const isPaid = dataOrder.isPaid;
+    const paymentMethod = dataOrder.paymentMethod;
 
-    console.log(detail);
+    console.log(isPaid);
+
+    console.log(dataOrder);
 
     // Kiểm tra xem itemCart có tồn tại không trước khi sử dụng map
     const [newArray, setnewArray] = useState([]);
@@ -83,7 +87,7 @@ const ListDetailsForm = ({ open, onCancel, detail, form, isEditing, orderId }) =
                 showSucsessMessage('Đơn hàng đang được xử lý!');
             },
             onError: () => {
-                showErrorMessage("Thanh toán PAYPAL thất bại");
+                showErrorMessage('Thanh toán PAYPAL thất bại');
                 setTimeout(() => {
                     window.location.reload();
                 }, 2000);
@@ -91,33 +95,53 @@ const ListDetailsForm = ({ open, onCancel, detail, form, isEditing, orderId }) =
         });
     };
 
+    const isOkButtonDisabled = true;
+
     return (
         <Modal
             title={<FormattedMessage defaultMessage="Chi tiết đơn hàng" />}
             open={open}
-            onCancel={onCancel}
-            onOk={handleFinish}
             width={700}
-            okText="Tiến hành thanh toán"
+            onCancel={onCancel}
+            // onOk={handleFinish}
+            // okText="Tiến hành thanh toán"
+            // cancelText="Xóa đơn hàng"
+            footer={[
+                state === 1 && (
+                    <Button key="cancel" onClick={onCancel}>
+                        Đóng
+                    </Button>
+                ),
+                ( state === 1 && paymentMethod===1 && !isPaid ) && (<Button
+                    key="ok"
+                    type="primary"
+                    onClick={handleFinish}
+                >
+                    Tiến hành thanh toán
+                </Button>),
+                state === 3 && (
+                    <Button key="buyAgain">
+                        Mua lại
+                    </Button>
+                ),
+            ]}
         >
             <Card>
                 <List
                     className="demo-loadmore-list"
                     itemLayout="horizontal"
                     dataSource={detail.content}
-                    style={{ marginBottom:10 }}
+                    style={{ marginBottom: 10 }}
                     renderItem={(item) => (
                         <Card style={{ backgroundColor: '#eff0f1', marginTop: 10 }}>
                             <List.Item key={item?.id}>
                                 <List.Item.Meta
-                                    avatar={
-                                        <Avatar
-                                            src={item?.image}
-                                            size={100}
-                                            alt=''
-                                        />
+                                    avatar={<Avatar src={item?.image} size={100} alt="" />}
+                                    title={
+                                        <a href="https://ant.design" style={{ fontSize: 25 }}>
+                                            {item?.name}
+                                        </a>
                                     }
-                                    title={<a href="https://ant.design"  style={{ fontSize:25 }}>{item?.name}</a>}
                                     // description={item?.price}
                                     description={
                                         <div
@@ -127,9 +151,13 @@ const ListDetailsForm = ({ open, onCancel, detail, form, isEditing, orderId }) =
                                                 flexDirection: 'column',
                                             }}
                                         >
-                                            <div style={{ flex: '1', justifyContent: 'center' }}>Số lượng: {item.amount}</div>
+                                            <div style={{ flex: '1', justifyContent: 'center' }}>
+                                                Số lượng: {item.amount}
+                                            </div>
                                             <div style={{ flex: '1', justifyContent: 'center' }}>Màu: {item.color}</div>
-                                            <div style={{ flex: '1', justifyContent: 'center', fontSize:20 }}> Tổng tiền: { " " }
+                                            <div style={{ flex: '1', justifyContent: 'center', fontSize: 20 }}>
+                                                {' '}
+                                                Tổng tiền:{' '}
                                                 {formatMoney(item?.price, {
                                                     groupSeparator: ',',
                                                     decimalSeparator: '.',

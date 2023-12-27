@@ -1,7 +1,7 @@
 /* eslint-disable indent */
 import React, { useEffect, useState } from 'react';
 import './ProductSinglePage.scss';
-import { generatePath, useParams } from 'react-router-dom';
+import { generatePath, useLocation, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 // import { fetchAsyncProductSingle, getProductSingle, getSingleProductStatus } from '../../store/productSlice';
 import { formatPrice } from '../../../utils/helpers';
@@ -21,6 +21,9 @@ import routes from '@routes';
 
 const ProductSinglePage = () => {
     const { id } = useParams();
+    const { pathname: pagePath } = useLocation();
+    // console.log(pagePath);
+    // console.log(id);
     const dispatch = useDispatch();
     const queryParameters = new URLSearchParams(window.location.search);
     const [detail, setDetail] = useState([]);
@@ -47,6 +50,24 @@ const ProductSinglePage = () => {
         if (product?.length > 0) setDetail(product);
         else setDetail([]);
     }, [product]);
+
+    useEffect(() => {
+        executgeallproducts({
+            pathParams: { id },
+            onCompleted: (res) => {
+                // setCacheAccessToken(res.access_token);
+                // executeGetProfile();
+                // window.location.reload();
+                setDetail(res.data);
+                console.log(res.data);
+            },
+            onError: (error) => {
+                // showErrorMessage(translate.formatMessage(message.loginFail));
+                // form.resetFields();
+                console.log(error);
+            },
+        });
+    }, [id]);
 
     // getting single product
     // useEffect(() => {
@@ -301,14 +322,12 @@ const ProductSinglePage = () => {
 };
 
 function AddToCardButton({ itemCart, quantity }) {
-    console.log('Button');
     const [cart, setCart] = useState([]);
     const [total, setTotal] = useState(0);
 
     useEffect(() => {
         // Lấy giỏ hàng từ localStorage khi component được render
         const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
-        console.log(storedCart);
         setCart(storedCart);
         calculateTotal(storedCart);
     }, []);
@@ -343,7 +362,6 @@ function AddToCardButton({ itemCart, quantity }) {
         const updatedCart = cart.filter((item) => item.id !== productId);
         setCart(updatedCart);
     };
-    // console.log(cookies);
     // const {
     //     data: addcard,
     //     loading: addCardLoading,

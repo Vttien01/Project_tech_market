@@ -9,7 +9,7 @@ import { statusOptions } from '@constants/masterData';
 import useAuth from '@hooks/useAuth';
 import useFetch from '@hooks/useFetch';
 import useTranslate from '@hooks/useTranslate';
-import { showErrorMessage } from '@services/notifyService';
+import { showErrorMessage, showSucsessMessage } from '@services/notifyService';
 import { IconPlus } from '@tabler/icons-react';
 import { IconMinus } from '@tabler/icons-react';
 import { formatMoney } from '@utils';
@@ -33,12 +33,10 @@ const ListDetailsForm = ({ open, onCancel, data, form, itemCart, saleOff, namePr
     const statusValues = translate.formatKeys(statusOptions, ['label']);
     const navigate = useNavigate();
     const [imageUrl, setImageUrl] = useState(null);
-    const { execute: executeUpFile } = useFetch(apiConfig.file.upload);
-    const { execute, loading } = useFetch({
+    const { execute: executeAddCart, loading } = useFetch({
         ...apiConfig.cart.add,
     });
     const [tableData, setTableData] = useState([]);
-    console.log(itemCart);
 
     // Kiểm tra xem itemCart có tồn tại không trước khi sử dụng map
     const [newArray, setnewArray] = useState([]);
@@ -111,32 +109,32 @@ const ListDetailsForm = ({ open, onCancel, data, form, itemCart, saleOff, namePr
     }, [newArray]);
 
     const handleFinish = () => {
-        // checkArray();
-        console.log(newArray);
         if (profile) {
             let data;
             data = { variantId: newArray[0].id, quantity: newArray[0].quantity };
-            execute({
+            executeAddCart({
                 data: { ...data },
                 onCompleted: (res) => {
                     // setCacheAccessToken(res.access_token);
                     // executeGetProfile();
+                    showSucsessMessage('Thêm vào giỏ hàng thành công');
                     window.location.reload();
                     onCancel();
-                    message.success('Thêm vào giỏ hàng thành công');
                 },
                 onError: () => {
-                    showErrorMessage(translate.formatMessage(message.loginFail));
+                    showErrorMessage('Thêm vào giỏ hàng thất bại');
+                    // window.location.reload();
                     form.resetFields();
                 },
             });
+            console.log(data);
         } else {
             newArray.forEach((product) => {
                 addToCart(product);
             });
             window.location.reload();
             onCancel();
-            message.success('Đặt hàng thành công');
+            message.success('Thêm vào giỏ hàng thành công');
         }
         onCancel();
         // removeFromCart(7000194750545920);
@@ -144,24 +142,6 @@ const ListDetailsForm = ({ open, onCancel, data, form, itemCart, saleOff, namePr
 
     const onChange = (id, item) => {
         form.setFieldValue('projectRoleId', item);
-    };
-    const uploadFile = (file, onSuccess, onError) => {
-        executeUpFile({
-            data: {
-                type: 'AVATAR',
-                file: file,
-            },
-            onCompleted: (response) => {
-                if (response.result === true) {
-                    onSuccess();
-                    setImageUrl(response.data.filePath);
-                    // setIsChangedFormValues(true);
-                }
-            },
-            onError: (error) => {
-                onError();
-            },
-        });
     };
     const handleParser = (value) => {
         // Xử lý giá trị trước khi hiển thị

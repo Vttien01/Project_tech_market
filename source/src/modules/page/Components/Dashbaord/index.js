@@ -74,8 +74,6 @@ function Dashboard() {
         // setCustomers(dataUser?.data?.totalElements);
     }, []);
     const onChange = (date, dateString) => {
-        console.log(1);
-        console.log(date[0].$d);
         // const startDate = formatDateString(date[0]?.$d, DATE_FORMAT_VALUE) + ' 00:00:00';
         if (date) {
             setStartDate(formatDateString(date[0]?.$d, DATE_FORMAT_VALUE) + ' 00:00:00');
@@ -221,6 +219,7 @@ function Dashboard() {
                 <RecentOrders />
                 <DashboardChart />
             </Space>
+            <RevenueOfEachProduct/>
         </Space>
     );
 }
@@ -268,7 +267,6 @@ function RecentOrders() {
                 const num = response.data.totalElements;
                 setDataSource(response.data.content.slice(-3));
                 setLoading(false);
-                console.log(response.data.content.slice(-3));
             },
         });
         // getOrders().then((res) => {
@@ -278,7 +276,7 @@ function RecentOrders() {
     }, []);
 
     return (
-        <>
+        <Card style={{ minWidth: 500 }}>
             <Typography.Title level={4}>Đơn hàng gần đây</Typography.Title>
             <Table
                 columns={[
@@ -316,7 +314,7 @@ function RecentOrders() {
                 pagination={false}
                 style={{ width: 400 }}
             ></Table>
-        </>
+        </Card>
     );
 }
 
@@ -374,9 +372,76 @@ function DashboardChart() {
         setYear(date.$y);
     };
     return (
-        <Card style={{ width: 550, height: 350, marginTop: 15 }}>
+        <Card style={{ minWidth: 500, height: 350, marginTop: 15 }}>
             <DatePicker onChange={onChange} picker="year" />
-            <Bar options={options} data={reveneuData} style={{ minWidth: 500 }} />
+            <Bar options={options} data={reveneuData} />
+        </Card>
+    );
+}
+
+function RevenueOfEachProduct() {
+    const [reveneuData, setReveneuData] = useState({
+        labels: [],
+        datasets: [],
+    });
+    const [data, setData] = useState('2023');
+
+    const { data: dataRevenue, execute: executeRevenueProduct } = useFetch({
+        ...apiConfig.revenue.getRevenueOfEachProduct,
+    });
+
+    useEffect(() => {
+        executeRevenueProduct({
+            onCompleted: (res) => {
+                // console.log(res.data.content);
+                setData(res.data.content);
+            },
+            onError: () => {
+            },
+        });
+    }, []);
+    console.log(data);
+
+    const itemHeader = [
+        {
+            title: 'Tên sản phẩm',
+            dataIndex: 'productName',
+            align: 'center',
+        },
+        {
+            title: 'Số lượng đã bán',
+            dataIndex: 'amount',
+            align: 'center',
+        },
+        {
+            title: 'Doanh thu',
+            dataIndex: 'totalRevenue',
+            align: 'center',
+            render: (value) => {
+                return (
+                    <span>
+                        {formatMoney(value, {
+                            groupSeparator: ',',
+                            decimalSeparator: '.',
+                            currentcy: 'đ',
+                            currentcyPosition: 'BACK',
+                            currentDecimal: '0',
+                        })}
+                    </span>
+                );
+            },
+        },
+    ];
+
+    return (
+        <Card style={{ minWidth: 500, minHeight: 350, marginTop: 15 }}>
+            <Typography.Title style={{ fontSize:22, marginBottom:20 }}>Thống kê doanh thu từng sản phẩm</Typography.Title>
+            <Table
+                pagination={true}
+                columns={itemHeader}
+                dataSource={data}
+                bordered
+            ></Table>
         </Card>
     );
 }

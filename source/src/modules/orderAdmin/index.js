@@ -74,11 +74,20 @@ const OrderAdminPage = () => {
             align: 'center',
         },
         {
-            title: 'Ngày tạo',
+            title: 'Ngày đặt',
             dataIndex: 'createdDate',
             align: 'center',
             render: (createdDate) => {
                 const result = convertUtcToLocalTime(createdDate, DEFAULT_FORMAT, DATE_FORMAT_VALUE);
+                return <div>{result}</div>;
+            },
+        },
+        {
+            title: 'Ngày dự kiến nhận hàng',
+            dataIndex: 'expectedDeliveryDate',
+            align: 'center',
+            render: (expectedDeliveryDate) => {
+                const result = convertUtcToLocalTime(expectedDeliveryDate, DEFAULT_FORMAT, DATE_FORMAT_VALUE);
                 return <div>{result}</div>;
             },
         },
@@ -131,7 +140,6 @@ const OrderAdminPage = () => {
             title: 'Trạng thái thanh toán',
             dataIndex: 'isPaid',
             align: 'center',
-            width: 120,
             render(dataRow) {
                 const state = isPaidValues.find((item) => item.value == dataRow);
                 return (
@@ -170,7 +178,7 @@ const OrderAdminPage = () => {
             },
         },
         // mixinFuncs.renderStatusColumn({ width: '120px' }),
-        mixinFuncs.renderActionColumn({ edit: true, delete: false }, { width: '120px' }),
+        mixinFuncs.renderActionColumn({ edit: true, delete: false }, { width: '60px' }),
     ];
 
     const searchFields = [
@@ -218,6 +226,7 @@ const OrderAdminPage = () => {
                         loading={loading}
                         dataSource={data}
                         columns={columns}
+                        style={{ cursor:'pointer' }}
                     />
                 }
             />

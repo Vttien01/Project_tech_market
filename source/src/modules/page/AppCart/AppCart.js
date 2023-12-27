@@ -107,11 +107,15 @@ const AppCart = () => {
 
     const removeFromCart = (productId) => {
         const updatedCart = cartItem.filter((item) => item.productVariantId !== productId);
-        setCartItem(updatedCart);
+        localStorage.setItem('cart', JSON.stringify(updatedCart));
+        // setCartItem(updatedCart);
+        setCheck(!check);
+        console.log(1);
         // window.location.reload();
     };
 
     useEffect(() => {
+        if (profile) {
         getCartExcute({
             onCompleted: (response) => {
                 // setCacheAccessToken(res.access_token);
@@ -124,6 +128,11 @@ const AppCart = () => {
                 // form.resetFields();
             },
         });
+    }
+    else {
+        const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
+        setCartItem(storedCart);
+    }
     }, [check]);
 
     function onConfirmOrder(values) {

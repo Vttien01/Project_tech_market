@@ -58,7 +58,6 @@ const SearchBox = () => {
         };
 
         const handleChange = (newValue) => {
-            console.log(newValue);
             navigate(`/productdetail/${newValue}`);
         };
         return (

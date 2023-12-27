@@ -82,7 +82,6 @@ const HistoryOrderPage = () => {
     const [form] = Form.useForm();
     const translate = useTranslate();
     const [item1, setItem1] = useState(null);
-    const [orderId, setOrderId] = useState(0);
     const stateValues = translate.formatKeys(paymentOptions, ['label']);
     const onSearch = (value, _e, info) => {
         <TableMyOrder search={value} />;
@@ -102,7 +101,6 @@ const HistoryOrderPage = () => {
     );
 
     const handleEdit = (item) => {
-        console.log(item);
         setItem1(item);
         handlerDetailsModal.open();
     };
@@ -184,7 +182,8 @@ function TableMyOrder({ stateValues, state, search }) {
     const [openedDetailsModal, handlerDetailsModal] = useDisclosure(false);
     const [detail, setDetail] = useState([]);
     const [check, setCheck] = useState(false);
-    const [orderId, setOrderId] = useState(null);
+    const [dataOrder, setDataOrder] = useState({});
+    // const [state, setState] = useState(null);
     const isPaidValues = translate.formatKeys(paidValues, ['label']);
 
 
@@ -207,11 +206,12 @@ function TableMyOrder({ stateValues, state, search }) {
         ...apiConfig.orderDetail.getByOrder,
     });
 
-    const handleFetchDetail = (id) => {
+    const handleFetchDetail = (record) => {
         executeDetailOrder({
-            pathParams: { id: id },
+            pathParams: { id: record.id },
             onCompleted: (response) => {
                 setDetail(response.data);
+                setDataOrder(record);
             },
             // onError: mixinFuncs.handleGetDetailError,
         });
@@ -304,7 +304,7 @@ function TableMyOrder({ stateValues, state, search }) {
             },
         ];
 
-        if (state !== 3) {
+        if (state === 1) {
             items.push({
                 title: 'Hành động',
                 key: 'action',
@@ -358,21 +358,22 @@ function TableMyOrder({ stateValues, state, search }) {
                 form={form}
                 detail={detail}
                 isEditing={!!detail}
-                orderId={orderId}
+                state={state}
+                dataOrder={dataOrder}
             />
             <Table
                 pagination={true}
                 onRow={(record, rowIndex) => ({
                     onClick: (e) => {
                         e.stopPropagation();
-                        setOrderId(record.id);
-                        handleFetchDetail(record.id);
+                        handleFetchDetail(record);
                         handlerDetailsModal.open();
                     },
                 })}
                 columns={itemHeader()}
                 dataSource={myOrder}
                 bordered
+                style={{ cursor:'pointer' }}
             ></Table>
         </div>
     );
