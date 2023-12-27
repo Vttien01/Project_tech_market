@@ -59,7 +59,7 @@ const ProfileForm = (props) => {
             phone: dataDetail?.account?.phone,
             gender: dataDetail?.gender,
         });
-        setImageUrl(dataDetail.avatar);
+        setImageUrl(dataDetail?.account?.avatar);
     }, [dataDetail]);
 
     const handleFinish = (values) => {
@@ -70,7 +70,7 @@ const ProfileForm = (props) => {
             oldPassword: values.oldPassword,
             password: values.password,
             birthday: formatDateString(values?.birthday, DATE_FORMAT_VALUE) + ' 00:00:00',
-            avatar: imageUrl,
+            avatarPath: imageUrl,
         });
     };
 

@@ -22,7 +22,7 @@ import { userSateteOptions, accountStatusOptions } from '@constants/masterData';
 import routes from '@routes';
 
 const message = defineMessages({
-    objectName: 'Profile',
+    objectName: 'Trang cá nhân',
 });
 
 const PersonInfo = () => {
@@ -114,6 +114,10 @@ const PersonInfo = () => {
         navigate(routes.PersonInfo.path + `/${profile.id}`);
     };
 
+    const handleReview = () => {
+        navigate(routes.EvaluatePage.path + `?userId=${profile.id}`);
+    };
+
     const breadRoutes = [{ breadcrumbName: translate.formatMessage(message.objectName) }];
 
     return (
@@ -139,7 +143,7 @@ const PersonInfo = () => {
                                 <IconStar
                                     size={40}
                                     color="#282a36"
-                                    onClick={handleEdit}
+                                    onClick={handleReview}
                                     style={{ marginLeft: 20, fontSize: 40, color: '#282a36', cursor: 'pointer' }}
                                 />
                             </Tooltip>

@@ -13,6 +13,7 @@ import HistoryOrderGuest from './HistoryOrder/HistoryOrderGuest';
 import OrderAdminPage from '@modules/orderAdmin';
 import OrderAdminSavePage from '@modules/orderAdmin/OrderAdminSavePage';
 import DashboardPage from './Components/Dashbaord/DashBoardPage';
+import EvaluatePage from './ReviewPage/EvaluatePage';
 
 export default {
     ProductHomePage1: {
@@ -92,6 +93,13 @@ export default {
         component: DashboardPage,
         auth: true,
         title: 'Statistical Page',
+        // permissions: [apiConfig.order.create.baseURL, apiConfig.order.update.baseURL],
+    },
+    EvaluatePage: {
+        path: '/review',
+        component: EvaluatePage,
+        auth: null,
+        title: 'Evaluate Page',
         // permissions: [apiConfig.order.create.baseURL, apiConfig.order.update.baseURL],
     },
 };

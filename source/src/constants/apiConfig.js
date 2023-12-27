@@ -492,8 +492,15 @@ const apiConfig = {
             isRequiredTenantId: true,
         },
 
-        listReviews: {
+        avgStarReviews: {
             baseURL: `${apiUrl}v1/review/star/:productId`,
+            method: 'GET',
+            headers: baseHeader,
+            isRequiredTenantId: true,
+        },
+
+        starListReview: {
+            baseURL: `${apiUrl}v1/review/star/count-for-each/:productId`,
             method: 'GET',
             headers: baseHeader,
             isRequiredTenantId: true,

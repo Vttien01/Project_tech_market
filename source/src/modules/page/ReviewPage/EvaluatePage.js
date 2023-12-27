@@ -1,6 +1,5 @@
 /* eslint-disable indent */
 import React, { useEffect, useRef, useState } from 'react';
-import './OrderPage.scss';
 import { generatePath, useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 // import { fetchAsyncProductSingle, getProductSingle, getSingleProductStatus } from '../../store/productSlice';
@@ -11,7 +10,6 @@ import Loading from '@components/common/loading';
 import apiConfig from '@constants/apiConfig';
 import useFetch from '@hooks/useFetch';
 import { convertUtcToLocalTime, formatMoney } from '@utils';
-import { DeleteOutlined } from '@ant-design/icons';
 import {
     IconEdit,
     IconEditCircle,
@@ -39,7 +37,6 @@ import {
     Table,
     Tabs,
     Tag,
-    Tooltip,
     Typography,
     message,
     theme,
@@ -49,16 +46,25 @@ import ListDetailsForm from './ListDetailsForm';
 import useDisclosure from '@hooks/useDisclosure';
 import PageWrapper from '@components/common/layout/PageWrapper';
 import routes from '@routes';
-import { LoadingOutlined, SmileOutlined, SolutionOutlined, StarFilled } from '@ant-design/icons';
+import { LoadingOutlined, SmileOutlined, SolutionOutlined } from '@ant-design/icons';
 import { IconLoader } from '@tabler/icons-react';
 import { defineMessage } from 'react-intl';
+import AutoCompleteField from '@components/common/form/AutoCompleteField';
+import SelectField from '@components/common/form/SelectField';
 import { paidOptions, paidValues, paymentOptions, statusOptions } from '@constants/masterData';
 import useAuth from '@hooks/useAuth';
 import { showErrorMessage, showSucsessMessage } from '@services/notifyService';
 import useTranslate from '@hooks/useTranslate';
 import useListBase from '@hooks/useListBase';
 import { DATE_FORMAT_VALUE, DEFAULT_FORMAT, DEFAULT_TABLE_ITEM_SIZE, commonStatus } from '@constants';
-import ReviewListModal from '../ReviewPage/ReviewListModal';
+import { BaseTooltip } from '@components/common/form/BaseTooltip';
+import { FormattedMessage } from 'react-intl';
+import { FieldTypes } from '@constants/formConfig';
+import ListPage from '@components/common/layout/ListPage';
+import BaseTable from '@components/common/table/BaseTable';
+import Search from 'antd/es/input/Search';
+const { Text } = Typography;
+let index = 0;
 
 const decription = defineMessage({
     first: 'Kiểm tra số lượng sản phẩm',
@@ -66,7 +72,7 @@ const decription = defineMessage({
     third: 'Hoàn thành các bước',
 });
 
-const HistoryOrderPage = () => {
+const EvaluatePage = () => {
     const { profile } = useAuth();
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -105,24 +111,14 @@ const HistoryOrderPage = () => {
 
     const steps = [
         {
-            label: `Đang Xử Lý`,
+            label: `Chưa đánh giá`,
             key: 1,
             children: <TableMyOrder stateValues={stateValues} state={1} />,
         },
         {
-            label: `Đã được duyệt`,
+            label: `Đã đánh giá`,
             key: 2,
             children: <TableMyOrder stateValues={stateValues} state={2} />,
-        },
-        {
-            label: `Hoàn Thành`,
-            key: 3,
-            children: <TableMyOrder stateValues={stateValues} state={4} />,
-        },
-        {
-            label: `Đã Hủy`,
-            key: 4,
-            children: <TableMyOrder stateValues={stateValues} state={3} />,
         },
     ];
     const items = steps.map((item) => ({
@@ -154,9 +150,12 @@ const HistoryOrderPage = () => {
             }}
         >
             <PageWrapper
-                routes={[{ breadcrumbName: 'Lịch sử đơn hàng' }]}
+                routes={[
+                    { breadcrumbName: 'Trang cá nhân', path:routes.PersonInfo.path },
+                    { breadcrumbName: 'Đánh giá sản phẩm' },
+                ]}
                 // title={title}
-                style={{ backgroundColor: '#282a36' }}
+                style={{ backgroundColor:'#282a36' }}
             ></PageWrapper>
             <div style={{ flex: '1', justifyContent: 'center', minHeight: 600 }}>
                 <Card style={{ minHeight: 600, backgroundColor: '#d8dadd' }}>
@@ -176,13 +175,13 @@ function TableMyOrder({ stateValues, state, search }) {
     const [dataOrder, setDataOrder] = useState({});
     // const [state, setState] = useState(null);
     const isPaidValues = translate.formatKeys(paidValues, ['label']);
-    const [orderId, setOrderId] = useState(null);
+
 
     const {
         data: myOrder,
         loading: loadingMyOrder,
         execute: executeMyOrder,
-    } = useFetch(apiConfig.order.myOrder, {
+    } = useFetch(apiConfig.review.getUnratedProduct, {
         immediate: true,
         mappingData: ({ data }) => data.content,
         params: { state: state },
@@ -198,34 +197,19 @@ function TableMyOrder({ stateValues, state, search }) {
     });
 
     const handleFetchDetail = (record) => {
-        executeDetailOrder({
-            pathParams: { id: record.id },
-            onCompleted: (response) => {
-                setDetail(response.data);
-                setDataOrder(record);
-            },
-            // onError: mixinFuncs.handleGetDetailError,
-        });
+        // executeDetailOrder({
+        //     pathParams: { id: record.id },
+        //     onCompleted: (response) => {
+        //         setDetail(response.data);
+        //         setDataOrder(record);
+        //     },
+        // });
+        console.log(1);
     };
 
     const { execute: excuteCancelOrder } = useFetch({
         ...apiConfig.order.cancelMyOrder,
     });
-
-    const showDeleteItemConfirm = (id) => {
-        // if (!apiConfig.delete) throw new Error('apiConfig.delete is not defined');
-        console.log(id);
-        Modal.confirm({
-            title: 'Hủy đơn hàng',
-            content: 'Bạn có chắc muốn hủy đơn hàng?',
-            okText: 'Xác nhận',
-            cancelText: 'Đóng',
-            centered: true,
-            onOk: () => {
-                handleCancelOrder(id);
-            },
-        });
-    };
 
     const handleCancelOrder = (id) => {
         excuteCancelOrder({
@@ -248,136 +232,23 @@ function TableMyOrder({ stateValues, state, search }) {
                 align: 'center',
             },
             {
-                title: 'Ngày đặt',
-                dataIndex: 'createdDate',
-                align: 'center',
-                with:200,
-                render: (createdDate) => {
-                    const result = convertUtcToLocalTime(createdDate, DEFAULT_FORMAT, DATE_FORMAT_VALUE);
-                    return <div>{result}</div>;
-                },
-            },
-            {
                 title: 'Người nhận',
                 dataIndex: 'receiver',
                 align: 'center',
             },
-            {
-                title: 'Phương thức thanh toán',
-                dataIndex: 'paymentMethod',
-                align: 'center',
-                width: 120,
-                render(dataRow) {
-                    const state = stateValues.find((item) => item.value == dataRow);
-                    return (
-                        <Tag color={state.color} style={{ width: 65, display: 'flex', justifyContent: 'center' }}>
-                            <div style={{ padding: '0 4px', fontSize: 14 }}>{state.label}</div>
-                        </Tag>
-                    );
-                },
-            },
-            {
-                title: 'Trạng thái thanh toán',
-                dataIndex: 'isPaid',
-                align: 'center',
-                width: 120,
-                render(dataRow) {
-                    const state = isPaidValues.find((item) => item.value == dataRow);
-                    return (
-                        <Tag color={state.color} style={{ width: 110, display: 'flex', justifyContent: 'center' }}>
-                            <div style={{ padding: '0 4px', fontSize: 14 }}>{state.label}</div>
-                        </Tag>
-                    );
-                },
-            },
-            {
-                title: 'Tổng tiền',
-                dataIndex: ['totalMoney'],
-                name: 'totalMoney',
-                align: 'center',
-                render: (value) => {
-                    return (
-                        <span>
-                            {formatMoney(value, {
-                                groupSeparator: ',',
-                                decimalSeparator: '.',
-                                currentcy: 'đ',
-                                currentcyPosition: 'BACK',
-                                currentDecimal: '0',
-                            })}
-                        </span>
-                    );
-                },
-            },
         ];
-        if (state === 1) {
-            items.push({
-                title: 'Hành động',
-                key: 'action',
-                align: 'center',
-                render: (_, record) => (
-                    // <Popconfirm
-                    //     title="Hủy đơn hàng"
-                    //     description="Bạn có chắc muốn hủy đơn hàng này?"
-                    //     onConfirm={(e) => {
-                    //         e.stopPropagation();
-                    //         showDeleteItemConfirm(record.id);
-                    //     }}
-                    //     // onCancel={cancel}
-                    //     okText="Xóa"
-                    //     cancelText="Hủy"
-                    // >
-                    //     <Button
-                    //         style={{
-                    //             padding: 3,
-                    //             display: 'table-cell',
-                    //             verticalAlign: 'middle',
-                    //             backgroundColor: '#e70d0d',
-                    //             fontWeight: 600,
-                    //             color: 'white',
-                    //             fontSize: 12,
-                    //         }}
-                    //         onClick={(e) => {
-                    //             e.stopPropagation();
-                    //             // handleCancelOrder(record.id);
-                    //         }}
-                    //     >
-                    //         HỦY ĐƠN HÀNG
-                    //     </Button>
-                    <Tooltip title="Xóa đơn hàng">
-                        <DeleteOutlined
-                            style={{ color: 'red', fontSize: 20 }}
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                showDeleteItemConfirm(record.id);
-                            }}
-                            // disabled={true}
-                        />
-                    </Tooltip>
-                ),
-            });
-        }
-        if (state === 2) {
-            items.push(
-                {
-                    title: 'Ngày dự kiến giao hàng',
-                    dataIndex: 'expectedDeliveryDate',
-                    align: 'center',
-                    width:200,
-                    render: (expectedDeliveryDate) => {
-                        const result = convertUtcToLocalTime(expectedDeliveryDate, DEFAULT_FORMAT, DATE_FORMAT_VALUE);
-                        return <div>{result}</div>;
-                    },
-                },
-            );
-        }
+
+
         return items;
     };
 
-
-
     return (
         <div>
+            {/* <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+                <p>Some contents...</p>
+                <p>Some contents...</p>
+                <p>Some contents...</p>
+            </Modal> */}
             <ListDetailsForm
                 open={openedDetailsModal}
                 onCancel={() => handlerDetailsModal.close()}
@@ -386,13 +257,11 @@ function TableMyOrder({ stateValues, state, search }) {
                 isEditing={!!detail}
                 state={state}
                 dataOrder={dataOrder}
-                orderId={orderId}
             />
-         <Table
+            <Table
                 pagination={true}
                 onRow={(record, rowIndex) => ({
                     onClick: (e) => {
-                        setOrderId(record.id);
                         e.stopPropagation();
                         handleFetchDetail(record);
                         handlerDetailsModal.open();
@@ -401,10 +270,10 @@ function TableMyOrder({ stateValues, state, search }) {
                 columns={itemHeader()}
                 dataSource={myOrder}
                 bordered
-                style={{ cursor: 'pointer' }}
+                style={{ cursor:'pointer' }}
             ></Table>
         </div>
     );
 }
 
-export default HistoryOrderPage;
+export default EvaluatePage;

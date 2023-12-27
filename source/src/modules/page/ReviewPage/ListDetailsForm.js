@@ -11,16 +11,14 @@ import useFetch from '@hooks/useFetch';
 import useTranslate from '@hooks/useTranslate';
 import { commonMessage } from '@locales/intl';
 import { showErrorMessage, showSucsessMessage } from '@services/notifyService';
-import { IconPlus, IconRecycle, IconTrash, IconStarFilled } from '@tabler/icons-react';
-import { StarFilled } from '@ant-design/icons';
+import { IconPlus, IconRecycle, IconTrash } from '@tabler/icons-react';
+import { IconMinus } from '@tabler/icons-react';
 import { formatMoney } from '@utils';
-import { Avatar, Button, Card, Col, Form, InputNumber, List, Modal, Row, Table, Tooltip, message } from 'antd';
+import { Avatar, Button, Card, Col, Form, InputNumber, List, Modal, Row, Table, message } from 'antd';
 import React, { useCallback, useEffect, useState } from 'react';
 import { FormattedMessage, defineMessage } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 import VirtualList from 'rc-virtual-list';
-import ReviewListModal from '../ReviewPage/ReviewListModal';
-import useDisclosure from '@hooks/useDisclosure';
 
 const messages = defineMessage({
     copyRight: '{brandName} - © Copyright {year}. All Rights Reserved',
@@ -29,7 +27,8 @@ const messages = defineMessage({
 });
 
 const ListDetailsForm = ({ open, onCancel, detail, form, isEditing, orderId, state, dataOrder }) => {
-    const [openReviewModal, handlersReviewModal] = useDisclosure(false);
+    const { profile } = useAuth();
+    const [cartItem, setCartItem] = useState([]);
     const [checkList, setCheckArray] = useState(false);
     const [skipFirstSubmit, setSkipFirstSubmit] = useState(true);
     const translate = useTranslate();
@@ -44,18 +43,19 @@ const ListDetailsForm = ({ open, onCancel, detail, form, isEditing, orderId, sta
     const isPaid = dataOrder.isPaid;
     const paymentMethod = dataOrder.paymentMethod;
 
+    console.log(isPaid);
+
+    console.log(dataOrder);
 
     // Kiểm tra xem itemCart có tồn tại không trước khi sử dụng map
     const [newArray, setnewArray] = useState([]);
-    const [orderDetailId, setOrderDetailId] = useState(null);
+    const [newArray1, setnewArray1] = useState([]);
 
     const [cart, setCart] = useState([]);
     const [total, setTotal] = useState(0);
 
     const [province, setProvince] = useState(null);
     const [district, setDistrict] = useState(null);
-    const [checkReivew,setCheckReview] = useState(true);
-
 
     const onChange = (id, item) => {
         form.setFieldValue('provinceId', item);
@@ -88,40 +88,14 @@ const ListDetailsForm = ({ open, onCancel, detail, form, isEditing, orderId, sta
             },
             onError: () => {
                 showErrorMessage('Thanh toán PAYPAL thất bại');
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
             },
         });
     };
 
-    const { data: dataListReview, loading:dataListLoading, execute: listReview } = useFetch(
-        apiConfig.review.getByProduct,
-        { immediate: false,
-            mappingData: ({ data }) => data.content,
-        });
-
-    const getListReview = (id) => {
-        listReview({
-            pathParams: {
-                id : id,
-            },
-        });
-        // console.log(id);
-    };
-    const { data: starData,loading:starDataLoading, execute: starReview } = useFetch(
-        apiConfig.review.starListReview,
-        { immediate: false,
-            mappingData: ({ data }) => data.content,
-        });
-
-    const getStarReview = (id) => {
-        starReview({
-            pathParams: {
-                productId : id,
-            },
-        });
-        console.log("1111111111111");
-    };
-
-    console.log(starData);
+    const isOkButtonDisabled = true;
 
     return (
         <Modal
@@ -138,12 +112,18 @@ const ListDetailsForm = ({ open, onCancel, detail, form, isEditing, orderId, sta
                         Đóng
                     </Button>
                 ),
-                state === 1 && paymentMethod === 1 && !isPaid && (
-                    <Button key="ok" type="primary" onClick={handleFinish}>
-                        Tiến hành thanh toán
+                ( state === 1 && paymentMethod===1 && !isPaid ) && (<Button
+                    key="ok"
+                    type="primary"
+                    onClick={handleFinish}
+                >
+                    Tiến hành thanh toán
+                </Button>),
+                state === 3 && (
+                    <Button key="buyAgain">
+                        Mua lại
                     </Button>
                 ),
-                state === 3 && <Button key="buyAgain">Mua lại</Button>,
             ]}
         >
             <Card>
@@ -189,36 +169,14 @@ const ListDetailsForm = ({ open, onCancel, detail, form, isEditing, orderId, sta
                                         </div>
                                     }
                                 />
-                                <div>
-                                    { state === 4 &&  (<Tooltip title="Đánh giá sản phẩm">
-                                        <StarFilled
-                                            style={{ fontSize: 45, color: '#fbfb00', cursor: 'pointer' }}
-                                            onClick={(e) => {
-                                                getListReview(item?.productId);
-                                                getStarReview(item?.productId);
-                                                setOrderDetailId(item?.id);
-                                                e.stopPropagation();
-                                                handlersReviewModal.open();
-                                            }}
-                                        />
-                                    </Tooltip>)}
-                                </div>
+                                {/* <div>
+                                    <IconTrash color='#f32020'/>
+                                </div> */}
                             </List.Item>
                         </Card>
                     )}
                 />
             </Card>
-            <ReviewListModal
-                open={openReviewModal}
-                onCancel={() => handlersReviewModal.close()}
-                data={dataListReview || {}}
-                // courseId = {courseId}
-                orderDetailId={orderDetailId}
-                star={starData}
-                // loading={dataListLoading || starDataLoading || loadingData}
-                width={800}
-                checkReivew={checkReivew}
-            />
         </Modal>
     );
 };
