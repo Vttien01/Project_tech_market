@@ -192,10 +192,6 @@ const ProductSinglePage = () => {
         <div className="con1 py-4 bg-whitesmoke" style={{ display: 'flex', justifyContent: 'center' }}>
             <PageWrapper
                 routes={[
-                    {
-                        breadcrumbName: 'Trang chủ',
-                        path: routes.homePage.path,
-                    },
                     { breadcrumbName: 'Sản phẩm' },
                 ]}
                 // title={title}

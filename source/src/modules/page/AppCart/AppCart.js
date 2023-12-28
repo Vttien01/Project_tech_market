@@ -116,23 +116,22 @@ const AppCart = () => {
 
     useEffect(() => {
         if (profile) {
-        getCartExcute({
-            onCompleted: (response) => {
-                // setCacheAccessToken(res.access_token);
-                // executeGetProfile();
-                const data = response.data.cartDetailDtos;
-                setCartItem(response.data.cartDetailDtos);
-            },
-            onError: () => {
-                // showErrorMessage('Không lấy được giả hàng!');
-                // form.resetFields();
-            },
-        });
-    }
-    else {
-        const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
-        setCartItem(storedCart);
-    }
+            getCartExcute({
+                onCompleted: (response) => {
+                    // setCacheAccessToken(res.access_token);
+                    // executeGetProfile();
+                    const data = response.data.cartDetailDtos;
+                    setCartItem(response.data.cartDetailDtos);
+                },
+                onError: () => {
+                    // showErrorMessage('Không lấy được giả hàng!');
+                    // form.resetFields();
+                },
+            });
+        } else {
+            const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
+            setCartItem(storedCart);
+        }
     }, [check]);
 
     function onConfirmOrder(values) {
@@ -235,13 +234,16 @@ const AppCart = () => {
             );
         };
 
-
         useEffect(() => {
             if (isInitialRender) {
                 setIsInitialRender(false);
                 return;
-              }
-            const updatedCart = { cartDetailId:record.cartDetailId, quantity: quantity, totalPriceSell: record.price * quantity };
+            }
+            const updatedCart = {
+                cartDetailId: record.cartDetailId,
+                quantity: quantity,
+                totalPriceSell: record.price * quantity,
+            };
             // updateCartItemById(record.cartDetailId, updatedCart);
             // console.log(updatedCart);
             setUpdatedCart(updatedCart);
@@ -250,10 +252,10 @@ const AppCart = () => {
                 data: { ...updatedCart },
                 onCompleted: (respone) => {
                     setCheck(!check);
-                 },
-                 onError: (error) => {
+                },
+                onError: (error) => {
                     console.log(error);
-                 },
+                },
             });
         }, [triggerEffect]);
 
@@ -350,12 +352,7 @@ const AppCart = () => {
                                 dataIndex: 'quantity',
                                 align: 'center',
                                 width: 200,
-                                render: (value, record) => (
-                                    <QuantityComponent
-                                        value={value}
-                                        record={record}
-                                    />
-                                ),
+                                render: (value, record) => <QuantityComponent value={value} record={record} />,
                             },
                             {
                                 title: 'Tổng',
@@ -547,16 +544,29 @@ const AppCart = () => {
                     ></Table>
                 )}
 
-                <Button
-                    type="primary"
-                    style={{ marginTop: 20 }}
-                    onClick={() => {
-                        profile ? navigate(routes.OderPage.path) : setCheckoutDrawerOpen(true);
-                        setCartDrawer(false);
-                    }}
-                >
-                    Đặt hàng
-                </Button>
+                {cartItem?.length > 0 ? (
+                    <Button
+                        type="primary"
+                        style={{ marginTop: 20 }}
+                        onClick={() => {
+                            profile ? navigate(routes.OderPage.path) : setCheckoutDrawerOpen(true);
+                            setCartDrawer(false);
+                        }}
+                    >
+                        Đặt hàng
+                    </Button>
+                ) : (
+                    <Button
+                        type="primary"
+                        style={{ marginTop: 20 }}
+                        onClick={() => {
+                            navigate(routes.ProductHomePage1.path);
+                            setCartDrawer(false);
+                        }}
+                    >
+                        Thêm giỏ hàng
+                    </Button>
+                )}
             </Drawer>
             <Drawer
                 open={checkoutDrawerOpen}
@@ -684,5 +694,3 @@ const AppCart = () => {
 };
 
 export default AppCart;
-
-

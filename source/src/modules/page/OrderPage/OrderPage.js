@@ -172,7 +172,7 @@ const OrderPage = () => {
                     setCurrent(2);
 
                     setTimeout(() => {
-                        window.location.reload();
+                       navigate(routes.HistoryOrder.path);
                     }, 2000);
                 }
             },
@@ -362,7 +362,7 @@ const OrderPage = () => {
                     <AutoCompleteField
                         label="Địa chỉ"
                         name="addressId"
-                        apiConfig={apiConfig.address.getList}
+                        apiConfig={apiConfig.address.getMyAddress}
                         required
                         dropdownRender={(menu) => (
                             <>

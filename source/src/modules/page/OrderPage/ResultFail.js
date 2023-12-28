@@ -79,7 +79,9 @@ const ResultFail = () => {
             orderId  : orderId,
         },
         onCompleted: (respone) => {
-
+            setTimeout(() => {
+                navigate(routes.HistoryOrder.path);
+             }, 2000);
         },
       });
     }, []);

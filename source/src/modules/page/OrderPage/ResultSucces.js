@@ -82,7 +82,7 @@ const ResultSuccess = () => {
             orderId  : orderId,
         },
         onCompleted: (respone) => {
-
+             navigate(routes.HistoryOrder.path);
         },
       });
     }, []);
