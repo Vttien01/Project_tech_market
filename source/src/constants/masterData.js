@@ -19,6 +19,7 @@ import {
     STATE_PAIDED,
     ACTIVE_USER,
     LOCKED_USER,
+    NO_ACTIVE_USER,
     LOCKED_ACCOUNT,
     ACTIVE_ACCOUNT,
 } from '@constants';
@@ -39,6 +40,7 @@ const paymentMessage = defineMessages({
 const userStateMessage = defineMessages({
     LOCKED_USER: 'Khóa',
     ACTIVE_USER: 'Kích hoạt',
+    NO_ACTIVE_USER: 'Chưa kích hoạt',
 });
 
 const accountStatusMessage = defineMessages({
@@ -121,6 +123,7 @@ export const paymentOptions = [
 
 export const userSateteOptions = [
     { value: LOCKED_USER, label: userStateMessage.LOCKED_USER, color: 'red' },
+    { value: NO_ACTIVE_USER, label: userStateMessage.NO_ACTIVE_USER, color: 'yellow' },
     { value: ACTIVE_USER, label: userStateMessage.ACTIVE_USER, color: 'green' },
 ];
 

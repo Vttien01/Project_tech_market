@@ -15,6 +15,12 @@ import { commonMessage } from '@locales/intl';
 import { convertUtcToLocalTime, formatMoney } from '@utils';
 import AvatarField from '@components/common/form/AvatarField';
 import routes from '@routes';
+import { BaseTooltip } from '@components/common/form/BaseTooltip';
+import { StarFilled } from '@ant-design/icons';
+import ReviewListModal from '@modules/page/ReviewPage/ReviewListModal';
+import { useState } from 'react';
+import useDisclosure from '@hooks/useDisclosure';
+import useFetch from '@hooks/useFetch';
 
 const message = defineMessages({
     objectName: 'Chi tiết đơn hàng',
@@ -27,11 +33,16 @@ const message = defineMessages({
 const DetailOrder = () => {
     const translate = useTranslate();
     const queryParameters = new URLSearchParams(window.location.search);
+    const [orderDetailId, setOrderDetailId] = useState(null);
+    const [openReviewModal, handlersReviewModal] = useDisclosure(false);
+
+
 
     const orderId = queryParameters.get('orderId');
     const statusValues = translate.formatKeys(statusOptions, ['label']);
     const stateValues = translate.formatKeys(paymentOptions, ['label']);
     const orderStatetateValues = translate.formatKeys(orderStateOption, ['label']);
+
 
     const { data, mixinFuncs, queryFilter, loading, pagination, changePagination, serializeParams, serializeParam } =
         useListBase({
@@ -77,6 +88,29 @@ const DetailOrder = () => {
                 funcs.getList = () => {
                     const params = mixinFuncs.prepareGetListParams(queryFilter);
                     mixinFuncs.handleFetchList({ ...params, orderId: null });
+                };
+                funcs.additionalActionColumnButtons = () => {
+                    return {
+                        review: ({ buttonProps, ...dataRow }) => (
+                            <BaseTooltip title="Đánh giá sản phẩm">
+                                <Button
+                                    type="link"
+                                    // disabled={state !== 3}
+                                    style={{ padding: 0 }}
+                                    onClick={(e) => {
+                                        getListReview(dataRow?.productId);
+                                        getStarReview(dataRow?.productId);
+                                        setOrderDetailId(dataRow?.id);
+                                        e.stopPropagation();
+                                        console.log(dataRow);
+                                        handlersReviewModal.open();
+                                    }}
+                                >
+                                    <StarFilled style={{ fontSize:20, color:'yellow' }}/>
+                                </Button>
+                            </BaseTooltip>
+                        ),
+                    };
                 };
             },
         });
@@ -135,7 +169,7 @@ const DetailOrder = () => {
             },
         },
         // mixinFuncs.renderStatusColumn({ width: '120px' }),
-        // mixinFuncs.renderActionColumn({ edit: true, delete: false }, { width: '120px' }),
+        mixinFuncs.renderActionColumn({ review: true }, { width: '120px' }),
     ];
 
     const searchFields = [
@@ -149,8 +183,45 @@ const DetailOrder = () => {
         { breadcrumbName: translate.formatMessage(message.objectName) },
     ];
 
+    const { data: dataListReview, loading:dataListLoading, execute: listReview } = useFetch(
+        apiConfig.review.getByProduct,
+        { immediate: false,
+            mappingData: ({ data }) => data.content,
+        });
+
+    const getListReview = (id) => {
+        listReview({
+            pathParams: {
+                id : id,
+            },
+        });
+    };
+    const { data: starData,loading:starDataLoading, execute: starReview } = useFetch(
+        apiConfig.review.starListReview,
+        { immediate: false,
+            mappingData: ({ data }) => data.content,
+        });
+
+    const getStarReview = (id) => {
+        starReview({
+            pathParams: {
+                productId : id,
+            },
+        });
+    };
+
     return (
         <PageWrapper routes={breadRoutes}>
+            <ReviewListModal
+                open={openReviewModal}
+                onCancel={() => handlersReviewModal.close()}
+                data={dataListReview || {}}
+                // courseId = {courseId}
+                orderDetailId={orderDetailId}
+                star={starData}
+                // loading={dataListLoading || starDataLoading || loadingData}
+                width={800}
+            />
             <ListPage
                 searchForm={mixinFuncs.renderSearchForm({ fields: searchFields, initialValues: queryFilter })}
                 // actionBar={mixinFuncs.renderActionBar()}

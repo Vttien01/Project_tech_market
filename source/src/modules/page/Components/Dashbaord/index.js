@@ -333,25 +333,28 @@ function DashboardChart() {
         executeRevenue({
             params: { year: year },
             onCompleted: (response) => {
-                const labels = response.data.map((cart) => {
-                    return `Tháng ${cart.month}`;
-                });
-                const data = response.data.map((cart) => {
-                    return cart.revenue;
-                });
+                if (response.data) {
+                    const labels = response.data.map((cart) => {
+                        return `Tháng ${cart.month}`;
+                    });
+                    const data = response.data.map((cart) => {
+                        return cart.revenue;
+                    });
 
-                const dataSource = {
-                    labels,
-                    datasets: [
-                        {
-                            label: 'Thống kê doanh thu từng tháng',
-                            data: data,
-                            backgroundColor: 'rgba(255, 0, 0, 1)',
-                        },
-                    ],
-                };
+                    const dataSource = {
+                        labels,
+                        datasets: [
+                            {
+                                label: 'Thống kê doanh thu từng tháng',
+                                data: data,
+                                backgroundColor: 'rgba(255, 0, 0, 1)',
+                            },
+                        ],
+                    };
 
-                setReveneuData(dataSource);
+                    setReveneuData(dataSource);
+                }
+                else setReveneuData([]);
             },
         });
     }, [year]);
@@ -370,6 +373,7 @@ function DashboardChart() {
     };
     const onChange = (date, dateString) => {
         setYear(date.$y);
+        console.log(date.$y);
     };
     return (
         <Card style={{ minWidth: 500, height: 350, marginTop: 15 }}>
@@ -380,11 +384,7 @@ function DashboardChart() {
 }
 
 function RevenueOfEachProduct() {
-    const [reveneuData, setReveneuData] = useState({
-        labels: [],
-        datasets: [],
-    });
-    const [data, setData] = useState('2023');
+    const [data, setData] = useState([]);
 
     const { data: dataRevenue, execute: executeRevenueProduct } = useFetch({
         ...apiConfig.revenue.getRevenueOfEachProduct,
@@ -393,14 +393,11 @@ function RevenueOfEachProduct() {
     useEffect(() => {
         executeRevenueProduct({
             onCompleted: (res) => {
-                // console.log(res.data.content);
                 setData(res.data.content);
             },
-            onError: () => {
-            },
+            onError: () => {},
         });
     }, []);
-    console.log(data);
 
     const itemHeader = [
         {

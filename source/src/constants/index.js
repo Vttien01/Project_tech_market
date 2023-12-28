@@ -115,6 +115,7 @@ export const PAYPAL_METHOD = 1;
 export const COD_METHOD = 0;
 
 export const LOCKED_USER = -1;
+export const NO_ACTIVE_USER = 0;
 export const ACTIVE_USER = 1;
 
 export const LOCKED_ACCOUNT = -1;

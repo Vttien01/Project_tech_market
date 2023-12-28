@@ -6,9 +6,7 @@ const DashboardPage = () => {
     const breadRoutes = [{ breadcrumbName: 'Thống kê' }];
     return (
         <PageWrapper routes={breadRoutes}>
-            {/* <div className="container" style={{ marginLeft: 20 }}> */}
             <Dashboard/>
-            {/* </div> */}
         </PageWrapper>
     );
 };

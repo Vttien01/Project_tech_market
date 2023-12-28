@@ -104,7 +104,6 @@ const ListDetailsForm = ({ open, onCancel, detail, form, isEditing, orderId, sta
                 id : id,
             },
         });
-        // console.log(id);
     };
     const { data: starData,loading:starDataLoading, execute: starReview } = useFetch(
         apiConfig.review.starListReview,
@@ -118,10 +117,8 @@ const ListDetailsForm = ({ open, onCancel, detail, form, isEditing, orderId, sta
                 productId : id,
             },
         });
-        console.log("1111111111111");
     };
 
-    console.log(starData);
 
     return (
         <Modal
