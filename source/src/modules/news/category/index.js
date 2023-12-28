@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { categoryKind } from '@constants';
 import CategoryListPageCommon from '@components/common/page/category';
+import { categoryKind } from '@constants';
 import { defineMessages, useIntl } from 'react-intl';
 
 const message = defineMessages({

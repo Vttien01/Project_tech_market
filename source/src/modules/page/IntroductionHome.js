@@ -1,15 +1,12 @@
-import { divide } from 'lodash';
-import React, { useState } from 'react';
-import './Intro.css';
-import { Avatar, Col, Image, Row, Space, Typography } from 'antd';
-import intro1 from '@assets/images/intro1.png';
-import facebook from '@assets/images/facebook.png';
-import footer_hotline from '@assets/images/footer_hotline.png';
-const { Title, Text, Link } = Typography;
 import IconIntro1 from '@assets/images/iconIntro1.png';
 import IconIntro2 from '@assets/images/iconIntro2.png';
 import IconIntro3 from '@assets/images/iconIntro3.png';
 import IconIntro4 from '@assets/images/iconIntro4.png';
+import intro1 from '@assets/images/intro1.png';
+import { Avatar, Col, Image, Row, Space, Typography } from 'antd';
+import React from 'react';
+import './Intro.css';
+const { Title, Text } = Typography;
 const IntroductionHome = () => {
     return (
         <div className="container">

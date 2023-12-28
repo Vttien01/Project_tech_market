@@ -1,19 +1,18 @@
-import { AppConstants, DATE_FORMAT_VALUE, DEFAULT_FORMAT, DEFAULT_TABLE_ITEM_SIZE } from '@constants';
-import useListBase from '@hooks/useListBase';
-import React from 'react';
-import { UserOutlined, DeleteOutlined } from '@ant-design/icons';
-import PageWrapper from '@components/common/layout/PageWrapper';
+import { DeleteOutlined } from '@ant-design/icons';
 import ListPage from '@components/common/layout/ListPage';
+import PageWrapper from '@components/common/layout/PageWrapper';
 import BaseTable from '@components/common/table/BaseTable';
-import { orderStateOption, paidValues, paymentOptions, statusOptions } from '@constants/masterData';
-import useTranslate from '@hooks/useTranslate';
-import { FieldTypes } from '@constants/formConfig';
+import { DATE_FORMAT_VALUE, DEFAULT_FORMAT, DEFAULT_TABLE_ITEM_SIZE } from '@constants';
 import apiConfig from '@constants/apiConfig';
-import { defineMessages } from 'react-intl';
-import { Button, Tag } from 'antd';
-import { commonMessage } from '@locales/intl';
-import { convertUtcToLocalTime, formatMoney } from '@utils';
+import { FieldTypes } from '@constants/formConfig';
+import { orderStateOption, paidValues, paymentOptions, statusOptions } from '@constants/masterData';
+import useListBase from '@hooks/useListBase';
+import useTranslate from '@hooks/useTranslate';
 import routes from '@routes';
+import { convertUtcToLocalTime, formatMoney } from '@utils';
+import { Button, Tag } from 'antd';
+import React from 'react';
+import { defineMessages } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 
 const message = defineMessages({

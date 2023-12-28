@@ -1,49 +1,24 @@
 /* eslint-disable indent */
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { generatePath, useNavigate } from 'react-router-dom';
 import './OrderPage.scss';
-import { generatePath, useNavigate, useParams } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
 // import { fetchAsyncProductSingle, getProductSingle, getSingleProductStatus } from '../../store/productSlice';
-import { formatPrice } from '../../../utils/helpers';
 // import { addToCart, getCartMessageStatus, setCartMessageOff, setCartMessageOn } from '../../store/cartSlice';
 // import CartMessage from '../../components/CartMessage/CartMessage';
-import Loading from '@components/common/loading';
+import PageWrapper from '@components/common/layout/PageWrapper';
 import apiConfig from '@constants/apiConfig';
+import useAuth from '@hooks/useAuth';
 import useFetch from '@hooks/useFetch';
-import { formatMoney } from '@utils';
-import { IconEdit, IconEditCircle, IconEditCircleOff, IconError404, IconMinus, IconPlus, IconPlusMinus } from '@tabler/icons-react';
+import useTranslate from '@hooks/useTranslate';
+import routes from '@routes';
 import {
     Button,
-    Checkbox,
-    Divider,
     Form,
-    Input,
     Result,
-    Space,
     Steps,
-    Table,
-    Tag,
-    Typography,
-    message,
     theme,
 } from 'antd';
-import axios from 'axios';
-import ListDetailsForm from './ListDetailsForm';
-import useDisclosure from '@hooks/useDisclosure';
-import PageWrapper from '@components/common/layout/PageWrapper';
-import routes from '@routes';
-import { LoadingOutlined, SmileOutlined, SolutionOutlined, UserOutlined } from '@ant-design/icons';
-import { IconLoader } from '@tabler/icons-react';
 import { defineMessage } from 'react-intl';
-import AutoCompleteField from '@components/common/form/AutoCompleteField';
-import SelectField from '@components/common/form/SelectField';
-import { paymentOptions } from '@constants/masterData';
-import useAuth from '@hooks/useAuth';
-import { showErrorMessage } from '@services/notifyService';
-import useTranslate from '@hooks/useTranslate';
-import Paragraph from 'antd/es/skeleton/Paragraph';
-const { Text } = Typography;
-let index = 0;
 
 const decription = defineMessage({
     first: 'Kiểm tra số lượng sản phẩm',

@@ -1,16 +1,16 @@
+import BaseTable from '@components/common/table/BaseTable';
 import apiConfig from '@constants/apiConfig';
 import useListBase from '@hooks/useListBase';
-import React, { useEffect } from 'react';
-import BaseTable from '@components/common/table/BaseTable';
+import React from 'react';
 
-import { DEFAULT_TABLE_ITEM_SIZE, UserTypes, groupPermissionKindsOptions, storageKeys } from '@constants';
-import PageWrapper from '@components/common/layout/PageWrapper';
 import ListPage from '@components/common/layout/ListPage';
+import PageWrapper from '@components/common/layout/PageWrapper';
+import { DEFAULT_TABLE_ITEM_SIZE, UserTypes, groupPermissionKindsOptions, storageKeys } from '@constants';
 import { FieldTypes } from '@constants/formConfig';
 import useQueryParams from '@hooks/useQueryParams';
-import { getData } from '@utils/localStorage';
 import useTranslate from '@hooks/useTranslate';
 import { commonMessage } from '@locales/intl';
+import { getData } from '@utils/localStorage';
 
 const GroupPermissionListPage = () => {
     const { setQueryParams } = useQueryParams();

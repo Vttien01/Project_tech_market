@@ -1,16 +1,14 @@
-import { Card, Col, Form, Row } from 'antd';
-import React, { useEffect, useState } from 'react';
-import useBasicForm from '@hooks/useBasicForm';
-import TextField from '@components/common/form/TextField';
+import { BaseForm } from '@components/common/form/BaseForm';
 import CropImageField from '@components/common/form/CropImageField';
-import { AppConstants } from '@constants';
-import useFetch from '@hooks/useFetch';
+import TextField from '@components/common/form/TextField';
 import apiConfig from '@constants/apiConfig';
-import { defineMessages } from 'react-intl';
+import useBasicForm from '@hooks/useBasicForm';
+import useFetch from '@hooks/useFetch';
 import useTranslate from '@hooks/useTranslate';
 import { commonMessage } from '@locales/intl';
-import { BaseForm } from '@components/common/form/BaseForm';
-import SelectField from '@components/common/form/SelectField';
+import { Card, Col, Row } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { defineMessages } from 'react-intl';
 
 const message = defineMessages({
     objectName: 'group permission',

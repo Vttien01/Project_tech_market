@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
 import { Layout } from 'antd';
+import React, { useState } from 'react';
 
-import NavSider from './NavSider';
 import AppHeader from './AppHeaderAdmin';
+import NavSider from './NavSider';
 
-import styles from './MainLayout.module.scss';
 import { brandName } from '@constants';
-import { defineMessages } from 'react-intl';
 import useTranslate from '@hooks/useTranslate';
+import { defineMessages } from 'react-intl';
+import styles from './MainLayout.module.scss';
 
 const { Content, Footer } = Layout;
 

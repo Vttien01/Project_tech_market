@@ -1,19 +1,16 @@
-import apiConfig from '@constants/apiConfig';
-import useListBase from '@hooks/useListBase';
-import React, { useEffect, useState } from 'react';
-import BaseTable from '@components/common/table/BaseTable';
-import { AppConstants, categoryKind, DEFAULT_TABLE_ITEM_SIZE } from '@constants';
-import PageWrapper from '@components/common/layout/PageWrapper';
 import ListPage from '@components/common/layout/ListPage';
+import PageWrapper from '@components/common/layout/PageWrapper';
+import BaseTable from '@components/common/table/BaseTable';
+import { DEFAULT_TABLE_ITEM_SIZE } from '@constants';
+import apiConfig from '@constants/apiConfig';
+import { nationKindOptions } from '@constants/masterData';
+import useListBase from '@hooks/useListBase';
 import useTranslate from '@hooks/useTranslate';
-import { defineMessages, FormattedMessage } from 'react-intl';
 import { commonMessage } from '@locales/intl';
-import { nationKindOptions, statusOptions } from '@constants/masterData';
-import { Button, Tag } from 'antd';
-import { BaseTooltip } from '@components/common/form/BaseTooltip';
-import { useLocation, useNavigate } from 'react-router-dom';
 import routes from '@routes';
-import { RightSquareOutlined } from '@ant-design/icons';
+import React from 'react';
+import { defineMessages } from 'react-intl';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styles from '../nation.module.scss';
 
 const message = defineMessages({

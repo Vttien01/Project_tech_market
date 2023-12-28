@@ -1,13 +1,12 @@
 import PageWrapper from '@components/common/layout/PageWrapper';
-import { GROUP_KIND_ADMIN, STATUS_ACTIVE, UserTypes } from '@constants';
+import { STATUS_ACTIVE } from '@constants';
 import apiConfig from '@constants/apiConfig';
 import useSaveBase from '@hooks/useSaveBase';
-import React from 'react';
-import { useParams } from 'react-router-dom';
-import { defineMessages } from 'react-intl';
 import useTranslate from '@hooks/useTranslate';
 import { commonMessage } from '@locales/intl';
-import useFetch from '@hooks/useFetch';
+import React from 'react';
+import { defineMessages } from 'react-intl';
+import { useParams } from 'react-router-dom';
 import AddressForm from './AddressForm';
 
 const message = defineMessages({

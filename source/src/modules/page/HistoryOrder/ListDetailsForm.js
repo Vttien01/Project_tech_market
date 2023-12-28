@@ -1,26 +1,16 @@
-import AutoCompleteField from '@components/common/form/AutoCompleteField';
-import { BaseForm } from '@components/common/form/BaseForm';
-import CropImageField from '@components/common/form/CropImageField';
-import NumericField from '@components/common/form/NumericField';
-import SelectField from '@components/common/form/SelectField';
-import TextField from '@components/common/form/TextField';
+import { StarFilled } from '@ant-design/icons';
 import apiConfig from '@constants/apiConfig';
 import { statusOptions } from '@constants/masterData';
-import useAuth from '@hooks/useAuth';
+import useDisclosure from '@hooks/useDisclosure';
 import useFetch from '@hooks/useFetch';
 import useTranslate from '@hooks/useTranslate';
-import { commonMessage } from '@locales/intl';
 import { showErrorMessage, showSucsessMessage } from '@services/notifyService';
-import { IconPlus, IconRecycle, IconTrash, IconStarFilled } from '@tabler/icons-react';
-import { StarFilled } from '@ant-design/icons';
 import { formatMoney } from '@utils';
-import { Avatar, Button, Card, Col, Form, InputNumber, List, Modal, Row, Table, Tooltip, message } from 'antd';
-import React, { useCallback, useEffect, useState } from 'react';
+import { Avatar, Button, Card, List, Modal, Tooltip } from 'antd';
+import React, { useEffect, useState } from 'react';
 import { FormattedMessage, defineMessage } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
-import VirtualList from 'rc-virtual-list';
 import ReviewListModal from '../ReviewPage/ReviewListModal';
-import useDisclosure from '@hooks/useDisclosure';
 
 const messages = defineMessage({
     copyRight: '{brandName} - © Copyright {year}. All Rights Reserved',

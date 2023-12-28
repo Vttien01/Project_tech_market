@@ -1,17 +1,17 @@
+import BaseTable from '@components/common/table/BaseTable';
 import apiConfig from '@constants/apiConfig';
 import useListBase from '@hooks/useListBase';
 import React, { useState } from 'react';
-import BaseTable from '@components/common/table/BaseTable';
 
-import { DEFAULT_TABLE_ITEM_SIZE, SettingTypes, isSystemSettingOptions } from '@constants';
-import PageWrapper from '@components/common/layout/PageWrapper';
+import SelectField from '@components/common/form/SelectField';
 import ListPage from '@components/common/layout/ListPage';
-import { defineMessages } from 'react-intl';
+import PageWrapper from '@components/common/layout/PageWrapper';
+import { DEFAULT_TABLE_ITEM_SIZE, SettingTypes, isSystemSettingOptions } from '@constants';
+import useAuth from '@hooks/useAuth';
 import useTranslate from '@hooks/useTranslate';
 import { commonMessage } from '@locales/intl';
-import useAuth from '@hooks/useAuth';
-import SelectField from '@components/common/form/SelectField';
 import { Tabs } from 'antd';
+import { defineMessages } from 'react-intl';
 
 const message = defineMessages({
     objectName: 'setting',

@@ -1,18 +1,18 @@
 import PageWrapper from '@components/common/layout/PageWrapper';
-import { GROUP_KIND_ADMIN, STATUS_ACTIVE, UserTypes } from '@constants';
+import { GROUP_KIND_ADMIN, STATUS_ACTIVE } from '@constants';
 import apiConfig from '@constants/apiConfig';
+import useFetch from '@hooks/useFetch';
 import useSaveBase from '@hooks/useSaveBase';
-import React from 'react';
-import { useParams } from 'react-router-dom';
-import UserForm from './UserForm';
-import { defineMessages } from 'react-intl';
 import useTranslate from '@hooks/useTranslate';
 import { commonMessage } from '@locales/intl';
-import useFetch from '@hooks/useFetch';
+import React from 'react';
+// import { defineMessages } from 'react-intl';
+import { useParams } from 'react-router-dom';
+import UserForm from './UserForm';
 
-const message = defineMessages({
-    objectName: 'UserAdmin',
-});
+// const message = defineMessages({
+//     objectName: 'UserAdmin',
+// });
 
 const UserSavePage = ({ pageOptions }) => {
     const translate = useTranslate();

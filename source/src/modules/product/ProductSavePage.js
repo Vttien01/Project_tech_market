@@ -1,17 +1,13 @@
-import React from 'react';
-import apiConfig from '@constants/apiConfig';
-import routes from '@routes';
 import PageWrapper from '@components/common/layout/PageWrapper';
-import ProductForm from './ProductForm';
-import useTranslate from '@hooks/useTranslate';
-import useSaveBase from '@hooks/useSaveBase';
-import { generatePath, useParams } from 'react-router-dom';
-import { defineMessages } from 'react-intl';
-import { commonMessage } from '@locales/intl';
-import { useState } from 'react';
-import { Button } from 'antd';
-import ListPage from '@components/common/layout/ListPage';
+import apiConfig from '@constants/apiConfig';
 import useAuth from '@hooks/useAuth';
+import useSaveBase from '@hooks/useSaveBase';
+import useTranslate from '@hooks/useTranslate';
+import routes from '@routes';
+import React from 'react';
+import { defineMessages } from 'react-intl';
+import { generatePath, useParams } from 'react-router-dom';
+import ProductForm from './ProductForm';
 
 const message = defineMessages({
     objectName: 'Product',

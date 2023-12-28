@@ -3,13 +3,12 @@ import apiConfig from '@constants/apiConfig';
 import useFetch from '@hooks/useFetch';
 import useFetchAction from '@hooks/useFetchAction';
 import useSaveBase from '@hooks/useSaveBase';
-import { accountActions } from '@store/actions';
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import ProfileForm from './ProfileForm';
-import { defineMessages } from 'react-intl';
 import useTranslate from '@hooks/useTranslate';
 import { commonMessage } from '@locales/intl';
+import { accountActions } from '@store/actions';
+import React, { useEffect, useState } from 'react';
+import { defineMessages } from 'react-intl';
+import ProfileForm from './ProfileForm';
 
 const message = defineMessages({
     objectName: 'profile',

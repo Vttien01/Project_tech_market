@@ -1,45 +1,33 @@
 /* eslint-disable indent */
-import React, { useEffect, useRef, useState } from 'react';
-import { generatePath, useNavigate, useParams } from 'react-router-dom';
-import Loading from '@components/common/loading';
+import { ShoppingCartOutlined } from '@ant-design/icons';
+import AutoCompleteField from '@components/common/form/AutoCompleteField';
+import SelectField from '@components/common/form/SelectField';
+import { paymentSelect } from '@constants';
 import apiConfig from '@constants/apiConfig';
+import useAuth from '@hooks/useAuth';
 import useFetch from '@hooks/useFetch';
+import useTranslate from '@hooks/useTranslate';
+import routes from '@routes';
+import { showErrorMessage, showSucsessMessage } from '@services/notifyService';
+import { IconMinus, IconPlus, IconTrash } from '@tabler/icons-react';
 import { formatMoney } from '@utils';
 import {
     Badge,
     Button,
-    Card,
     Checkbox,
-    Divider,
     Drawer,
     Form,
     Input,
-    Popconfirm,
-    Result,
-    Space,
-    Steps,
     Table,
-    Tabs,
     Tag,
     Tooltip,
     Typography,
-    message,
-    theme,
 } from 'antd';
-import routes from '@routes';
+import React, { useEffect, useState } from 'react';
 import { defineMessage } from 'react-intl';
-import AutoCompleteField from '@components/common/form/AutoCompleteField';
-import SelectField from '@components/common/form/SelectField';
-import { paymentOptions, statusOptions } from '@constants/masterData';
-import useAuth from '@hooks/useAuth';
-import { showErrorMessage, showSucsessMessage } from '@services/notifyService';
-import useTranslate from '@hooks/useTranslate';
-const { Text } = Typography;
-import { ShoppingCartOutlined } from '@ant-design/icons';
-import { paymentSelect } from '@constants';
-import { IconPlus, IconTrash } from '@tabler/icons-react';
+import { useNavigate } from 'react-router-dom';
 import './AppCart.scss';
-import { IconMinus } from '@tabler/icons-react';
+const { Text } = Typography;
 
 const decription = defineMessage({
     first: 'Kiểm tra số lượng sản phẩm',

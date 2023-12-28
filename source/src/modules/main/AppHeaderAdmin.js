@@ -1,30 +1,30 @@
 /* eslint-disable react/no-unknown-property */
-import React from 'react';
-import { Layout, Menu, Avatar, Space } from 'antd';
 import {
     DownOutlined,
-    UserOutlined,
+    HomeOutlined,
     LoginOutlined,
     MenuFoldOutlined,
     MenuUnfoldOutlined,
     TranslationOutlined,
-    HomeOutlined,
+    UserOutlined,
 } from '@ant-design/icons';
+import { Avatar, Layout, Menu, Space } from 'antd';
+import React from 'react';
 const { Header } = Layout;
 
-import styles from './AppHeader.module.scss';
-import useAuth from '@hooks/useAuth';
-import { useDispatch } from 'react-redux';
-import { accountActions, appActions } from '@store/actions';
-import useFetch from '@hooks/useFetch';
-import apiConfig from '@constants/apiConfig';
-import { removeCacheToken } from '@services/userService';
-import { useNavigate } from 'react-router-dom';
 import { AppConstants } from '@constants';
-import { defineMessages } from 'react-intl';
-import useTranslate from '@hooks/useTranslate';
+import apiConfig from '@constants/apiConfig';
+import useAuth from '@hooks/useAuth';
+import useFetch from '@hooks/useFetch';
 import useLocale from '@hooks/useLocale';
+import useTranslate from '@hooks/useTranslate';
 import routes from '@routes';
+import { removeCacheToken } from '@services/userService';
+import { accountActions, appActions } from '@store/actions';
+import { defineMessages } from 'react-intl';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import styles from './AppHeader.module.scss';
 
 const messages = defineMessages({
     profile: 'Profile',
@@ -87,7 +87,7 @@ const AppHeader = ({ collapsed, onCollapse }) => {
                                         <span>{translate.formatMessage(messages.home)}</span>
                                     </div>
                                 ),
-                                key: 'profile',
+                                key: 'allProduct',
                                 onClick: () => navigate('/all-product'),
                             },
                             {

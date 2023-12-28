@@ -1,14 +1,14 @@
 import PageWrapper from '@components/common/layout/PageWrapper';
-import { GROUP_ROLE_EMPLOYEE,GROUP_KIND_ADMIN, STATUS_ACTIVE, UserTypes } from '@constants';
+import { GROUP_KIND_ADMIN, GROUP_ROLE_EMPLOYEE, STATUS_ACTIVE, UserTypes } from '@constants';
 import apiConfig from '@constants/apiConfig';
+import useFetch from '@hooks/useFetch';
 import useSaveBase from '@hooks/useSaveBase';
-import React from 'react';
-import { useParams } from 'react-router-dom';
-import UserAdminForm from './UserAdminForm';
-import { defineMessages } from 'react-intl';
 import useTranslate from '@hooks/useTranslate';
 import { commonMessage } from '@locales/intl';
-import useFetch from '@hooks/useFetch';
+import React from 'react';
+import { defineMessages } from 'react-intl';
+import { useParams } from 'react-router-dom';
+import UserAdminForm from './UserAdminForm';
 
 const message = defineMessages({
     objectName: 'UserAdmin',

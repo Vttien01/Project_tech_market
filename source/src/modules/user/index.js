@@ -1,19 +1,16 @@
+import BaseTable from '@components/common/table/BaseTable';
 import apiConfig from '@constants/apiConfig';
 import useListBase from '@hooks/useListBase';
-import { Avatar, Tag } from 'antd';
 import React from 'react';
-import BaseTable from '@components/common/table/BaseTable';
 
 import { UserOutlined } from '@ant-design/icons';
-import { AppConstants, DEFAULT_TABLE_ITEM_SIZE } from '@constants';
-import PageWrapper from '@components/common/layout/PageWrapper';
-import ListPage from '@components/common/layout/ListPage';
-import { defineMessages } from 'react-intl';
-import useTranslate from '@hooks/useTranslate';
 import AvatarField from '@components/common/form/AvatarField';
-import { commonMessage } from '@locales/intl';
+import ListPage from '@components/common/layout/ListPage';
+import PageWrapper from '@components/common/layout/PageWrapper';
+import { AppConstants, DEFAULT_TABLE_ITEM_SIZE } from '@constants';
 import useAuth from '@hooks/useAuth';
-import { userSateteOptions } from '@constants/masterData';
+import useTranslate from '@hooks/useTranslate';
+import { commonMessage } from '@locales/intl';
 
 const UserAdminListPage = ({ pageOptions }) => {
     const translate = useTranslate();

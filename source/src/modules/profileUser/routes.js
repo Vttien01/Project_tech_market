@@ -1,4 +1,3 @@
-import apiConfig from '@constants/apiConfig';
 import PersonInfo from './PersonInfo';
 import ProfileUserSavePage from './ProfileUserSavePage';
 

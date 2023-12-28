@@ -7,12 +7,13 @@ export default {
         title: 'Brand List Page',
         auth: true,
         component: BrandListPage,
+        permissions: [apiConfig.brand.getList.baseURL],
     },
     brandSavePage: {
         path: '/brand/:id',
         title: 'Brand Save Page',
         auth: true,
         component: BrandSavePage,
-        // permissions: [apiConfig.brand.create.baseURL, apiConfig.brandSavePage.update.baseURL],
+        permissions: [apiConfig.brand.create.baseURL, apiConfig.brand.update.baseURL],
     },
 };

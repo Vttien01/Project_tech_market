@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from 'react';
 import { getProducts, getProductsCount } from '@functions/product';
-import ProductCard from '../cards/ProductCard';
-import { LoadingOutlined } from '@ant-design/icons';
-import Border from '../cards/Border';
-import LoadingCard from '../cards/LoadingCard';
 import { Pagination } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import LoadingCard from '../cards/LoadingCard';
+import ProductCard from '../cards/ProductCard';
 
 const BestSellers = () => {
     const [products, setProducts] = useState([]);

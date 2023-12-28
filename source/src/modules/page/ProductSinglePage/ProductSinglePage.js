@@ -1,27 +1,23 @@
 /* eslint-disable indent */
 import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useLocation, useParams } from 'react-router-dom';
 import './ProductSinglePage.scss';
-import { generatePath, useLocation, useParams } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
 // import { fetchAsyncProductSingle, getProductSingle, getSingleProductStatus } from '../../store/productSlice';
-import { formatPrice } from '../../../utils/helpers';
 // import { addToCart, getCartMessageStatus, setCartMessageOff, setCartMessageOn } from '../../store/cartSlice';
 // import CartMessage from '../../components/CartMessage/CartMessage';
-import Loading from '@components/common/loading';
-import apiConfig from '@constants/apiConfig';
-import useFetch from '@hooks/useFetch';
-import { convertUtcToLocalTime, formatMoney } from '@utils';
-import { IconMinus, IconPlus } from '@tabler/icons-react';
-import { Button, Card, Col, Form, Progress, Rate, Row, Space, Spin, Typography, message } from 'antd';
-import axios from 'axios';
-import ListDetailsForm from './ListDetailsForm';
-import useDisclosure from '@hooks/useDisclosure';
-import PageWrapper from '@components/common/layout/PageWrapper';
-import routes from '@routes';
-import styles from './ReviewModal.module.scss';
-import { StarFilled, UserOutlined, ArrowDownOutlined } from '@ant-design/icons';
+import { ArrowDownOutlined, StarFilled, UserOutlined } from '@ant-design/icons';
 import AvatarField from '@components/common/form/AvatarField';
+import PageWrapper from '@components/common/layout/PageWrapper';
 import { DEFAULT_FORMAT } from '@constants';
+import apiConfig from '@constants/apiConfig';
+import useDisclosure from '@hooks/useDisclosure';
+import useFetch from '@hooks/useFetch';
+import { IconMinus, IconPlus } from '@tabler/icons-react';
+import { convertUtcToLocalTime, formatMoney } from '@utils';
+import { Button, Card, Col, Form, Progress, Rate, Row, Space, Spin, Typography } from 'antd';
+import ListDetailsForm from './ListDetailsForm';
+import styles from './ReviewModal.module.scss';
 
 const ProductSinglePage = () => {
     const { id } = useParams();
@@ -194,7 +190,6 @@ const ProductSinglePage = () => {
                 routes={[
                     { breadcrumbName: 'Sản phẩm' },
                 ]}
-                // title={title}
             >
                 <ListDetailsForm
                     open={openedDetailsModal}

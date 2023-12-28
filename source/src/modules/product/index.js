@@ -6,17 +6,15 @@ import apiConfig from '@constants/apiConfig';
 import { FieldTypes } from '@constants/formConfig';
 import { DEFAULT_TABLE_ITEM_SIZE } from '@constants/index';
 import { statusOptions } from '@constants/masterData';
-import useFetch from '@hooks/useFetch';
+import useAuth from '@hooks/useAuth';
 import useListBase from '@hooks/useListBase';
 import useTranslate from '@hooks/useTranslate';
 import { commonMessage } from '@locales/intl';
-import { Button } from 'antd';
-import React, { useEffect, useState } from 'react';
-import { defineMessages, FormattedMessage } from 'react-intl';
-import { useLocation, useNavigate } from 'react-router-dom';
-import useAuth from '@hooks/useAuth';
-import routes from '@routes';
 import { formatMoney } from '@utils/index';
+import { Button } from 'antd';
+import React, { useState } from 'react';
+import { FormattedMessage, defineMessages } from 'react-intl';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const message = defineMessages({
     objectName: 'Sản phẩm',

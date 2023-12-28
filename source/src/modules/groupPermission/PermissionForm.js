@@ -1,8 +1,8 @@
-import { Card, Checkbox, Col, Form, Row } from 'antd';
-import React, { useEffect, useState } from 'react';
-import useBasicForm from '@hooks/useBasicForm';
 import TextField from '@components/common/form/TextField';
 import { formSize } from '@constants/masterData';
+import useBasicForm from '@hooks/useBasicForm';
+import { Card, Checkbox, Col, Form, Row } from 'antd';
+import React, { useEffect, useState } from 'react';
 
 const PermissionForm = (props) => {
     const { formId, actions, dataDetail, onSubmit, setIsChangedFormValues, isEditing, permissions, size='small' } = props;

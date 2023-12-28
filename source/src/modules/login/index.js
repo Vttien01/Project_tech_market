@@ -1,28 +1,26 @@
+import { Button, Form, Image } from 'antd';
 import React from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
-import { Button, Form, Image } from 'antd';
 
-import apiConfig from '@constants/apiConfig';
-import { setCacheAccessToken } from '@services/userService';
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import imgContact from '@assets/images/imgContact.png';
+import logo from '@assets/images/logoTech.png';
 import InputTextField from '@components/common/form/InputTextField';
-import styles from './index.module.scss';
-import { accountActions } from '@store/actions';
+import SelectField from '@components/common/form/SelectField';
+import { appAccount, loginOptions } from '@constants';
+import apiConfig from '@constants/apiConfig';
 import useAuth from '@hooks/useAuth';
+import useDisclosure from '@hooks/useDisclosure';
 import useFetch from '@hooks/useFetch';
 import useFetchAction from '@hooks/useFetchAction';
-import Title from 'antd/es/typography/Title';
-import { showErrorMessage } from '@services/notifyService';
-import { appAccount, brandName, loginOptions } from '@constants';
-import { commonMessage } from '@locales/intl';
-import { Buffer } from 'buffer';
 import useTranslate from '@hooks/useTranslate';
-import SelectField from '@components/common/form/SelectField';
-import logo from '@assets/images/logoTech.png';
-import imgContact from '@assets/images/imgContact.png';
-import './style.css';
-import useDisclosure from '@hooks/useDisclosure';
+import { commonMessage } from '@locales/intl';
+import { showErrorMessage } from '@services/notifyService';
+import { setCacheAccessToken } from '@services/userService';
+import { accountActions } from '@store/actions';
+import { Buffer } from 'buffer';
 import ListDetailsForm from './ListDetailsForm';
+import './style.css';
 
 window.Buffer = window.Buffer || Buffer;
 const message = defineMessages({
@@ -49,16 +47,11 @@ const LoginPage = () => {
     const onFinish = (values) => {
         console.log(values.grant_type);
         let data;
-
-        // Kiểm tra giá trị của grant_type
         if (values.grant_type === 'user') {
-            // Nếu grant_type rỗng, sử dụng phone làm username
             data = { phone: values.username, password: values.password, grant_type: values.grant_type };
         } else {
-            // Nếu grant_type không rỗng, sử dụng giá trị của values
             data = values;
         }
-        // showErrorMessage('ccccccccccccccc');
         execute({
             data: { ...data },
             onCompleted: (res) => {

@@ -1,69 +1,38 @@
 /* eslint-disable indent */
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { generatePath, useNavigate } from 'react-router-dom';
 import './OrderPage.scss';
-import { generatePath, useNavigate, useParams } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
 // import { fetchAsyncProductSingle, getProductSingle, getSingleProductStatus } from '../../store/productSlice';
-import { formatPrice } from '../../../utils/helpers';
 // import { addToCart, getCartMessageStatus, setCartMessageOff, setCartMessageOn } from '../../store/cartSlice';
 // import CartMessage from '../../components/CartMessage/CartMessage';
-import Loading from '@components/common/loading';
+import { SearchOutlined } from '@ant-design/icons';
+import PageWrapper from '@components/common/layout/PageWrapper';
 import apiConfig from '@constants/apiConfig';
+import { paymentOptions } from '@constants/masterData';
+import useAuth from '@hooks/useAuth';
+import useDisclosure from '@hooks/useDisclosure';
 import useFetch from '@hooks/useFetch';
-import { convertUtcToLocalTime, formatMoney } from '@utils';
+import useTranslate from '@hooks/useTranslate';
+import routes from '@routes';
 import {
     IconEdit,
-    IconEditCircle,
-    IconEditCircleOff,
-    IconMinus,
-    IconPlus,
-    IconPlusMinus,
-    IconHttpDelete,
-    IconRecycle,
-    IconTrash,
-    IconSearch,
 } from '@tabler/icons-react';
+import { formatMoney } from '@utils';
 import {
     Button,
     Card,
-    Checkbox,
-    Divider,
     Form,
     Input,
     List,
     Result,
-    Space,
-    Steps,
-    Table,
     Tabs,
-    Tag,
     Typography,
-    message,
     theme,
 } from 'antd';
-import axios from 'axios';
-import ListDetailsForm from './ListDetailsForm';
-import useDisclosure from '@hooks/useDisclosure';
-import PageWrapper from '@components/common/layout/PageWrapper';
-import routes from '@routes';
-import { LoadingOutlined, SmileOutlined, SolutionOutlined, SearchOutlined } from '@ant-design/icons';
-import { IconLoader } from '@tabler/icons-react';
-import { defineMessage } from 'react-intl';
-import AutoCompleteField from '@components/common/form/AutoCompleteField';
-import SelectField from '@components/common/form/SelectField';
-import { paymentOptions, statusOptions } from '@constants/masterData';
-import useAuth from '@hooks/useAuth';
-import { showErrorMessage, showSucsessMessage } from '@services/notifyService';
-import useTranslate from '@hooks/useTranslate';
-import useListBase from '@hooks/useListBase';
-import { DATE_FORMAT_VALUE, DEFAULT_FORMAT, DEFAULT_TABLE_ITEM_SIZE, commonStatus } from '@constants';
-import { BaseTooltip } from '@components/common/form/BaseTooltip';
-import { FormattedMessage } from 'react-intl';
-import { FieldTypes } from '@constants/formConfig';
-import ListPage from '@components/common/layout/ListPage';
-import BaseTable from '@components/common/table/BaseTable';
-import Search from 'antd/es/input/Search';
 import Avatar from 'antd/es/avatar/avatar';
+import { defineMessage } from 'react-intl';
+import ListDetailsForm from './ListDetailsForm';
 const { Text } = Typography;
 let index = 0;
 

@@ -1,13 +1,13 @@
 import React from 'react';
 
-import { Routes, BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-import ValidateAccess from './ValidateAccess';
 import AppNavigate from '@modules/main/AppNavigate';
+import ValidateAccess from './ValidateAccess';
 
-import routes from '.';
-import useAuth from '@hooks/useAuth';
 import Loading from '@components/common/loading';
+import useAuth from '@hooks/useAuth';
+import routes from '.';
 
 const routesArray = Object.values(routes);
 

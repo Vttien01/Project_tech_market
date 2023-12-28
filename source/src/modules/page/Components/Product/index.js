@@ -1,12 +1,11 @@
-import React from 'react';
-import { useEffect, useState } from 'react';
-import { AddToCard, getAllProduct, getProductsByCategory } from '../API';
-import { Badge, Button, Card, Image, List, Rate, Select, Spin, Typography, message } from 'antd';
+import { Button, List, Select, Spin, Typography, message } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { AddToCard } from '../API';
 // import './Product.css';
+import apiConfig from '@constants/apiConfig';
+import useFetch from '@hooks/useFetch';
 import { useParams } from 'react-router-dom';
 import CardProduct from './CardProduct';
-import useFetch from '@hooks/useFetch';
-import apiConfig from '@constants/apiConfig';
 
 function Products({ title }) {
     const [loading, setLoading] = useState(false);

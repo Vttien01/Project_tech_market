@@ -1,21 +1,14 @@
+import BaseTable from '@components/common/table/BaseTable';
 import apiConfig from '@constants/apiConfig';
 import useListBase from '@hooks/useListBase';
-import { Avatar } from 'antd';
-import React, { useEffect, useState } from 'react';
-import BaseTable from '@components/common/table/BaseTable';
+import React from 'react';
 
-import { UserOutlined } from '@ant-design/icons';
-import { AppConstants, DEFAULT_TABLE_ITEM_SIZE } from '@constants';
-import PageWrapper from '@components/common/layout/PageWrapper';
 import ListPage from '@components/common/layout/ListPage';
-import { defineMessages } from 'react-intl';
+import PageWrapper from '@components/common/layout/PageWrapper';
+import { DEFAULT_TABLE_ITEM_SIZE } from '@constants';
 import useTranslate from '@hooks/useTranslate';
-import AvatarField from '@components/common/form/AvatarField';
 import { commonMessage } from '@locales/intl';
-import useAuth from '@hooks/useAuth';
-import useFetch from '@hooks/useFetch';
-import { FieldTypes } from '@constants/formConfig';
-import { useLocation,useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 const AddressListPage = ({ pageOptions }) => {
     const translate = useTranslate();

@@ -1,23 +1,18 @@
-import { storageKeys } from '@constants';
 import apiConfig from '@constants/apiConfig';
-import { removeItem } from '@utils/localStorage';
 import axios from 'axios';
 import {
     getCacheAccessToken,
-    getCacheUserEmail,
     getCacheRefreshToken,
     removeCacheToken,
-    setCacheToken,
 } from './userService';
 
 // Handle refresh token
 const axiosInstance = axios.create();
-let isRefreshing = false;
 let subscribers = [];
 
-const onRefreshed = (newAccessToken) => {
-    subscribers.map((cb) => cb(newAccessToken));
-};
+// const onRefreshed = (newAccessToken) => {
+//     subscribers.map((cb) => cb(newAccessToken));
+// };
 
 const subscribeTokenRefresh = (cb) => {
     subscribers.push(cb);

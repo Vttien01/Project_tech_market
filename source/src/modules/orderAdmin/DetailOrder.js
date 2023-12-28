@@ -1,26 +1,22 @@
-import { AppConstants, DATE_FORMAT_VALUE, DEFAULT_FORMAT, DEFAULT_TABLE_ITEM_SIZE } from '@constants';
-import useListBase from '@hooks/useListBase';
-import React from 'react';
-import { UserOutlined, DeleteOutlined } from '@ant-design/icons';
-import PageWrapper from '@components/common/layout/PageWrapper';
-import ListPage from '@components/common/layout/ListPage';
-import BaseTable from '@components/common/table/BaseTable';
-import { orderStateOption, paymentOptions, statusOptions } from '@constants/masterData';
-import useTranslate from '@hooks/useTranslate';
-import { FieldTypes } from '@constants/formConfig';
-import apiConfig from '@constants/apiConfig';
-import { defineMessages } from 'react-intl';
-import { Button, Tag } from 'antd';
-import { commonMessage } from '@locales/intl';
-import { convertUtcToLocalTime, formatMoney } from '@utils';
+import { StarFilled, UserOutlined } from '@ant-design/icons';
 import AvatarField from '@components/common/form/AvatarField';
-import routes from '@routes';
 import { BaseTooltip } from '@components/common/form/BaseTooltip';
-import { StarFilled } from '@ant-design/icons';
-import ReviewListModal from '@modules/page/ReviewPage/ReviewListModal';
-import { useState } from 'react';
+import ListPage from '@components/common/layout/ListPage';
+import PageWrapper from '@components/common/layout/PageWrapper';
+import BaseTable from '@components/common/table/BaseTable';
+import { DEFAULT_TABLE_ITEM_SIZE } from '@constants';
+import apiConfig from '@constants/apiConfig';
+import { orderStateOption, paymentOptions, statusOptions } from '@constants/masterData';
 import useDisclosure from '@hooks/useDisclosure';
 import useFetch from '@hooks/useFetch';
+import useListBase from '@hooks/useListBase';
+import useTranslate from '@hooks/useTranslate';
+import ReviewListModal from '@modules/page/ReviewPage/ReviewListModal';
+import routes from '@routes';
+import { formatMoney } from '@utils';
+import { Button } from 'antd';
+import React, { useState } from 'react';
+import { defineMessages } from 'react-intl';
 
 const message = defineMessages({
     objectName: 'Chi tiết đơn hàng',

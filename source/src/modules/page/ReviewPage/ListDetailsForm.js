@@ -1,24 +1,14 @@
-import AutoCompleteField from '@components/common/form/AutoCompleteField';
-import { BaseForm } from '@components/common/form/BaseForm';
-import CropImageField from '@components/common/form/CropImageField';
-import NumericField from '@components/common/form/NumericField';
-import SelectField from '@components/common/form/SelectField';
-import TextField from '@components/common/form/TextField';
 import apiConfig from '@constants/apiConfig';
 import { statusOptions } from '@constants/masterData';
 import useAuth from '@hooks/useAuth';
 import useFetch from '@hooks/useFetch';
 import useTranslate from '@hooks/useTranslate';
-import { commonMessage } from '@locales/intl';
 import { showErrorMessage, showSucsessMessage } from '@services/notifyService';
-import { IconPlus, IconRecycle, IconTrash } from '@tabler/icons-react';
-import { IconMinus } from '@tabler/icons-react';
 import { formatMoney } from '@utils';
-import { Avatar, Button, Card, Col, Form, InputNumber, List, Modal, Row, Table, message } from 'antd';
-import React, { useCallback, useEffect, useState } from 'react';
+import { Avatar, Button, Card, List, Modal } from 'antd';
+import React, { useEffect, useState } from 'react';
 import { FormattedMessage, defineMessage } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
-import VirtualList from 'rc-virtual-list';
 
 const messages = defineMessage({
     copyRight: '{brandName} - © Copyright {year}. All Rights Reserved',
@@ -27,15 +17,9 @@ const messages = defineMessage({
 });
 
 const ListDetailsForm = ({ open, onCancel, detail, form, isEditing, orderId, state, dataOrder }) => {
-    const { profile } = useAuth();
-    const [cartItem, setCartItem] = useState([]);
     const [checkList, setCheckArray] = useState(false);
     const [skipFirstSubmit, setSkipFirstSubmit] = useState(true);
     const translate = useTranslate();
-    const statusValues = translate.formatKeys(statusOptions, ['label']);
-    const navigate = useNavigate();
-    const [imageUrl, setImageUrl] = useState(null);
-    const { execute: executeUpdate } = useFetch(apiConfig.address.update);
     const { execute: createTransaction, loading } = useFetch({
         ...apiConfig.transaction.create,
     });

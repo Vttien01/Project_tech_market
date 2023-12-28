@@ -1,14 +1,12 @@
-import notFoundImage from '@assets/images/bg_404.png';
-import React from 'react';
 import { useCurrency } from '@components/common/elements/Currency';
 import { storageKeys } from '@constants';
+import useAuth from '@hooks/useAuth';
 import useNotification from '@hooks/useNotification';
 import routes from '@routes';
 import { getData } from '@utils/localStorage';
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import useAuth from '@hooks/useAuth';
 
 const Dashboard = () => {
     const userKind = getData(storageKeys.kind);

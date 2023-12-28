@@ -1,21 +1,21 @@
-import BaseTable from '@components/common/table/BaseTable';
-import apiConfig from '@constants/apiConfig';
-import useListBase from '@hooks/useListBase';
-import { Button, Modal, Tag } from 'antd';
-import React, { useEffect, useState } from 'react';
 import { EyeOutlined, UserOutlined } from '@ant-design/icons';
 import AvatarField from '@components/common/form/AvatarField';
 import ListPage from '@components/common/layout/ListPage';
 import PageWrapper from '@components/common/layout/PageWrapper';
-import { AppConstants, categoryKind, DEFAULT_FORMAT, DEFAULT_TABLE_ITEM_SIZE } from '@constants';
+import BaseTable from '@components/common/table/BaseTable';
+import { AppConstants, DEFAULT_FORMAT, DEFAULT_TABLE_ITEM_SIZE, categoryKind } from '@constants';
+import apiConfig from '@constants/apiConfig';
 import { FieldTypes } from '@constants/formConfig';
 import { statusOptions } from '@constants/masterData';
 import useFetch from '@hooks/useFetch';
+import useListBase from '@hooks/useListBase';
 import useNotification from '@hooks/useNotification';
 import useTranslate from '@hooks/useTranslate';
 import { commonMessage } from '@locales/intl';
 import { convertUtcToLocalTime } from '@utils';
-import { defineMessages, FormattedMessage } from 'react-intl';
+import { Button, Modal, Tag } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { FormattedMessage, defineMessages } from 'react-intl';
 import styles from './index.module.scss';
 const message = defineMessages({
     objectName: 'news',

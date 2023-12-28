@@ -1,25 +1,20 @@
-import React from 'react';
 import {
     DollarCircleOutlined,
-    ShoppingCartOutlined,
-    ShoppingOutlined,
-    UserOutlined,
-    UngroupOutlined,
     RiseOutlined,
-    FallOutlined,
-    PlusOutlined,
+    ShoppingCartOutlined,
+    UngroupOutlined,
+    UserOutlined,
 } from '@ant-design/icons';
 import { Card, DatePicker, Space, Statistic, Table, Typography } from 'antd';
-import { useEffect, useState } from 'react';
-import { getCustomers, getInventory, getOrders, getRevenue } from '../API/index';
+import React, { useEffect, useState } from 'react';
 
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
-import { Bar } from 'react-chartjs-2';
-import useFetch from '@hooks/useFetch';
-import apiConfig from '@constants/apiConfig';
-import { formatDateString, formatMoney } from '@utils';
 import DateRangePickerField from '@components/common/form/DateRangePickerField';
 import { DATE_FORMAT_VALUE } from '@constants';
+import apiConfig from '@constants/apiConfig';
+import useFetch from '@hooks/useFetch';
+import { formatDateString, formatMoney } from '@utils';
+import { BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip } from 'chart.js';
+import { Bar } from 'react-chartjs-2';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 

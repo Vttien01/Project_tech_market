@@ -3,21 +3,17 @@ import React from 'react';
 import { accessRouteTypeEnum } from '@constants';
 import { Navigate, Outlet, useLocation, useParams } from 'react-router-dom';
 
-import routes from '.';
-import PublicLayout from '@modules/main/PublicLayout';
-import MainLayout from '@modules/main/MainLayout';
 import HasPermission from '@components/common/elements/HasPermission';
 import PageUnauthorized from '@components/common/page/unauthorized';
-import { navMenuConfig } from '@constants/menuConfig';
-import useValidatePermission from '@hooks/useValidatePermission';
+import MainLayout from '@modules/main/MainLayout';
+import PublicLayout from '@modules/main/PublicLayout';
 import PublicLayoutOther from '@modules/main/PublicLayoutOther';
+import routes from '.';
 const ValidateAccess = ({
     authRequire,
     component: Component,
     componentProps,
     isAuthenticated,
-    profile,
-    layout,
     permissions: routePermissions,
     onValidatePermissions,
     path,

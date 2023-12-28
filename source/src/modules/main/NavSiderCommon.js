@@ -1,16 +1,11 @@
 import React, { useMemo } from 'react';
 // import './index.css';
-import { LaptopOutlined, NotificationOutlined, UserOutlined, PhoneOutlined, TabletOutlined, ClockCircleOutlined } from '@ant-design/icons';
-import { Breadcrumb, Layout, Menu, theme } from 'antd';
-import Icon from '@ant-design/icons/lib/components/AntdIcon';
-import styles from './NavSiderCommon.module.scss';
-import { generatePath, matchPath, useLocation, useNavigate } from 'react-router-dom';
-import routes from '@routes';
+import { ClockCircleOutlined, LaptopOutlined, PhoneOutlined, TabletOutlined } from '@ant-design/icons';
 import useValidatePermission from '@hooks/useValidatePermission';
-import apiConfig from '@constants/apiConfig.js';
-import order from '@assets/icons/sort-descending.svg';
-import { IconClock12, IconHeading } from '@tabler/icons-react';
 import { IconHeadphones } from '@tabler/icons-react';
+import { Layout, Menu, theme } from 'antd';
+import { matchPath, useLocation, useNavigate } from 'react-router-dom';
+import styles from './NavSiderCommon.module.scss';
 
 const { Sider } = Layout;
 

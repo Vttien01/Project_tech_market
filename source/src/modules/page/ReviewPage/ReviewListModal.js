@@ -1,16 +1,14 @@
-import { Col, Spin, Modal, Row, Button, Rate, Progress } from 'antd';
-import React, { useState, useEffect } from 'react';
-import useNotification from '@hooks/useNotification';
-import { defineMessages } from 'react-intl';
-import { useIntl } from 'react-intl';
-import useTranslate from '@hooks/useTranslate';
+import { ArrowDownOutlined, StarFilled, UserOutlined } from '@ant-design/icons';
 import AvatarField from '@components/common/form/AvatarField';
-import useDisclosure from '@hooks/useDisclosure';
-import { convertUtcToLocalTime } from '@utils/index';
-import { StarFilled, UserOutlined, ArrowDownOutlined } from '@ant-design/icons';
-import { AppConstants, DEFAULT_FORMAT, DATE_FORMAT_VALUE } from '@constants';
-import ReviewModal from './ReviewModal';
+import { DEFAULT_FORMAT } from '@constants';
 import useAuth from '@hooks/useAuth';
+import useDisclosure from '@hooks/useDisclosure';
+import useTranslate from '@hooks/useTranslate';
+import { convertUtcToLocalTime } from '@utils/index';
+import { Button, Col, Modal, Progress, Rate, Row, Spin } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { defineMessages } from 'react-intl';
+import ReviewModal from './ReviewModal';
 import styles from './ReviewModal.module.scss';
 const messages = defineMessages({
     objectName: 'Đánh giá',

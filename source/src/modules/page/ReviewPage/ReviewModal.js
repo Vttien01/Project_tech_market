@@ -1,16 +1,15 @@
-import TextField from '@components/common/form/TextField';
-import { Col, Form, Modal, Row, Button, Rate } from 'antd';
-import React, { useEffect, useState } from 'react';
+import { UserOutlined } from '@ant-design/icons';
+import AvatarField from '@components/common/form/AvatarField';
 import { BaseForm } from '@components/common/form/BaseForm';
-import useNotification from '@hooks/useNotification';
-import { defineMessages } from 'react-intl';
-import useTranslate from '@hooks/useTranslate';
-import { AppConstants } from '@constants';
+import TextField from '@components/common/form/TextField';
 import apiConfig from '@constants/apiConfig';
 import useFetch from '@hooks/useFetch';
-import AvatarField from '@components/common/form/AvatarField';
-import { UserOutlined } from '@ant-design/icons';
+import useNotification from '@hooks/useNotification';
+import useTranslate from '@hooks/useTranslate';
 import { showErrorMessage } from '@services/notifyService';
+import { Button, Col, Form, Modal, Rate, Row } from 'antd';
+import React, { useState } from 'react';
+import { defineMessages } from 'react-intl';
 
 const messages = defineMessages({
     objectName: 'Thêm đánh giá',

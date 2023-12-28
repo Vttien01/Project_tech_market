@@ -1,14 +1,14 @@
-import { Card, Col, Row } from 'antd';
-import React, { useEffect, useState } from 'react';
-import useBasicForm from '@hooks/useBasicForm';
-import TextField from '@components/common/form/TextField';
-import { defineMessages } from 'react-intl';
-import useTranslate from '@hooks/useTranslate';
-import { commonMessage } from '@locales/intl';
 import { BaseForm } from '@components/common/form/BaseForm';
 import SelectField from '@components/common/form/SelectField';
+import TextField from '@components/common/form/TextField';
 import { formSize, statusOptions } from '@constants/masterData';
 import timezone from '@constants/timezone.json';
+import useBasicForm from '@hooks/useBasicForm';
+import useTranslate from '@hooks/useTranslate';
+import { commonMessage } from '@locales/intl';
+import { Card, Col, Row } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { defineMessages } from 'react-intl';
 
 const message = defineMessages({
     objectName: 'setting',

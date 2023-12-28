@@ -1,13 +1,13 @@
+import { ClearOutlined } from '@ant-design/icons';
 import apiConfig from '@constants/apiConfig';
 import useFetch from '@hooks/useFetch';
+import { IconSearch } from '@tabler/icons-react';
+import { Avatar, Button, Select, Space, Typography } from 'antd';
 import React, { useEffect, useState } from 'react';
-import { Await, Navigate, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { defineMessages } from 'react-intl';
-import { Avatar, Button, Card, Divider, Input, Result, Select, Space, Spin, Statistic, Tag, Typography } from 'antd';
+import { useNavigate } from 'react-router-dom';
 import './SearchBox.scss';
 import useFetchDataHook from './useFetchDataHook';
-import { ClearOutlined } from '@ant-design/icons';
-import { IconSearch } from '@tabler/icons-react';
 const { Option } = Select;
 
 const message = defineMessages({

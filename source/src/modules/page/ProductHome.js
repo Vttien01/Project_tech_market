@@ -1,11 +1,7 @@
-import React, { useState } from 'react';
 import NavSiderCommon from '@modules/main/NavSiderCommon';
+import React, { useState } from 'react';
 import Products from './Components/Product';
-import { Route, Routes, generatePath } from 'react-router-dom';
-import styles from '../main/MainLayout.module.scss';
 import './Product.css';
-import PageWrapper from '@components/common/layout/PageWrapper';
-import routes from '@routes';
 
 const ProductHome = () => {
     const [collapsed, setCollapsed] = useState(false);

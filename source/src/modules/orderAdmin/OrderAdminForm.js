@@ -1,30 +1,23 @@
-import AutoCompleteField from '@components/common/form/AutoCompleteField';
 import { BaseForm } from '@components/common/form/BaseForm';
 import DatePickerField from '@components/common/form/DatePickerField';
+import InputTextField from '@components/common/form/InputTextField';
 import SelectField from '@components/common/form/SelectField';
 import TextField from '@components/common/form/TextField';
-import { AppConstants, DATE_FORMAT_DISPLAY, DATE_FORMAT_VALUE, DEFAULT_FORMAT, paymentSelect } from '@constants';
+import { DATE_FORMAT_DISPLAY, DATE_FORMAT_VALUE, DEFAULT_FORMAT } from '@constants';
 import apiConfig from '@constants/apiConfig';
-import useBasicForm from '@hooks/useBasicForm';
-import useFetch from '@hooks/useFetch';
-import { formatDateString } from '@utils';
-import { Card, Col, Form, Row, notification } from 'antd';
-import dayjs from 'dayjs';
-import moment from 'moment';
-import React, { useEffect, useState } from 'react';
-import { FormattedMessage } from 'react-intl';
 import {
-    formSize,
-    orderStateOption,
     orderStateValue,
     paidOptions,
     paymentOptions,
-    statusOptions,
 } from '@constants/masterData';
+import useBasicForm from '@hooks/useBasicForm';
+import useFetch from '@hooks/useFetch';
 import useTranslate from '@hooks/useTranslate';
-import NumericField from '@components/common/form/NumericField';
-import CropImageField from '@components/common/form/CropImageField';
-import InputTextField from '@components/common/form/InputTextField';
+import { formatDateString } from '@utils';
+import { Card, Col, Row } from 'antd';
+import dayjs from 'dayjs';
+import React, { useEffect, useState } from 'react';
+import { FormattedMessage } from 'react-intl';
 
 const OrderAdminForm = (props) => {
     const { formId, actions, onSubmit, dataDetail, setIsChangedFormValues, isEditing } = props;

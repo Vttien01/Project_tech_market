@@ -1,30 +1,21 @@
+import { PlusOutlined } from '@ant-design/icons';
+import AutoCompleteField from '@components/common/form/AutoCompleteField';
 import { BaseForm } from '@components/common/form/BaseForm';
-import DatePickerField from '@components/common/form/DatePickerField';
-import NumericField from '@components/common/form/NumericField';
+import CropImageField from '@components/common/form/CropImageField';
 import SelectField from '@components/common/form/SelectField';
 import TextField from '@components/common/form/TextField';
-import { AppConstants, DATE_FORMAT_DISPLAY, DATE_FORMAT_VALUE, DEFAULT_FORMAT } from '@constants';
+import apiConfig from '@constants/apiConfig';
 import { statusOptions } from '@constants/masterData';
 import useBasicForm from '@hooks/useBasicForm';
 import useDisclosure from '@hooks/useDisclosure';
-import useTranslate from '@hooks/useTranslate';
-import { formatDateString } from '@utils';
-import { Button, Card, Col, Row, Flex, Modal, Form } from 'antd';
-import dayjs from 'dayjs';
-import React, { useCallback, useEffect, useState } from 'react';
-import { FormattedMessage } from 'react-intl';
-import { useLocation } from 'react-router-dom';
-import ListDetailsForm from './ListDetailsForm';
-import { setData } from '@utils/localStorage';
-import ListDetailsTable from './ListDetailsTable';
-import { PlusOutlined } from '@ant-design/icons';
-import Title from 'antd/es/typography/Title';
-import { defineMessages } from 'react-intl';
-import RichTextField, { insertBaseURL, removeBaseURL } from '@components/common/form/RichTextField';
 import useFetch from '@hooks/useFetch';
-import apiConfig from '@constants/apiConfig';
-import AutoCompleteField from '@components/common/form/AutoCompleteField';
-import CropImageField from '@components/common/form/CropImageField';
+import useTranslate from '@hooks/useTranslate';
+import { Button, Card, Col, Flex, Form, Modal, Row } from 'antd';
+import Title from 'antd/es/typography/Title';
+import React, { useCallback, useEffect, useState } from 'react';
+import { FormattedMessage, defineMessages } from 'react-intl';
+import ListDetailsForm from './ListDetailsForm';
+import ListDetailsTable from './ListDetailsTable';
 
 const messages = defineMessages({
     objectName: 'Sản phẩm',

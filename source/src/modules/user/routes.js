@@ -1,11 +1,11 @@
 import apiConfig from '@constants/apiConfig';
+import { commonMessage } from '@locales/intl';
 import UserAdminListPage from '.';
 import UserAdminSavePage from './UserAdminSavePage';
-import UserListPage from './users';
-import UserSavePage from './users/UserSavePage';
-import { commonMessage } from '@locales/intl';
 import AddressListPage from './address';
 import AddressSavePage from './address/AddressSavePage';
+import UserListPage from './users';
+import UserSavePage from './users/UserSavePage';
 const paths = {
     adminsListPage: '/admins',
     adminsSavePage: '/admins/:id',
@@ -25,7 +25,7 @@ export default {
         permission: [apiConfig.account.getList.baseURL],
         pageOptions: {
             objectName: commonMessage.admins,
-            renderBreadcrumbs: (messages, t, title, options = {}) => {
+            renderBreadcrumbs: (messages, t = {}) => {
                 return [{ breadcrumbName: t.formatMessage(messages.userAdmin) }];
             },
         },
@@ -39,7 +39,7 @@ export default {
         pageOptions: {
             objectName: commonMessage.admins,
             listPageUrl: paths.adminsListPage,
-            renderBreadcrumbs: (messages, t, title, options = {}) => {
+            renderBreadcrumbs: (messages, t, title = {}) => {
                 return [
                     { breadcrumbName: t.formatMessage(messages.userAdmin), path: paths.adminsListPage },
                     { breadcrumbName: title },
@@ -57,7 +57,7 @@ export default {
         permission: [apiConfig.user.getList.baseURL],
         pageOptions: {
             objectName: commonMessage.adminsLeader,
-            renderBreadcrumbs: (messages, t, title, options = {}) => {
+            renderBreadcrumbs: (messages, t = {}) => {
                 return [{ breadcrumbName: t.formatMessage(messages.userAdminLeader) }];
             },
         },
@@ -71,7 +71,7 @@ export default {
         pageOptions: {
             objectName: commonMessage.adminsLeader,
             listPageUrl: paths.adminsLeaderListPage,
-            renderBreadcrumbs: (messages, t, title, options = {}) => {
+            renderBreadcrumbs: (messages, t, title = {}) => {
                 return [
                     { breadcrumbName: t.formatMessage(messages.userAdminLeader), path: paths.adminsLeaderListPage },
                     { breadcrumbName: title },
@@ -89,7 +89,7 @@ export default {
         permission: [apiConfig.user.getList.baseURL],
         pageOptions: {
             objectName: commonMessage.user,
-            renderBreadcrumbs: (messages, t, title, options = {}) => {
+            renderBreadcrumbs: (messages, t = {}) => {
                 return [{ breadcrumbName: t.formatMessage(messages.user) }];
             },
         },
@@ -103,7 +103,7 @@ export default {
         pageOptions: {
             objectName: commonMessage.user,
             listPageUrl: paths.userListPage,
-            renderBreadcrumbs: (messages, t, title, options = {}) => {
+            renderBreadcrumbs: (messages, t, title = {}) => {
                 return [
                     { breadcrumbName: t.formatMessage(messages.user), path: paths.userListPage },
                     { breadcrumbName: title },
@@ -118,7 +118,7 @@ export default {
         permission: [apiConfig.address.getList.baseURL],
         pageOptions: {
             objectName: commonMessage.address,
-            renderBreadcrumbs: (messages, t, title, options = {}) => {
+            renderBreadcrumbs: (messages, t = {}) => {
                 return [
                     { breadcrumbName: t.formatMessage(messages.user), path: paths.userListPage },
                     { breadcrumbName: t.formatMessage(messages.address) },
@@ -135,7 +135,7 @@ export default {
         pageOptions: {
             objectName: commonMessage.address,
             listPageUrl: paths.personInfo,
-            renderBreadcrumbs: (messages, t, title, options = {}) => {
+            renderBreadcrumbs: ( t, title = {}) => {
                 return [
                     { breadcrumbName: title },
                 ];

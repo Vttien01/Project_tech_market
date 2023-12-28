@@ -1,24 +1,21 @@
-import PageNotFound from '@components/common/page/PageNotFound';
 import PageNotAllowed from '@components/common/page/PageNotAllowed';
-import LoginPage from '@modules/login/index';
+import PageNotFound from '@components/common/page/PageNotFound';
+import BrandRoutes from '@modules/brand/routes';
 import Dashboard from '@modules/entry';
-import ProfilePage from '@modules/profile/index';
-import adminsRoutes from '@modules/user/routes';
-import newsRoutes from '@modules/news/routes';
-import nationRoutes from '@modules/nation/routes';
 import GroupPermissionListPage from '@modules/groupPermission';
 import PermissionSavePage from '@modules/groupPermission/PermissionSavePage';
 import SettingListPage from '@modules/listSetting';
 import SettingSavePage from '@modules/listSetting/SettingSavePage';
-import ProductHomePageRoutes from '@modules/page/routes';
-import BrandRoutes from '@modules/brand/routes';
-import ProductRoutes from '@modules/product/routes';
-import SignupPage from '@modules/signup';
-import ProfileForm from '@modules/profileUser/ProfileForm';
-import ProfileUserPage from '@modules/profileUser/ProfileUserSavePage';
-import PersonInfo from '@modules/profileUser/PersonInfo';
+import LoginPage from '@modules/login/index';
+import nationRoutes from '@modules/nation/routes';
+import newsRoutes from '@modules/news/routes';
 import OrderAdmin from '@modules/orderAdmin/routes';
+import ProductHomePageRoutes from '@modules/page/routes';
+import ProductRoutes from '@modules/product/routes';
+import ProfilePage from '@modules/profile/index';
 import ProfileUser from '@modules/profileUser/routes';
+import SignupPage from '@modules/signup';
+import adminsRoutes from '@modules/user/routes';
 
 /*
 	auth

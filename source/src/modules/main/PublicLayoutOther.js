@@ -1,12 +1,10 @@
-import React, { useState } from 'react';
 import { Layout } from 'antd';
+import React, { useState } from 'react';
 
-import NavSider from './NavSider';
-import AppHeader from './AppHeader';
 import AppFooter from './AppFooter';
+import AppHeader from './AppHeader';
 
 import styles from './MainLayout.module.scss';
-import { brandName } from '@constants';
 
 const { Content, Footer } = Layout;
 

@@ -1,7 +1,7 @@
 // CardProduct.js
-import React from 'react';
-import { Badge, Card, Typography, Image } from 'antd';
 import { formatMoney } from '@utils';
+import { Badge, Card, Image, Typography } from 'antd';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
 const CardProduct = ({ product, index }) => {

@@ -1,8 +1,8 @@
 import apiConfig from '@constants/apiConfig';
 import NewsListPage from '.';
+import NewsSavePage from './NewsSavePage';
 import CategoryListPage from './category';
 import CategorySavePage from './category/CategorySavePage';
-import NewsSavePage from './NewsSavePage';
 
 export default {
     newsListPage: {

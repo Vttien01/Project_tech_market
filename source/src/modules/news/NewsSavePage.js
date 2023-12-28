@@ -3,11 +3,11 @@ import { categoryKind } from '@constants';
 import apiConfig from '@constants/apiConfig';
 import useFetch from '@hooks/useFetch';
 import useSaveBase from '@hooks/useSaveBase';
+import useTranslate from '@hooks/useTranslate';
 import React, { useEffect } from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 import NewsForm from './NewsForm';
 import routes from './routes';
-import useTranslate from '@hooks/useTranslate';
 
 const message = defineMessages({
     objectName: 'news',

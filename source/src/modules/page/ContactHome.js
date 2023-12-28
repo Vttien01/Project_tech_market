@@ -1,12 +1,6 @@
-import React, { useState } from 'react';
-import './contact.css';
-import { Button, Card, Col, Image, Row, Space } from 'antd';
-import imgContact from '@assets/images/imgContact.png';
-import { BaseForm } from '@components/common/form/BaseForm';
-import { commonMessage } from '@locales/intl';
-import TextField from '@components/common/form/TextField';
 import useTranslate from '@hooks/useTranslate';
-import { FormattedMessage } from 'react-intl';
+import React from 'react';
+import './contact.css';
 
 const ContactHome = () => {
     const translate = useTranslate();

@@ -1,23 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import NavSiderCommon from '@modules/main/NavSiderCommon';
-import styles from '../../main/MainLayout.module.scss';
-import './home.css';
-import { Carousel, Row, Col, Image, Radio, Flex, List, Card } from 'antd';
-import { Button, Space } from 'antd';
-import banner1 from '@assets/images/HomePage/banner1.jpg';
 import banner2 from '@assets/images/HomePage/banner2.jpg';
 import banner3 from '@assets/images/HomePage/banner3.jpg';
 import banner4 from '@assets/images/HomePage/banner4.jpg';
 import banner5 from '@assets/images/HomePage/slider-banner1.jpg';
 import banner6 from '@assets/images/HomePage/slider-banner2.jpg';
 import banner7 from '@assets/images/HomePage/slider-banner3.jpg';
-import { useParams } from 'react-router-dom';
-const positionOptions = ['top', 'bottom', 'both'];
-import { AddToCard, getAllProduct, getProductsByCategory } from '../Components/API/index';
-import ProductList from '@components/ProductList/ProductList';
 import ProductGird from '@components/ProductGird/ProductGrid';
-import useFetch from '@hooks/useFetch';
+import ProductList from '@components/ProductList/ProductList';
 import apiConfig from '@constants/apiConfig';
+import useFetch from '@hooks/useFetch';
+import NavSiderCommon from '@modules/main/NavSiderCommon';
+import { Carousel, Col, Image, Row, Space } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { getAllProduct, getProductsByCategory } from '../Components/API/index';
+import './home.css';
 
 window.onload = function () {};
 

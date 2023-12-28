@@ -21,4 +21,4 @@ const showWarningMessage = (content, translate) => {
     });
 };
 
-export { showErrorMessage, showWarningMessage, showSucsessMessage };
+export { showErrorMessage, showSucsessMessage, showWarningMessage };

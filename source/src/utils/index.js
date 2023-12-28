@@ -38,7 +38,6 @@ export const formatMoney = (value, setting = {}) => {
         const currentcy = setting.currentcy || '€';
         const currentcyPosition = setting.currentcyPosition || CurrentcyPositions.BACK;
         value = setting.currentDecimal ? (+value).toFixed(setting.currentDecimal) : (+value).toFixed(2);
-        // value = (+value).toFixed(0);
         const decimalPosition = value.toString().indexOf('.');
         if (decimalPosition > 0) {
             const intVal = value.toString().substring(0, decimalPosition);
@@ -111,7 +110,7 @@ export const getYoutubeVideoID = (url) => {
     return pattern.exec(url)?.[3];
 };
 
-export const formatNumber = (value, setting) => {
+export const formatNumber = ( value ) => {
     if (value) {
         const decimalPosition = value.toString().indexOf('.');
         if (decimalPosition > 0) {

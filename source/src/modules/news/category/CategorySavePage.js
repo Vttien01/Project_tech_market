@@ -1,9 +1,8 @@
 import CategorySavePageCommon from '@components/common/page/category/CategorySavePageCommon';
 import { categoryKind } from '@constants';
 import React from 'react';
-import { useIntl } from 'react-intl';
+import { defineMessages, useIntl } from 'react-intl';
 import routes from '../routes';
-import { defineMessages } from 'react-intl';
 
 const message = defineMessages({
     home: 'Home',

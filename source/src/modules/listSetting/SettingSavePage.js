@@ -1,13 +1,13 @@
 import PageWrapper from '@components/common/layout/PageWrapper';
 import apiConfig from '@constants/apiConfig';
 import useSaveBase from '@hooks/useSaveBase';
-import React from 'react';
-import { useParams } from 'react-router-dom';
-import SettingForm from './SettingForm';
-import { defineMessages } from 'react-intl';
 import useTranslate from '@hooks/useTranslate';
 import { commonMessage } from '@locales/intl';
 import routes from '@routes';
+import React from 'react';
+import { defineMessages } from 'react-intl';
+import { useParams } from 'react-router-dom';
+import SettingForm from './SettingForm';
 
 const message = defineMessages({
     objectName: 'setting',

@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import styles from '../main/MainLayout.module.scss';
-import { Avatar, Badge, Button, Card, Col, Image, List, Row, Skeleton, Space, Typography } from 'antd';
 import { LikeOutlined, MessageOutlined, StarOutlined } from '@ant-design/icons';
+import { Avatar, Button, Card, List, Skeleton, Space, Typography } from 'antd';
+import React, { useEffect, useState } from 'react';
 import './Product.css';
 
 const { Meta } = Card;

@@ -1,64 +1,36 @@
 /* eslint-disable indent */
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import './OrderPage.scss';
-import { generatePath, useNavigate, useParams } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
 // import { fetchAsyncProductSingle, getProductSingle, getSingleProductStatus } from '../../store/productSlice';
-import { formatPrice } from '../../../utils/helpers';
 // import { addToCart, getCartMessageStatus, setCartMessageOff, setCartMessageOn } from '../../store/cartSlice';
 // import CartMessage from '../../components/CartMessage/CartMessage';
-import Loading from '@components/common/loading';
-import apiConfig from '@constants/apiConfig';
-import useFetch from '@hooks/useFetch';
-import { convertUtcToLocalTime, formatMoney } from '@utils';
 import { DeleteOutlined } from '@ant-design/icons';
+import PageWrapper from '@components/common/layout/PageWrapper';
+import { DATE_FORMAT_VALUE, DEFAULT_FORMAT } from '@constants';
+import apiConfig from '@constants/apiConfig';
+import { paidValues, paymentOptions } from '@constants/masterData';
+import useAuth from '@hooks/useAuth';
+import useDisclosure from '@hooks/useDisclosure';
+import useFetch from '@hooks/useFetch';
+import useTranslate from '@hooks/useTranslate';
 import {
     IconEdit,
-    IconEditCircle,
-    IconEditCircleOff,
-    IconMinus,
-    IconPlus,
-    IconPlusMinus,
-    IconHttpDelete,
-    IconRecycle,
-    IconTrash,
-    IconSearch,
 } from '@tabler/icons-react';
+import { convertUtcToLocalTime, formatMoney } from '@utils';
 import {
-    Button,
     Card,
-    Checkbox,
-    Divider,
     Form,
-    Input,
     Modal,
-    Popconfirm,
-    Result,
-    Space,
-    Steps,
     Table,
     Tabs,
     Tag,
     Tooltip,
-    Typography,
-    message,
     theme,
 } from 'antd';
-import axios from 'axios';
-import ListDetailsForm from './ListDetailsForm';
-import useDisclosure from '@hooks/useDisclosure';
-import PageWrapper from '@components/common/layout/PageWrapper';
-import routes from '@routes';
-import { LoadingOutlined, SmileOutlined, SolutionOutlined, StarFilled } from '@ant-design/icons';
-import { IconLoader } from '@tabler/icons-react';
 import { defineMessage } from 'react-intl';
-import { paidOptions, paidValues, paymentOptions, statusOptions } from '@constants/masterData';
-import useAuth from '@hooks/useAuth';
-import { showErrorMessage, showSucsessMessage } from '@services/notifyService';
-import useTranslate from '@hooks/useTranslate';
-import useListBase from '@hooks/useListBase';
-import { DATE_FORMAT_VALUE, DEFAULT_FORMAT, DEFAULT_TABLE_ITEM_SIZE, commonStatus } from '@constants';
-import ReviewListModal from '../ReviewPage/ReviewListModal';
+import ListDetailsForm from './ListDetailsForm';
 
 const decription = defineMessage({
     first: 'Kiểm tra số lượng sản phẩm',

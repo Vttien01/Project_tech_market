@@ -1,18 +1,16 @@
-import { AppConstants, DEFAULT_TABLE_ITEM_SIZE } from '@constants';
-import useListBase from '@hooks/useListBase';
-import React from 'react';
-import { UserOutlined, DeleteOutlined } from '@ant-design/icons';
-import PageWrapper from '@components/common/layout/PageWrapper';
+import { DeleteOutlined } from '@ant-design/icons';
 import ListPage from '@components/common/layout/ListPage';
+import PageWrapper from '@components/common/layout/PageWrapper';
 import BaseTable from '@components/common/table/BaseTable';
-import { statusOptions } from '@constants/masterData';
-import useTranslate from '@hooks/useTranslate';
-import { FieldTypes } from '@constants/formConfig';
+import { DEFAULT_TABLE_ITEM_SIZE } from '@constants';
 import apiConfig from '@constants/apiConfig';
+import { FieldTypes } from '@constants/formConfig';
+import { statusOptions } from '@constants/masterData';
+import useListBase from '@hooks/useListBase';
+import useTranslate from '@hooks/useTranslate';
+import { Button } from 'antd';
+import React from 'react';
 import { defineMessages } from 'react-intl';
-import { Button, Tag } from 'antd';
-import { commonMessage } from '@locales/intl';
-import { useParams } from 'react-router-dom';
 
 const message = defineMessages({
     objectName: 'Brand',

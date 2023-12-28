@@ -1,14 +1,12 @@
-import AutoCompleteField from '@components/common/form/AutoCompleteField';
 import { BaseForm } from '@components/common/form/BaseForm';
 import CropImageField from '@components/common/form/CropImageField';
-import NumericField from '@components/common/form/NumericField';
 import SelectField from '@components/common/form/SelectField';
 import TextField from '@components/common/form/TextField';
 import apiConfig from '@constants/apiConfig';
 import { statusOptions } from '@constants/masterData';
 import useFetch from '@hooks/useFetch';
 import useTranslate from '@hooks/useTranslate';
-import { Button, Card, Col, Modal, Row } from 'antd';
+import { Card, Col, Modal, Row } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 

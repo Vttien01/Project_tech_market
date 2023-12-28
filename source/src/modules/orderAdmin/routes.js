@@ -1,9 +1,7 @@
 import apiConfig from '@constants/apiConfig';
-import BrandListPage from '.';
-import BrandSavePage from './OrderAdminSavePage';
 import OrderAdminPage from '.';
-import OrderAdminSavePage from './OrderAdminSavePage';
 import DetailOrder from './DetailOrder';
+import OrderAdminSavePage from './OrderAdminSavePage';
 export default {
     OrderPageAdmin: {
         path: '/order-admin',

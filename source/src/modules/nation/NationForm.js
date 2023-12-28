@@ -1,13 +1,13 @@
-import { Card, Col, Form, Row, Space } from 'antd';
-import React, { useEffect, useState } from 'react';
-import useBasicForm from '@hooks/useBasicForm';
-import TextField from '@components/common/form/TextField';
-import SelectField from '@components/common/form/SelectField';
-import useTranslate from '@hooks/useTranslate';
-import { nationKindOptions, statusOptions } from '@constants/masterData';
-import { FormattedMessage } from 'react-intl';
 import { BaseForm } from '@components/common/form/BaseForm';
+import SelectField from '@components/common/form/SelectField';
+import TextField from '@components/common/form/TextField';
+import { nationKindOptions, statusOptions } from '@constants/masterData';
+import useBasicForm from '@hooks/useBasicForm';
+import useTranslate from '@hooks/useTranslate';
 import { commonMessage } from '@locales/intl';
+import { Card, Col, Row } from 'antd';
+import React, { useEffect } from 'react';
+import { FormattedMessage } from 'react-intl';
 
 const NationForm = ({ formId, actions, dataDetail, onSubmit, setIsChangedFormValues, isEditing }) => {
     const translate = useTranslate();

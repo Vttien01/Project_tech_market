@@ -1,13 +1,9 @@
 /* eslint-disable react/no-unknown-property */
-import React from 'react';
-import { UsergroupAddOutlined, ControlOutlined, InboxOutlined } from '@ant-design/icons';
+import { UsergroupAddOutlined } from '@ant-design/icons';
 import routes from '@routes';
+import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import apiConfig from './apiConfig';
-import product from "@assets/icons/building-factory.svg";
-import { Iconnews } from '@assets/icons/icon';
-import IconOrder from '@assets/icons/icon';
-import order from '@assets/icons/sort-descending.svg';
 
 export const navMenuConfig = [
     {

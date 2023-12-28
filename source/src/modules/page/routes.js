@@ -93,7 +93,7 @@ export default {
         component: DashboardPage,
         auth: true,
         title: 'Statistical Page',
-        // permissions: [apiConfig.order.create.baseURL, apiConfig.order.update.baseURL],
+        permissions: [apiConfig.revenue.getRevenue.baseURL, apiConfig.revenue.getRevenueOfEachProduct.baseURL, apiConfig.revenue.getRevenueMonth.baseURL],
     },
     EvaluatePage: {
         path: '/review',

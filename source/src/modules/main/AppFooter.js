@@ -1,34 +1,23 @@
-import React from 'react';
-import { Layout, Menu, Avatar, Space, Image, Input, Typography, Flex, Table, Row, Col } from 'antd';
 import {
-    DownOutlined,
     UserOutlined,
-    LoginOutlined,
-    MenuFoldOutlined,
-    MenuUnfoldOutlined,
-    UnorderedListOutlined,
-    ShoppingCartOutlined,
 } from '@ant-design/icons';
+import { Avatar, Col, Layout, Row, Space, Typography } from 'antd';
+import React from 'react';
 const { Footer } = Layout;
-const { Title, Text, Link } = Typography;
+const { Title, Text } = Typography;
 
-import styles from './AppFooter.module.scss';
-import useAuth from '@hooks/useAuth';
-import { useDispatch } from 'react-redux';
-import { accountActions } from '@store/actions';
-import useFetch from '@hooks/useFetch';
-import apiConfig from '@constants/apiConfig';
-import { removeCacheToken } from '@services/userService';
-import { useNavigate } from 'react-router-dom';
-import { AppConstants } from '@constants';
-import { defineMessages } from 'react-intl';
-import useTranslate from '@hooks/useTranslate';
+import facebook from '@assets/images/facebook.png';
 import footer1 from '@assets/images/footer1.png';
 import footer2 from '@assets/images/footer2.png';
-import facebook from '@assets/images/facebook.png';
+import footer_card from '@assets/images/footer4.png';
 import footer_hotline from '@assets/images/footer_hotline.png';
 import footer_ship from '@assets/images/footer_ship.png';
-import footer_card from '@assets/images/footer4.png';
+import useAuth from '@hooks/useAuth';
+import useTranslate from '@hooks/useTranslate';
+import { defineMessages } from 'react-intl';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import styles from './AppFooter.module.scss';
 
 import { brandName } from '@constants';
 
