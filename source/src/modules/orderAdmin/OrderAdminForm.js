@@ -5,11 +5,7 @@ import SelectField from '@components/common/form/SelectField';
 import TextField from '@components/common/form/TextField';
 import { DATE_FORMAT_DISPLAY, DATE_FORMAT_VALUE, DEFAULT_FORMAT } from '@constants';
 import apiConfig from '@constants/apiConfig';
-import {
-    orderStateValue,
-    paidOptions,
-    paymentOptions,
-} from '@constants/masterData';
+import { orderStateValue, paidOptions, paymentOptions } from '@constants/masterData';
 import useBasicForm from '@hooks/useBasicForm';
 import useFetch from '@hooks/useFetch';
 import useTranslate from '@hooks/useTranslate';
@@ -171,10 +167,10 @@ const OrderAdminForm = (props) => {
                             name="expectedDeliveryDate"
                             format={DATE_FORMAT_DISPLAY}
                             rules={[
-                                {
-                                    required: true,
-                                    message: 'Vui lòng chọn ngày giao hàng!',
-                                },
+                                // {
+                                //     required: true,
+                                //     message: 'Vui lòng chọn ngày giao hàng!',
+                                // },
                                 {
                                     validator: validateDueDate,
                                 },
@@ -187,7 +183,9 @@ const OrderAdminForm = (props) => {
                 <Row gutter={12}>
                     <Col span={12}>
                         <SelectField
-                            disabled={dataDetail?.state === 4}
+                            disabled={
+                                dataDetail?.state === 4 || (dataDetail?.paymentMethod === 1 && !dataDetail?.isPaid)
+                            }
                             defaultValue={orderStateFilter[0]}
                             name="state"
                             label={<FormattedMessage defaultMessage="Trạng thái đơn hàng" />}

@@ -31,8 +31,8 @@ const ListDetailsForm = ({ open, onCancel, detail, form, isEditing, orderId, sta
         ...apiConfig.transaction.create,
     });
     const [tableData, setTableData] = useState([]);
-    const isPaid = dataOrder.isPaid;
-    const paymentMethod = dataOrder.paymentMethod;
+    const isPaid = dataOrder?.isPaid;
+    const paymentMethod = dataOrder?.paymentMethod;
 
 
     // Kiểm tra xem itemCart có tồn tại không trước khi sử dụng map

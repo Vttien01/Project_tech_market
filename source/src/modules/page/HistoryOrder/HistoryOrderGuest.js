@@ -33,6 +33,7 @@ import {
 import Avatar from 'antd/es/avatar/avatar';
 import { defineMessage } from 'react-intl';
 import ListDetailsForm from './ListDetailsForm';
+import { showErrorMessage } from '@services/notifyService';
 const { Text } = Typography;
 let index = 0;
 
@@ -79,11 +80,20 @@ const HistoryOrderGuest = () => {
         ...apiConfig.orderDetail.getByPhoneAndOrder,
     });
 
+    function processString(value) {
+        // Sử dụng biểu thức chính quy để loại bỏ kí tự không phải chữ cái
+        const processedValue = value.replace(/[^a-zA-Z1-9]/g, '');
+
+        // processedValue giờ chỉ chứa các kí tự chữ cái từ a đến z hoặc A đến Z
+        return processedValue;
+      }
+
     const onSearch = (value, _e, info) => {
+        const output = processString(value.orderCode);
         // setSearch(value.orderCode);
-        if (value.orderCode !== '') {
+        if ( output !== '') {
             executeSearchOrder({
-                params: { orderCode: value.orderCode },
+                params: { orderCode: output },
                 onCompleted: (response) => {
                     // console.log(response.data.content);
                     if (response !== null) {
@@ -94,6 +104,9 @@ const HistoryOrderGuest = () => {
                     } else {
                         setCheckSearch(false);
                     }
+                },
+                onError: (error) => {
+                    showErrorMessage(error.message);
                 },
             });
         }

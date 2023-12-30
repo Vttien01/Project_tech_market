@@ -1,16 +1,18 @@
 import { DeleteOutlined } from '@ant-design/icons';
+import DatePickerField from '@components/common/form/DatePickerField';
 import ListPage from '@components/common/layout/ListPage';
 import PageWrapper from '@components/common/layout/PageWrapper';
 import BaseTable from '@components/common/table/BaseTable';
-import { DATE_FORMAT_VALUE, DEFAULT_FORMAT, DEFAULT_TABLE_ITEM_SIZE } from '@constants';
+import { DATE_FORMAT_DISPLAY, DATE_FORMAT_VALUE, DEFAULT_FORMAT, DEFAULT_TABLE_ITEM_SIZE } from '@constants';
 import apiConfig from '@constants/apiConfig';
 import { FieldTypes } from '@constants/formConfig';
 import { orderStateOption, paidValues, paymentOptions, statusOptions } from '@constants/masterData';
 import useListBase from '@hooks/useListBase';
 import useTranslate from '@hooks/useTranslate';
 import routes from '@routes';
-import { convertUtcToLocalTime, formatMoney } from '@utils';
-import { Button, Tag } from 'antd';
+import { convertUtcToLocalTime, formatDateString, formatMoney } from '@utils';
+import { Button, DatePicker, Tag } from 'antd';
+import { values } from 'lodash';
 import React from 'react';
 import { defineMessages } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
@@ -180,6 +182,10 @@ const OrderAdminPage = () => {
         mixinFuncs.renderActionColumn({ edit: true, delete: false }, { width: '60px' }),
     ];
 
+    const handleSearch = (date, dateString) => {
+        console.log(date);
+    };
+
     const searchFields = [
         {
             key: 'orderCode',
@@ -195,14 +201,17 @@ const OrderAdminPage = () => {
             type: FieldTypes.SELECT,
             options: orderStatetateValues,
         },
+        // {
+        //     key: 'createDate',
+        //     placeholder: 'Ngày đặt',
+        //     type: FieldTypes.DATE,
+        //     format: DATE_FORMAT_VALUE,
+        // },
     ];
     const breadRoutes = [{ breadcrumbName: translate.formatMessage(message.objectName) }];
 
     const handleFetchDetail = (id) => {
-        navigate(
-            routes.DetailOrderAdmin.path +
-                `?orderId=${id}`,
-        );
+        navigate(routes.DetailOrderAdmin.path + `?orderId=${id}`);
     };
 
     return (
@@ -225,7 +234,7 @@ const OrderAdminPage = () => {
                         loading={loading}
                         dataSource={data}
                         columns={columns}
-                        style={{ cursor:'pointer' }}
+                        style={{ cursor: 'pointer' }}
                     />
                 }
             />

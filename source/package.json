@@ -5,6 +5,7 @@
     "scripts": {
         "postinstall": "cd .. && husky install source/.husky",
         "start": "env-cmd -f ./env/.dev craco start",
+        "build": "env-cmd -f ./env/.dev craco build",
         "prebuild:dev": "rm -rf build",
         "build:dev": "env-cmd -f ./env/.dev craco build",
         "build:beta": "env-cmd -f ./env/.beta craco build",
