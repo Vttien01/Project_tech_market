@@ -1,3 +1,4 @@
+import { apiFrontend } from '@constants';
 import apiConfig from '@constants/apiConfig';
 import { statusOptions } from '@constants/masterData';
 import useAuth from '@hooks/useAuth';
@@ -63,8 +64,8 @@ const ListDetailsForm = ({ open, onCancel, detail, form, isEditing, orderId, sta
         createTransaction({
             data: {
                 orderId: orderId,
-                urlCancel: 'http://localhost:3000/my-order-fail',
-                urlSuccess: 'http://localhost:3000/my-order-success',
+                urlCancel: `${apiFrontend}my-order-fail`,
+                urlSuccess: `${apiFrontend}my-order-succes`,
             },
             onCompleted: (res) => {
                 window.location.href = res.data;

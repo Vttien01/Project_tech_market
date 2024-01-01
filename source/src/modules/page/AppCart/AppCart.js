@@ -2,7 +2,7 @@
 import { ShoppingCartOutlined } from '@ant-design/icons';
 import AutoCompleteField from '@components/common/form/AutoCompleteField';
 import SelectField from '@components/common/form/SelectField';
-import { paymentSelect } from '@constants';
+import { apiFrontend, paymentSelect } from '@constants';
 import apiConfig from '@constants/apiConfig';
 import useAuth from '@hooks/useAuth';
 import useFetch from '@hooks/useFetch';
@@ -143,8 +143,8 @@ const AppCart = () => {
                     createTransaction({
                         data: {
                             orderId: respone.data.orderId,
-                            urlCancel: 'http://localhost:3000/my-order-fail',
-                            urlSuccess: 'http://localhost:3000/my-order-success',
+                            urlCancel: `${apiFrontend}my-order-fail`,
+                            urlSuccess: `${apiFrontend}my-order-succes`,
                         },
                         onCompleted: (res) => {
                             window.location.href = res.data;

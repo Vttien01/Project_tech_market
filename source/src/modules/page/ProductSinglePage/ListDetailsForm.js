@@ -3,9 +3,10 @@ import { statusOptions } from '@constants/masterData';
 import useAuth from '@hooks/useAuth';
 import useFetch from '@hooks/useFetch';
 import useTranslate from '@hooks/useTranslate';
-import { showErrorMessage, showSucsessMessage } from '@services/notifyService';
+import routes from '@routes';
+import { showErrorMessage, showSucsessMessage, showWarningMessage } from '@services/notifyService';
 import { formatMoney } from '@utils';
-import { Form, InputNumber, Modal, Table } from 'antd';
+import { Button, Form, InputNumber, Modal, Table } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { FormattedMessage, defineMessage } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
@@ -16,7 +17,7 @@ const message = defineMessage({
     login: 'Đăng nhập',
 });
 
-const ListDetailsForm = ({ open, onCancel, data, form, itemCart, saleOff, nameProduct }) => {
+const ListDetailsForm = ({ open, onCancel, data, form, itemCart, saleOff, nameProduct, check, quantityBuyNow }) => {
     const { profile } = useAuth();
     const [cartItem, setCartItem] = useState([]);
     const [checkList, setCheckArray] = useState(false);
@@ -62,7 +63,11 @@ const ListDetailsForm = ({ open, onCancel, data, form, itemCart, saleOff, namePr
             // Nếu sản phẩm đã tồn tại trong giỏ hàng, tăng số lượng lên
             const updatedCart = cart.map((item) =>
                 item.id === product.id
-                    ? { ...item, quantity: item?.quantity + product.quantity, totalPriceSell: item?.totalPriceSell + product.totalPriceSell }
+                    ? {
+                        ...item,
+                        quantity: item?.quantity + product.quantity,
+                        totalPriceSell: item?.totalPriceSell + product.totalPriceSell,
+                    }
                     : item,
             );
             setCart(updatedCart);
@@ -78,8 +83,16 @@ const ListDetailsForm = ({ open, onCancel, data, form, itemCart, saleOff, namePr
     };
 
     const updateArray = () => {
-        setnewArray(itemCart ? itemCart.map((item) => ({ ...item, quantity: 0, productVariantId: item?.id,
-            productName: nameProduct })) : []);
+        setnewArray(
+            itemCart
+                ? itemCart.map((item) => ({
+                    ...item,
+                    quantity: 0,
+                    productVariantId: item?.id,
+                    productName: nameProduct,
+                }))
+                : [],
+        );
     };
 
     // Gọi hàm updateArray khi cần thiết, chẳng hạn trong useEffect hoặc một sự kiện nào đó.
@@ -140,15 +153,46 @@ const ListDetailsForm = ({ open, onCancel, data, form, itemCart, saleOff, namePr
         return parsedValue;
     };
 
+    const handleBuyNow = () => {
+        if (newArray[0]?.quantity === 0) {
+            showWarningMessage('Bạn phải chọn sản phẩm');
+        } else {
+            const data = newArray.map(item => ({ ...item, productName:nameProduct }));
+            navigate(routes.OderPage.path, {
+                state: { data: { ...newArray[0] } },
+            });
+        }
+        // console.log(33333);
+    };
+
     return (
         <Modal
             title={<FormattedMessage defaultMessage="Vui lòng chọn sản phẩm" />}
             open={open}
             onCancel={onCancel}
-            onOk={() => form.submit()}
+            // onOk={() => form.submit()}
             width={800}
+            footer={[
+                <Button key="cancel" onClick={onCancel}>
+                    Đóng
+                </Button>,
+                check === 1 && (
+                    <Button key="ok" type="primary" onClick={handleFinish}>
+                        Thêm vào giỏ hàng
+                    </Button>
+                ),
+                check === 2 && (
+                    <Button key="buyNow1" onClick={(e) => {
+                        e.stopPropagation();
+                        handleBuyNow();
+                        // handlerDetailsModal.open();
+                    }}>
+                        Thanh toán
+                    </Button>
+                ),
+            ]}
         >
-            <Form form={form} onFinish={handleFinish}>
+            <Form form={form}>
                 <Table
                     pagination={false}
                     onChange={(extra) => {

@@ -10,19 +10,13 @@ import useDisclosure from '@hooks/useDisclosure';
 import useFetch from '@hooks/useFetch';
 import useTranslate from '@hooks/useTranslate';
 import routes from '@routes';
-import {
-    IconEdit,
-} from '@tabler/icons-react';
-import {
-    Card,
-    Form,
-    Table,
-    Tabs,
-    Typography,
-    theme,
-} from 'antd';
+import { IconEdit, IconStarFilled } from '@tabler/icons-react';
+import { Avatar, Card, Divider, Form, List, Rate, Space, Table, Tabs, Tooltip, Typography, theme } from 'antd';
 import { defineMessage } from 'react-intl';
 import ListDetailsForm from './ListDetailsForm';
+import { convertUtcToLocalTime, formatMoney } from '@utils';
+import { DEFAULT_FORMAT } from '@constants';
+import { LikeOutlined, MessageOutlined, StarOutlined } from '@ant-design/icons';
 const { Text } = Typography;
 let index = 0;
 
@@ -40,62 +34,23 @@ const EvaluatePage = () => {
     const [openedDetailsModal, handlerDetailsModal] = useDisclosure(false);
     const [form] = Form.useForm();
     const translate = useTranslate();
-    const [item1, setItem1] = useState(null);
-    const stateValues = translate.formatKeys(paymentOptions, ['label']);
-    const onSearch = (value, _e, info) => {
-        <TableMyOrder search={value} />;
-    };
-    const renderTitle = (title, item) => (
-        <span>
-            {title}
-            <a
-                style={{
-                    float: 'right',
-                }}
-                onClick={() => handleEdit(item)}
-            >
-                <IconEdit size={17} />
-            </a>
-        </span>
-    );
-
-    const handleEdit = (item) => {
-        setItem1(item);
-        handlerDetailsModal.open();
-    };
 
     const { token } = theme.useToken();
-    const [current, setCurrent] = useState(0);
 
-    const [quantity, setQuantity] = useState(1);
+    const {
+        data: detail,
+        loading: loadingMyReview,
+        execute: executeMyReview,
+    } = useFetch(apiConfig.review.getMyReview, {
+        immediate: true,
+    });
 
-    const steps = [
-        {
-            label: `Chưa đánh giá`,
-            key: 1,
-            children: <TableMyOrder stateValues={stateValues} state={1} />,
-        },
-        {
-            label: `Đã đánh giá`,
-            key: 2,
-            children: <TableMyOrder stateValues={stateValues} state={2} />,
-        },
-    ];
-    const items = steps.map((item) => ({
-        label: item.label,
-        key: item.key,
-        children: item.children,
-    }));
-    const contentStyle = {
-        lineHeight: '260px',
-        textAlign: 'center',
-        color: token.colorTextTertiary,
-        backgroundColor: token.colorFillAlter,
-        borderRadius: token.borderRadiusLG,
-        border: `1px dashed ${token.colorBorder}`,
-        marginTop: 16,
-        width: 1100,
-    };
+    const IconText = ({ icon, text }) => (
+        <Space>
+            {React.createElement(icon)}
+            {text}
+        </Space>
+    );
 
     return (
         <div
@@ -111,15 +66,87 @@ const EvaluatePage = () => {
         >
             <PageWrapper
                 routes={[
-                    { breadcrumbName: 'Trang cá nhân', path:routes.PersonInfo.path },
+                    { breadcrumbName: 'Trang cá nhân', path: routes.PersonInfo.path },
                     { breadcrumbName: 'Đánh giá sản phẩm' },
                 ]}
                 // title={title}
-                style={{ backgroundColor:'#282a36' }}
+                style={{ backgroundColor: '#282a36' }}
             ></PageWrapper>
             <div style={{ flex: '1', justifyContent: 'center', minHeight: 600 }}>
-                <Card style={{ minHeight: 600, backgroundColor: '#d8dadd' }}>
-                    <Tabs defaultActiveKey="1" centered size="large" items={items} style={{ marginBottom: 20 }} />
+                <Card style={{ backgroundColor: '#d8dadd' }}>
+                    <Divider orientation="left" style={{ fontSize: 25 }}>
+                        Danh sách các đánh giá của người dùng
+                    </Divider>
+                    <List
+                        pagination={true}
+                        className="demo-loadmore-list"
+                        itemLayout="horizontal"
+                        dataSource={detail?.data}
+                        style={{ marginBottom: 10 }}
+                        renderItem={(item) => (
+                            <Card style={{ backgroundColor: '#eff0f1', marginTop: 10 }}>
+                                <List.Item
+                                    itemLayout="vertical"
+                                    key={item?.id}
+                                    actions={[
+                                        <IconText icon={StarOutlined} text="156" key="list-vertical-star-o" />,
+                                        <IconText icon={LikeOutlined} text="156" key="list-vertical-like-o" />,
+                                        <IconText icon={MessageOutlined} text="2" key="list-vertical-message" />,
+                                    ]}
+                                >
+                                    <List.Item.Meta
+                                        avatar={<Avatar src={item?.image} size={100} alt="" />}
+                                        title={
+                                            <a href="https://ant.design" style={{ fontSize: 25 }}>
+                                                {item?.productName}
+                                            </a>
+                                        }
+                                        description={
+                                            <div
+                                                style={{
+                                                    display: 'flex',
+                                                    justifyContent: 'center',
+                                                    flexDirection: 'column',
+                                                }}
+                                            >
+                                                <div style={{ flex: '1', justifyContent: 'center' }}>
+                                                    <Rate disabled allowHalf value={item?.star} />
+                                                </div>
+                                                <div style={{ flex: '1', justifyContent: 'center' }}>
+                                                    Màu: {item.color}
+                                                </div>
+                                                <div style={{ flex: '1', justifyContent: 'center' }}>
+                                                    Ngày tạo: {''}
+                                                    <span>
+                                                        {convertUtcToLocalTime(
+                                                            item?.createdDate,
+                                                            DEFAULT_FORMAT,
+                                                            DEFAULT_FORMAT,
+                                                        )}
+                                                    </span>
+                                                </div>
+                                                <div style={{ flex: '1', justifyContent: 'center' }}>
+                                                    <Typography.Paragraph
+                                                        ellipsis={{ rows: 2, expandable: true, symbol: 'more' }}
+                                                        style={{ fontSize: 18 }}
+                                                    >
+                                                        Nội dung: {item?.message}
+                                                    </Typography.Paragraph>
+                                                </div>
+                                            </div>
+                                        }
+                                    />
+                                    {/* <div>
+                                        {
+                                            <Tooltip title="Đánh giá sản phẩm">
+                                                <Rate disabled allowHalf value={item?.star} />
+                                            </Tooltip>
+                                        }
+                                    </div> */}
+                                </List.Item>
+                            </Card>
+                        )}
+                    />
                 </Card>
             </div>
         </div>
@@ -135,7 +162,6 @@ function TableMyOrder({ stateValues, state, search }) {
     const [dataOrder, setDataOrder] = useState({});
     // const [state, setState] = useState(null);
     const isPaidValues = translate.formatKeys(paidValues, ['label']);
-
 
     const {
         data: myOrder,
@@ -198,7 +224,6 @@ function TableMyOrder({ stateValues, state, search }) {
             },
         ];
 
-
         return items;
     };
 
@@ -230,7 +255,7 @@ function TableMyOrder({ stateValues, state, search }) {
                 columns={itemHeader()}
                 dataSource={myOrder}
                 bordered
-                style={{ cursor:'pointer' }}
+                style={{ cursor: 'pointer' }}
             ></Table>
         </div>
     );

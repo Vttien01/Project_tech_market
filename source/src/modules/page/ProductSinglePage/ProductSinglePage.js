@@ -18,19 +18,19 @@ import { convertUtcToLocalTime, formatMoney } from '@utils';
 import { Button, Card, Col, Form, Progress, Rate, Row, Space, Spin, Typography } from 'antd';
 import ListDetailsForm from './ListDetailsForm';
 import styles from './ReviewModal.module.scss';
+import useAuth from '@hooks/useAuth';
+import { showWarningMessage } from '@services/notifyService';
 
 const ProductSinglePage = () => {
     const { id } = useParams();
     const { pathname: pagePath } = useLocation();
     const [visibleItems, setVisibleItems] = useState(10);
-    // console.log(pagePath);
-    // console.log(id);
     const dispatch = useDispatch();
     const queryParameters = new URLSearchParams(window.location.search);
     const [detail, setDetail] = useState([]);
     const [openedDetailsModal, handlerDetailsModal] = useDisclosure(false);
     const [form] = Form.useForm();
-    const maxLines = 7;
+    const { profile } = useAuth();
     // const productId = queryParameters.get('productId');
     // const productId = useParams();
 
@@ -39,6 +39,7 @@ const ProductSinglePage = () => {
     // const cartMessageStatus = useSelector(getCartMessageStatus);
     const [quantity, setQuantity] = useState(1);
     const [isLoadingMore, setIsLoadingMore] = useState(false);
+    const [check, setCheck] = useState();
     const {
         data: product,
         loading: allproductsLoading,
@@ -61,12 +62,10 @@ const ProductSinglePage = () => {
                 // executeGetProfile();
                 // window.location.reload();
                 setDetail(res.data);
-                console.log(res.data);
             },
             onError: (error) => {
                 // showErrorMessage(translate.formatMessage(message.loginFail));
                 // form.resetFields();
-                console.log(error);
             },
         });
     }, [id]);
@@ -184,6 +183,17 @@ const ProductSinglePage = () => {
         }
     }, [open]);
 
+    const handleBuyNow = () => {
+        console.log(22222222222);
+        if(profile) {
+            handlerDetailsModal.open();
+        }
+        else
+        {
+            showWarningMessage("Bạn phải đăng nhập để sử dụng chức năng này!");
+        }
+    };
+
     return (
         <div className="con1 py-4 bg-whitesmoke" style={{ display: 'flex', justifyContent: 'center' }}>
             <PageWrapper
@@ -196,7 +206,8 @@ const ProductSinglePage = () => {
                     onCancel={() => handlerDetailsModal.close()}
                     form={form}
                     itemCart={product?.listProductVariant}
-                    quantity={quantity}
+                    quantityBuyNow={quantity}
+                    check={check}
                     saleOff={product?.saleOff !== 0 ? product?.saleOff : 0}
                     nameProduct={product?.name}
                 />
@@ -343,7 +354,7 @@ const ProductSinglePage = () => {
                                 )}
 
                                 <div className="qty flex align-center my-4">
-                                    <div className="qty-text">Quantity:</div>
+                                    {/* <div className="qty-text">Quantity:</div>
                                     <div className="qty-change flex align-center mx-3">
                                         <button
                                             type="button"
@@ -362,7 +373,7 @@ const ProductSinglePage = () => {
                                             <i className="fas fa-plus"></i>
                                             <IconPlus />
                                         </button>
-                                    </div>
+                                    </div> */}
                                     {product?.stock === 0 ? (
                                         <div className="qty-error text-uppercase bg-danger text-white fs-12 ls-1 mx-2 fw-5">
                                             out of stock
@@ -378,7 +389,9 @@ const ProductSinglePage = () => {
                                         <i className="fas fa-shopping-cart"></i>
                                         <span
                                             className="btn-text mx-2"
-                                            onClick={() => {
+                                            onClick={(e) => {
+                                                setCheck(1);
+                                                e.stopPropagation();
                                                 handlerDetailsModal.open();
                                             }}
                                         >
@@ -386,7 +399,12 @@ const ProductSinglePage = () => {
                                         </span>
                                     </button>
                                     <button type="button" className="buy-now btn mx-3">
-                                        <span className="btn-text">Mua ngay</span>
+                                        <span className="btn-text" onClick={(e) => {
+                                                setCheck(2);
+                                                e.stopPropagation();
+                                                handleBuyNow();
+                                                // handlerDetailsModal.open();
+                                            }}>Mua ngay</span>
                                     </button>
                                 </div>
                             </div>

@@ -11,6 +11,7 @@ import React, { useEffect, useState } from 'react';
 import { FormattedMessage, defineMessage } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 import ReviewListModal from '../ReviewPage/ReviewListModal';
+import { apiFrontend } from '@constants';
 
 const messages = defineMessage({
     copyRight: '{brandName} - © Copyright {year}. All Rights Reserved',
@@ -38,6 +39,7 @@ const ListDetailsForm = ({ open, onCancel, detail, form, isEditing, orderId, sta
     // Kiểm tra xem itemCart có tồn tại không trước khi sử dụng map
     const [newArray, setnewArray] = useState([]);
     const [orderDetailId, setOrderDetailId] = useState(null);
+    const [orderDetail, setOrderDetail] = useState({});
 
     const [cart, setCart] = useState([]);
     const [total, setTotal] = useState(0);
@@ -69,8 +71,8 @@ const ListDetailsForm = ({ open, onCancel, detail, form, isEditing, orderId, sta
         createTransaction({
             data: {
                 orderId: orderId,
-                urlCancel: 'http://localhost:3000/my-order-fail',
-                urlSuccess: 'http://localhost:3000/my-order-success',
+                urlCancel: `${apiFrontend}my-order-fail`,
+                urlSuccess: `${apiFrontend}my-order-succes`,
             },
             onCompleted: (res) => {
                 window.location.href = res.data;
@@ -184,6 +186,7 @@ const ListDetailsForm = ({ open, onCancel, detail, form, isEditing, orderId, sta
                                                 getListReview(item?.productId);
                                                 getStarReview(item?.productId);
                                                 setOrderDetailId(item?.id);
+                                                setOrderDetail(item);
                                                 e.stopPropagation();
                                                 handlersReviewModal.open();
                                             }}
@@ -204,6 +207,7 @@ const ListDetailsForm = ({ open, onCancel, detail, form, isEditing, orderId, sta
                 star={starData}
                 // loading={dataListLoading || starDataLoading || loadingData}
                 width={800}
+                orderDetail={orderDetail}
                 checkReivew={checkReivew}
             />
         </Modal>

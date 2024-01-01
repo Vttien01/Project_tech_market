@@ -1,4 +1,5 @@
 REACT_APP_API = https://tech-market.space/
+REACT_APP_FRONTEND = https://project-tech-market-v2.vercel.app/
 REACT_APP_ENV = beta
 GENERATE_SOURCEMAP = false
 CI = false

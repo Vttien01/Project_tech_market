@@ -7,7 +7,7 @@ import useFetch from '@hooks/useFetch';
 import useTranslate from '@hooks/useTranslate';
 import { commonMessage } from '@locales/intl';
 import { showErrorMessage, showSucsessMessage } from '@services/notifyService';
-import { Button, Card, Col, Form, Input, Modal, Row } from 'antd';
+import { Button, Card, Col, Form, Input, Modal, Row, Statistic } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { FormattedMessage, defineMessage } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
@@ -24,7 +24,6 @@ const ListDetailsForm = ({ handleAddList, open, onCancel, data, isEditing, form,
     const statusValues = translate.formatKeys(statusOptions, ['label']);
     const navigate = useNavigate();
     const [idHash, setidHash] = useState('');
-    console.log(idHash);
     const [imageUrl, setImageUrl] = useState(null);
     const { execute: executeUpFile } = useFetch(apiConfig.file.upload);
     const { execute: executeRequestForgetPassword, loading: loadingRequestForgetPassword } = useFetch({
@@ -59,6 +58,8 @@ const ListDetailsForm = ({ handleAddList, open, onCancel, data, isEditing, form,
     const onChange = (id, item) => {
         form.setFieldValue('projectRoleId', item);
     };
+    const [secondsLeft, setSecondsLeft] = useState();
+    const [isCounting, setIsCounting] = useState(false);
 
     const handleGetOtp = () => {
         // Xử lý sự kiện khi người dùng click vào "Quên mật khẩu?"
@@ -77,7 +78,26 @@ const ListDetailsForm = ({ handleAddList, open, onCancel, data, isEditing, form,
                 // form.resetFields();
             },
         });
+        setIsCounting(!isCounting);
     };
+
+    useEffect(() => {
+        let timer;
+        // if (isCounting) {
+        timer = setInterval(() => {
+            setSecondsLeft((prevSeconds) => (prevSeconds > 0 ? prevSeconds - 1 : 0));
+        }, 1000);
+        // }
+
+        return () => {
+            clearInterval(timer);
+        };
+        // console.log(isCounting);
+    }, [isCounting]);
+
+    const formattedTime = `${Math.floor(secondsLeft / 60)
+        .toString()
+        .padStart(2, '0')}:${(secondsLeft % 60).toString().padStart(2, '0')}`;
     return (
         <Modal
             title={<FormattedMessage defaultMessage="Đặt lại mật khẩu" />}
@@ -148,27 +168,31 @@ const ListDetailsForm = ({ handleAddList, open, onCancel, data, isEditing, form,
                             />
                         </Col>
                     </Row>
-                    <Form.Item label="OTP" extra="Vui lòng kiểm tra email!">
-                        <Row gutter={16}>
-                            <Col span={8}>
-                                <Form.Item
-                                    name="otp"
-                                    noStyle
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: 'Vui lòng nhập mã otp!',
-                                        },
-                                    ]}
+                    <Row gutter={24}>
+                        <Col span={12}>
+                            <InputTextField
+                                name="otp"
+                                placeholder="OTP"
+                                required
+                            />
+                        </Col>
+                        <Col span={12}>
+                            {secondsLeft > 1 ? (
+                                <Button><Statistic value={formattedTime} valueStyle={{ fontSize: 15, fontWeight: 500 }} /></Button>
+                            ) : (
+                                <Button
+                                    onClick={(e) => {
+                                        setSecondsLeft(40);
+                                        e.stopPropagation();
+                                        handleGetOtp();
+                                    }}
                                 >
-                                    <Input />
-                                </Form.Item>
-                            </Col>
-                            <Col span={12}>
-                                <Button onClick={handleGetOtp}>Lấy mã</Button>
-                            </Col>
-                        </Row>
-                    </Form.Item>
+                                    {/* {secondsLeft > 0 ? 'Lấy mã' : 'Gửi lại mã'} */}
+                                    Lấy mã
+                                </Button>
+                            )}
+                        </Col>
+                    </Row>
                 </Card>
             </BaseForm>
         </Modal>

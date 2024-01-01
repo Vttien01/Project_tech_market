@@ -23,7 +23,7 @@ const Product = ({ product }) => {
                     </div>
                     <div className="title py-2">{truncateText(product?.name, 40)}</div>
                     <div className="price flex align-center justify-center">
-                        {product?.discountedPrice ? (
+                        {product?.discountedPrice !== product?.price ? (
                             <>
                                 <span className="old-price" style={{ color:"#ff4d4f" }}>
                                     {formatMoney(

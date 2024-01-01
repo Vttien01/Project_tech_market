@@ -1,6 +1,7 @@
 import { commonMessage } from '@locales/intl';
 
 export const apiUrl = process.env.REACT_APP_API;
+export const apiFrontend = process.env.REACT_APP_FRONTEND;
 export const enableExposure = process.env.REACT_APP_ENABLE_EXPOSURE === 'true';
 
 export const fixedPath = {

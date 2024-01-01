@@ -48,8 +48,8 @@ const OrderAdminForm = (props) => {
         return Promise.resolve();
     };
     const validateDueDate = (_, value) => {
-        const { createdDate } = form.getFieldValue();
-        if (createdDate && value && value <= createdDate) {
+        const { createdDate, state } = form.getFieldValue();
+        if (createdDate && value && value <= createdDate && state !== 3) {
             return Promise.reject('Ngày giao hàng phải lớn hơn ngày đặt!');
         }
         return Promise.resolve();
@@ -93,6 +93,9 @@ const OrderAdminForm = (props) => {
         dataDetail.createdDate = dataDetail?.createdDate && dayjs(dataDetail?.createdDate, DATE_FORMAT_VALUE);
         dataDetail.expectedDeliveryDate =
             dataDetail?.expectedDeliveryDate && dayjs(dataDetail?.expectedDeliveryDate, DATE_FORMAT_VALUE);
+        if (!dataDetail?.expectedDeliveryDate) {
+            dataDetail.expectedDeliveryDate = dataDetail.createdDate;
+        }
         if (dataDetail) form.setFieldsValue({ ...dataDetail });
     }, [dataDetail]);
 
@@ -107,6 +110,7 @@ const OrderAdminForm = (props) => {
 
         return rules;
     };
+
     return (
         <BaseForm formId={formId} onFinish={handleSubmit} form={form} onValuesChange={onValuesChange}>
             <Card className="card-form" bordered={false}>
@@ -167,10 +171,10 @@ const OrderAdminForm = (props) => {
                             name="expectedDeliveryDate"
                             format={DATE_FORMAT_DISPLAY}
                             rules={[
-                                // {
-                                //     required: true,
-                                //     message: 'Vui lòng chọn ngày giao hàng!',
-                                // },
+                                {
+                                    required: true,
+                                    message: 'Vui lòng chọn ngày giao hàng!',
+                                },
                                 {
                                     validator: validateDueDate,
                                 },
