@@ -65,7 +65,7 @@ const ListDetailsForm = ({ open, onCancel, detail, form, isEditing, orderId, sta
             data: {
                 orderId: orderId,
                 urlCancel: `${apiFrontend}my-order-fail`,
-                urlSuccess: `${apiFrontend}my-order-succes`,
+                urlSuccess: `${apiFrontend}my-order-success`,
             },
             onCompleted: (res) => {
                 window.location.href = res.data;

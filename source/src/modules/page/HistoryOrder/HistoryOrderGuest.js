@@ -82,7 +82,7 @@ const HistoryOrderGuest = () => {
 
     function processString(value) {
         // Sử dụng biểu thức chính quy để loại bỏ kí tự không phải chữ cái
-        const processedValue = value.replace(/[^a-zA-Z1-9]/g, '');
+        const processedValue = value.replace(/[^a-zA-Z0-9]/g, '');
 
         // processedValue giờ chỉ chứa các kí tự chữ cái từ a đến z hoặc A đến Z
         return processedValue;

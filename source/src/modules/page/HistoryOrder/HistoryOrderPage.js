@@ -288,35 +288,7 @@ function TableMyOrder({ stateValues, state, search }) {
                 key: 'action',
                 align: 'center',
                 render: (_, record) => (
-                    // <Popconfirm
-                    //     title="Hủy đơn hàng"
-                    //     description="Bạn có chắc muốn hủy đơn hàng này?"
-                    //     onConfirm={(e) => {
-                    //         e.stopPropagation();
-                    //         showDeleteItemConfirm(record.id);
-                    //     }}
-                    //     // onCancel={cancel}
-                    //     okText="Xóa"
-                    //     cancelText="Hủy"
-                    // >
-                    //     <Button
-                    //         style={{
-                    //             padding: 3,
-                    //             display: 'table-cell',
-                    //             verticalAlign: 'middle',
-                    //             backgroundColor: '#e70d0d',
-                    //             fontWeight: 600,
-                    //             color: 'white',
-                    //             fontSize: 12,
-                    //         }}
-                    //         onClick={(e) => {
-                    //             e.stopPropagation();
-                    //             // handleCancelOrder(record.id);
-                    //         }}
-                    //     >
-                    //         HỦY ĐƠN HÀNG
-                    //     </Button>
-                    <Tooltip title="Xóa đơn hàng">
+                    <Tooltip title="Hủy đơn hàng">
                         <DeleteOutlined
                             style={{ color: 'red', fontSize: 20 }}
                             onClick={(e) => {

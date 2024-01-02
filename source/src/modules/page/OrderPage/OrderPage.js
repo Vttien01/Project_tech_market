@@ -156,7 +156,7 @@ const OrderPage = () => {
                         data: {
                             orderId: respone.data.orderId,
                             urlCancel: `${apiFrontend}my-order-fail`,
-                            urlSuccess: `${apiFrontend}my-order-succes`,
+                            urlSuccess: `${apiFrontend}my-order-success`,
                         },
                         onCompleted: (res) => {
                             window.location.href = res.data;

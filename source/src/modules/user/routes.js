@@ -6,6 +6,7 @@ import AddressListPage from './address';
 import AddressSavePage from './address/AddressSavePage';
 import UserListPage from './users';
 import UserSavePage from './users/UserSavePage';
+import routes from '@routes';
 const paths = {
     adminsListPage: '/admins',
     adminsSavePage: '/admins/:id',
@@ -14,7 +15,7 @@ const paths = {
     userListPage: '/user',
     userSavePage: '/user/:id',
     addressListPage:'/user/address',
-    personInfo:'/profile-user',
+    // personInfo:'/profile-user',
     addressSavePage: '/profile-user/address/:id',
 };
 export default {
@@ -134,7 +135,7 @@ export default {
         permission: [apiConfig.address.create.baseURL, apiConfig.address.update.baseURL],
         pageOptions: {
             objectName: commonMessage.address,
-            listPageUrl: paths.personInfo,
+            listPageUrl: "/profile-user",
             renderBreadcrumbs: ( t, title = {}) => {
                 return [
                     { breadcrumbName: title },

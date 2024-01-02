@@ -6,8 +6,9 @@ import useTranslate from '@hooks/useTranslate';
 import { commonMessage } from '@locales/intl';
 import React from 'react';
 import { defineMessages } from 'react-intl';
-import { useParams } from 'react-router-dom';
+import { generatePath, useParams } from 'react-router-dom';
 import AddressForm from './AddressForm';
+import routes from '@routes';
 
 const message = defineMessages({
     objectName: 'address',
@@ -41,11 +42,11 @@ const AddressSavePage = ({ pageOptions }) => {
                     address: data.address,
                 };
             };
-            // funcs.prepareCreateData = (data) => {
-            //     return {
-            //         ...data,
-            //     };
-            // };
+            funcs.prepareCreateData = (data) => {
+                return {
+                    ...data,
+                };
+            };
         },
     });
 
@@ -53,8 +54,13 @@ const AddressSavePage = ({ pageOptions }) => {
         <div style={{ width: 1500, display: 'flex', justifyContent: 'center' }}>
             <PageWrapper
                 loading={loading}
-                routes={pageOptions.renderBreadcrumbs(commonMessage, translate, title, { userId: userId })}
-            >
+                routes={[
+                    {
+                        breadcrumbName: 'Thông tin cá nhân',
+                        path: generatePath(routes.PersonInfo.path),
+                    },
+                    { breadcrumbName: 'Sửa địa chỉ' },
+                ]}>
                 <AddressForm
                     setIsChangedFormValues={setIsChangedFormValues}
                     dataDetail={detail ? detail : {}}

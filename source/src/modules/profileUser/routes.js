@@ -14,12 +14,12 @@ export default {
         auth: null,
         title: 'Sửa thông tin cá nhân',
     },
-    AddressInfoSavePage: {
-        path: '/profile-user/address/:id',
-        component: PersonInfo,
-        auth: null,
-        title: 'Sửa thông tin địa chỉ người dùng',
-    },
+    // AddressInfoSavePage: {
+    //     path: '/profile-user/address/:id',
+    //     component: PersonInfo,
+    //     auth: null,
+    //     title: 'Sửa thông tin địa chỉ người dùng',
+    // },
     // DetailOrderAdmin: {
     //     path: '/order-admin/detai-order',
     //     component: DetailOrder,
