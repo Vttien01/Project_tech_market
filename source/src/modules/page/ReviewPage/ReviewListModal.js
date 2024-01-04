@@ -51,7 +51,7 @@ const ReviewListModal = ({
             ratingCount[item.star - 1] += item.amount;
         }
     });
-    const averageRating = totalRatings > 0 ? (totalStars / totalRatings).toFixed(2) : 0;
+    const averageRating = totalRatings > 0 ? (totalStars / totalRatings).toFixed(1) : 0;
     const ratingPercentages = ratingCount.map((count) =>
         totalRatings > 0 ? Math.floor((count / totalRatings) * 100) : 0,
     );
