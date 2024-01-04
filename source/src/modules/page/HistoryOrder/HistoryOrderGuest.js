@@ -128,16 +128,6 @@ const HistoryOrderGuest = () => {
         key: item.key,
         children: item.children,
     }));
-    const contentStyle = {
-        lineHeight: '260px',
-        textAlign: 'center',
-        color: token.colorTextTertiary,
-        backgroundColor: token.colorFillAlter,
-        borderRadius: token.borderRadiusLG,
-        border: `1px dashed ${token.colorBorder}`,
-        marginTop: 16,
-        width: 1100,
-    };
 
     const renderPaymentStatusTag = (value, check) => {
         let state;
@@ -149,10 +139,10 @@ const HistoryOrderGuest = () => {
         }
         return (
             <Tag
-                color={state.color}
+                color={state?.color}
                 style={{ minWidth: 80, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
             >
-                <div style={{ padding: '3px 0px 3px 0px', fontSize: 14 }}>{state.label}</div>
+                <div style={{ padding: '3px 0px 3px 0px', fontSize: 14 }}>{state?.label}</div>
             </Tag>
         );
     };
@@ -285,16 +275,16 @@ const HistoryOrderGuest = () => {
                                                     color: 'gray',
                                                     children: 'Đơn hàng được duyệt',
                                                 },
-                                                {
-                                                    color: 'red',
-                                                    children: (
-                                                        <>
-                                                            <p>Solve initial network problems 1</p>
-                                                            <p>Solve initial network problems 2</p>
-                                                            <p>Solve initial network problems 3 2015-09-01</p>
-                                                        </>
-                                                    ),
-                                                },
+                                                // {
+                                                //     color: 'red',
+                                                //     children: (
+                                                //         <>
+                                                //             <p>Solve initial network problems 1</p>
+                                                //             <p>Solve initial network problems 2</p>
+                                                //             <p>Solve initial network problems 3 2015-09-01</p>
+                                                //         </>
+                                                //     ),
+                                                // },
                                                 {
                                                     color: '#00CCFF',
                                                     // dot: <SmileOutlined />,
@@ -396,9 +386,9 @@ function TableMyOrder({ stateValues, state, search }) {
                                             }}
                                         >
                                             <div style={{ flex: '1', justifyContent: 'center' }}>
-                                                Số lượng: {item.amount}
+                                                Số lượng: {item?.amount}
                                             </div>
-                                            <div style={{ flex: '1', justifyContent: 'center' }}>Màu: {item.color}</div>
+                                            <div style={{ flex: '1', justifyContent: 'center' }}>Màu: {item?.color}</div>
                                             <div style={{ flex: '1', justifyContent: 'center', fontSize: 20 }}>
                                                 {' '}
                                                 Tổng tiền:{' '}
@@ -413,9 +403,6 @@ function TableMyOrder({ stateValues, state, search }) {
                                         </div>
                                     }
                                 />
-                                {/* <div>
-                                    <IconTrash color="#f32020" />
-                                </div> */}
                             </List.Item>
                         </Card>
                     )}

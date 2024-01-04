@@ -80,7 +80,7 @@ export default {
         path: '/history-order',
         component: HistoryOrderPage,
         auth: null,
-        title: 'Đặt hàng thành công',
+        title: 'Lịch sử đơn hàng',
     },
     HistoryOrderGuest: {
         path: '/history-order-guest',

@@ -174,10 +174,10 @@ const OrderPage = () => {
                 } else {
                     showSucsessMessage('Đặt hàng thành công');
                     setCurrent(2);
-
                     setTimeout(() => {
                        navigate(routes.HistoryOrder.path);
-                    }, 2000);
+                        window.location.reload();
+                    }, 1500);
                 }
             },
             onError: (error) => {
