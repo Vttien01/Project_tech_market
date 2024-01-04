@@ -61,7 +61,13 @@ const ResultSuccess = () => {
             orderId  : orderId,
         },
         onCompleted: (respone) => {
+            if (profile) {
              navigate(routes.HistoryOrder.path);
+            }
+            else
+            {
+                navigate(routes.HomePage.path);
+            }
         },
       });
     }, []);

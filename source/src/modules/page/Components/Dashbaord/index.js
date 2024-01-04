@@ -64,9 +64,6 @@ function Dashboard() {
                 setInventory(response.data?.revenue);
             },
         });
-        // setOrders(dataOrder?.data?.totalElements);
-        // setRevenue(dataProduct?.data?.totalElements);
-        // setCustomers(dataUser?.data?.totalElements);
     }, []);
     const onChange = (date, dateString) => {
         // const startDate = formatDateString(date[0]?.$d, DATE_FORMAT_VALUE) + ' 00:00:00';
@@ -86,6 +83,7 @@ function Dashboard() {
             params: { startDate: startDate, endDate: endDate },
             onCompleted: (response) => {
                 setInventory(response.data?.revenue);
+                setOrders(response.data?.amount);
             },
         });
     }, [change]);

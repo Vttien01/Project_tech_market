@@ -37,6 +37,8 @@ const ListDetailsForm = ({ open, onCancel, data, form, idHash, email }) => {
         execute({
             data: { ...data },
             onCompleted: (res) => {
+                setSecondsLeft(300);
+                setIsCounting(false);
                 // setCacheAccessToken(res.access_token);
                 // executeGetProfile();
                 navigate('/login');
@@ -46,6 +48,8 @@ const ListDetailsForm = ({ open, onCancel, data, form, idHash, email }) => {
             onError: (error) => {
                 if (error.code === 'ERROR-ACCOUNT-0005' || error.code === 'ERROR-ACCOUNT-0006')
                     showErrorMessage('Vui lòng nhập mã khác!');
+                setSecondsLeft(300);
+                setIsCounting(false);
                 // console.log(error.code);
                 form.resetFields();
             },
@@ -65,10 +69,14 @@ const ListDetailsForm = ({ open, onCancel, data, form, idHash, email }) => {
             data: { ...data },
             onCompleted: (response) => {
                 <Alert message="OTP đã được gửi" description="Vui lòng kiểm tra email." type="success" showIcon />;
+                setSecondsLeft(300);
+                setIsCounting(true);
                 form.resetFields();
             },
             onError: (error) => {
                 showErrorMessage(error.message);
+                setSecondsLeft(300);
+                setIsCounting(false);
                 form.resetFields();
             },
         });
@@ -76,11 +84,11 @@ const ListDetailsForm = ({ open, onCancel, data, form, idHash, email }) => {
 
     useEffect(() => {
         let timer;
-        // if (isCounting) {
-        timer = setInterval(() => {
-            setSecondsLeft((prevSeconds) => (prevSeconds > 0 ? prevSeconds - 1 : 0));
-        }, 1000);
-        // }
+        if (isCounting) {
+            timer = setInterval(() => {
+                setSecondsLeft((prevSeconds) => (prevSeconds > 0 ? prevSeconds - 1 : 0));
+            }, 1000);
+        }
 
         return () => {
             clearInterval(timer);
@@ -91,6 +99,23 @@ const ListDetailsForm = ({ open, onCancel, data, form, idHash, email }) => {
     const formattedTime = `${Math.floor(secondsLeft / 60)
         .toString()
         .padStart(2, '0')}:${(secondsLeft % 60).toString().padStart(2, '0')}`;
+
+
+    const [loadings, setLoadings] = useState([]);
+    const enterLoading = (index) => {
+        setLoadings((prevLoadings) => {
+            const newLoadings = [...prevLoadings];
+            newLoadings[index] = true;
+            return newLoadings;
+        });
+        setTimeout(() => {
+            setLoadings((prevLoadings) => {
+                const newLoadings = [...prevLoadings];
+                newLoadings[index] = false;
+                return newLoadings;
+            });
+        }, 4000);
+    };
 
     return (
         <Modal
@@ -118,17 +143,30 @@ const ListDetailsForm = ({ open, onCancel, data, form, idHash, email }) => {
                                 </Form.Item>
                             </Col>
                             <Col span={12}>
-                                {secondsLeft > 1 ? (
+                                {isCounting && secondsLeft > 1 ? (
                                     <Button>
                                         <Statistic
                                             value={formattedTime}
                                             valueStyle={{ fontSize: 15, fontWeight: 500 }}
                                         />
+                                        <a
+                                            style={{ fontSize: 12, marginTop: 5 }}
+                                            onClick={(e) => {
+                                                setIsCounting(false);
+                                                setSecondsLeft(300);
+                                                enterLoading(0);
+                                                e.stopPropagation();
+                                                handleGetOtp();
+                                            }}
+                                        >
+                                            Gửi lại OTP
+                                        </a>
                                     </Button>
                                 ) : (
                                     <Button
+                                        loading={loadings[0]}
                                         onClick={(e) => {
-                                            setSecondsLeft(40);
+                                            enterLoading(0);
                                             e.stopPropagation();
                                             handleGetOtp();
                                         }}

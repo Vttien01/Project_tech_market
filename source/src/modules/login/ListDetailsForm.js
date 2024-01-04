@@ -7,7 +7,8 @@ import useFetch from '@hooks/useFetch';
 import useTranslate from '@hooks/useTranslate';
 import { commonMessage } from '@locales/intl';
 import { showErrorMessage, showSucsessMessage } from '@services/notifyService';
-import { Button, Card, Col, Form, Input, Modal, Row, Statistic } from 'antd';
+import { Button, Card, Col, Form, Input, Modal, Row, Space, Statistic } from 'antd';
+import { flatMap } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { FormattedMessage, defineMessage } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
@@ -45,12 +46,16 @@ const ListDetailsForm = ({ handleAddList, open, onCancel, data, isEditing, form,
                 // setCacheAccessToken(res.access_token);
                 // executeGetProfile();
                 showSucsessMessage(response.message);
+                setSecondsLeft(300);
+                setIsCounting(false);
                 // navigate('/login');
                 form.resetFields();
                 onCancel();
             },
             onError: (error) => {
                 showErrorMessage(error.message);
+                setSecondsLeft(300);
+                setIsCounting(false);
                 form.resetFields();
             },
         });
@@ -71,23 +76,27 @@ const ListDetailsForm = ({ handleAddList, open, onCancel, data, isEditing, form,
             onCompleted: (response) => {
                 setidHash(response.data.idHash);
                 showSucsessMessage(response.message);
+                setSecondsLeft(300);
+                setIsCounting(true);
                 // form.resetFields();
             },
             onError: (error) => {
                 showErrorMessage('Check your email!');
+                setSecondsLeft(300);
+                setIsCounting(false);
                 // form.resetFields();
             },
         });
-        setIsCounting(!isCounting);
+        // setIsCounting(!isCounting);
     };
 
     useEffect(() => {
         let timer;
-        // if (isCounting) {
-        timer = setInterval(() => {
-            setSecondsLeft((prevSeconds) => (prevSeconds > 0 ? prevSeconds - 1 : 0));
-        }, 1000);
-        // }
+        if (isCounting) {
+            timer = setInterval(() => {
+                setSecondsLeft((prevSeconds) => (prevSeconds > 0 ? prevSeconds - 1 : 0));
+            }, 1000);
+        }
 
         return () => {
             clearInterval(timer);
@@ -98,6 +107,22 @@ const ListDetailsForm = ({ handleAddList, open, onCancel, data, isEditing, form,
     const formattedTime = `${Math.floor(secondsLeft / 60)
         .toString()
         .padStart(2, '0')}:${(secondsLeft % 60).toString().padStart(2, '0')}`;
+
+    const [loadings, setLoadings] = useState([]);
+    const enterLoading = (index) => {
+        setLoadings((prevLoadings) => {
+            const newLoadings = [...prevLoadings];
+            newLoadings[index] = true;
+            return newLoadings;
+        });
+        setTimeout(() => {
+            setLoadings((prevLoadings) => {
+                const newLoadings = [...prevLoadings];
+                newLoadings[index] = false;
+                return newLoadings;
+            });
+        }, 4000);
+    };
     return (
         <Modal
             title={<FormattedMessage defaultMessage="Đặt lại mật khẩu" />}
@@ -170,19 +195,30 @@ const ListDetailsForm = ({ handleAddList, open, onCancel, data, isEditing, form,
                     </Row>
                     <Row gutter={24}>
                         <Col span={12}>
-                            <InputTextField
-                                name="otp"
-                                placeholder="OTP"
-                                required
-                            />
+                            <InputTextField name="otp" placeholder="OTP" required />
                         </Col>
                         <Col span={12}>
-                            {secondsLeft > 1 ? (
-                                <Button><Statistic value={formattedTime} valueStyle={{ fontSize: 15, fontWeight: 500 }} /></Button>
+                            {isCounting && secondsLeft > 1 ? (
+                                <Button>
+                                    <Statistic value={formattedTime} valueStyle={{ fontSize: 15, fontWeight: 500 }} />
+                                    <a
+                                        style={{ fontSize: 12, marginTop: 5 }}
+                                        onClick={(e) => {
+                                            setIsCounting(false);
+                                            setSecondsLeft(300);
+                                            enterLoading(0);
+                                            e.stopPropagation();
+                                            handleGetOtp();
+                                        }}
+                                    >
+                                        Gửi lại OTP
+                                    </a>
+                                </Button>
                             ) : (
                                 <Button
+                                    loading={loadings[0]}
                                     onClick={(e) => {
-                                        setSecondsLeft(40);
+                                        enterLoading(0);
                                         e.stopPropagation();
                                         handleGetOtp();
                                     }}

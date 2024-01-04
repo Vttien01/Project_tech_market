@@ -9,24 +9,28 @@ import './OrderPage.scss';
 import { SearchOutlined } from '@ant-design/icons';
 import PageWrapper from '@components/common/layout/PageWrapper';
 import apiConfig from '@constants/apiConfig';
-import { paymentOptions } from '@constants/masterData';
+import { orderStateOption, paymentOptions } from '@constants/masterData';
 import useAuth from '@hooks/useAuth';
 import useDisclosure from '@hooks/useDisclosure';
 import useFetch from '@hooks/useFetch';
 import useTranslate from '@hooks/useTranslate';
 import routes from '@routes';
-import {
-    IconEdit,
-} from '@tabler/icons-react';
+import { IconEdit } from '@tabler/icons-react';
 import { formatMoney } from '@utils';
 import {
     Button,
     Card,
+    Col,
+    Divider,
     Form,
     Input,
     List,
     Result,
+    Row,
+    Space,
     Tabs,
+    Tag,
+    Timeline,
     Typography,
     theme,
 } from 'antd';
@@ -34,6 +38,7 @@ import Avatar from 'antd/es/avatar/avatar';
 import { defineMessage } from 'react-intl';
 import ListDetailsForm from './ListDetailsForm';
 import { showErrorMessage } from '@services/notifyService';
+import { SmileOutlined } from '@ant-design/icons';
 const { Text } = Typography;
 let index = 0;
 
@@ -53,28 +58,11 @@ const HistoryOrderGuest = () => {
     const translate = useTranslate();
     const [item1, setItem1] = useState(null);
     const [orderId, setOrderId] = useState(0);
-    const stateValues = translate.formatKeys(paymentOptions, ['label']);
     const [search, setSearch] = useState('');
     const [checkSearch, setCheckSearch] = useState(false);
-
-    const renderTitle = (title, item) => (
-        <span>
-            {title}
-            <a
-                style={{
-                    float: 'right',
-                }}
-                onClick={() => handleEdit(item)}
-            >
-                <IconEdit size={17} />
-            </a>
-        </span>
-    );
-
-    const handleEdit = (item) => {
-        setItem1(item);
-        handlerDetailsModal.open();
-    };
+    const [dataReciver, setDataReciver] = useState({});
+    const stateValues = translate.formatKeys(paymentOptions, ['label']);
+    const orderStatetateValues = translate.formatKeys(orderStateOption, ['label']);
 
     const { data: myOrder, execute: executeSearchOrder } = useFetch({
         ...apiConfig.orderDetail.getByPhoneAndOrder,
@@ -86,20 +74,19 @@ const HistoryOrderGuest = () => {
 
         // processedValue giờ chỉ chứa các kí tự chữ cái từ a đến z hoặc A đến Z
         return processedValue;
-      }
+    }
 
     const onSearch = (value, _e, info) => {
         const output = processString(value.orderCode);
         // setSearch(value.orderCode);
-        if ( output !== '') {
+        if (output !== '') {
             executeSearchOrder({
                 params: { orderCode: output },
                 onCompleted: (response) => {
                     // console.log(response.data.content);
                     if (response !== null) {
                         setCheckSearch(true);
-                        const data = response.data.content;
-                        console.log(data);
+                        setDataReciver(response.data.orderDto);
                         setSearch(response.data.content);
                     } else {
                         setCheckSearch(false);
@@ -109,8 +96,7 @@ const HistoryOrderGuest = () => {
                     showErrorMessage(error.message);
                 },
             });
-        }
-        else  setCheckSearch(false);
+        } else setCheckSearch(false);
     };
 
     const { token } = theme.useToken();
@@ -153,6 +139,24 @@ const HistoryOrderGuest = () => {
         width: 1100,
     };
 
+    const renderPaymentStatusTag = (value, check) => {
+        let state;
+        if (check) {
+            state = stateValues.find((item) => item.value == value);
+        }
+        else {
+            state = orderStatetateValues.find((item) => item.value == value);
+        }
+        return (
+            <Tag
+                color={state.color}
+                style={{ minWidth: 80, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+            >
+                <div style={{ padding: '3px 0px 3px 0px', fontSize: 14 }}>{state.label}</div>
+            </Tag>
+        );
+    };
+
     return (
         <div
             className="con1 py-4 bg-whitesmoke"
@@ -173,7 +177,7 @@ const HistoryOrderGuest = () => {
                     },
                     { breadcrumbName: 'Tìm kiếm đơn hàng' },
                 ]}
-                style={{ backgroundColor:'#282a36' }}
+                style={{ backgroundColor: '#282a36' }}
                 // title={title}
             ></PageWrapper>
             <div
@@ -187,7 +191,7 @@ const HistoryOrderGuest = () => {
             >
                 <div style={{ flex: '1', justifyContent: 'center' }}>
                     <Form onFinish={onSearch}>
-                        <div style={{ display: 'flex', justifyContent:'center', marginTop:10 }}>
+                        <div style={{ display: 'flex', justifyContent: 'center', marginTop: 10 }}>
                             <Form.Item name="orderCode" contentWrapperStyle={{ width: 800 }}>
                                 <Input
                                     placeholder="Nhập mã đơn hàng ..."
@@ -208,7 +212,118 @@ const HistoryOrderGuest = () => {
             </div>
             <div style={{ flex: '1', justifyContent: 'center', minHeight: 300 }}>
                 <Card style={{ minHeight: 600, backgroundColor: '#d8dadd' }}>
-                    <Tabs defaultActiveKey="1" centered size="large" items={items} style={{ marginBottom: 20 }} />
+                    {checkSearch ? (
+                        <Space
+                            direction="vertical"
+                            style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                        >
+                            <Space size={'large'} style={{ minHeight: 350 }} direction="vertical">
+                                <Divider orientation="left" style={{ fontSize: 20 }}>
+                                    Thông tin khách hàng
+                                </Divider>
+                                <Row style={{ minWidth: 900 }}>
+                                    <Col span={12}>
+                                        <Space direction="vertical">
+                                            <Space>
+                                                <Typography.Title style={{ fontSize: 14, marginTop: 7 }}>
+                                                    Họ và tên:
+                                                </Typography.Title>
+                                                <Typography.Text>{dataReciver?.receiver}</Typography.Text>
+                                            </Space>
+                                            {/* <Space>
+                                                <Typography.Title style={{ fontSize: 14, marginTop: 7 }}>
+                                                    Email:
+                                                </Typography.Title>
+                                                <Typography.Text>{dataReciver?.email}</Typography.Text>
+                                            </Space> */}
+                                            <Space>
+                                                <Typography.Title style={{ fontSize: 14, marginTop: 7 }}>
+                                                    Số điện thoại:
+                                                </Typography.Title>
+                                                <Typography.Text>{dataReciver?.phone}</Typography.Text>
+                                            </Space>
+                                            <Space>
+                                                <Typography.Title style={{ fontSize: 14, marginTop: 7 }}>
+                                                    Ngày đặt:
+                                                </Typography.Title>
+                                                <Typography.Text>{dataReciver?.createdDate}</Typography.Text>
+                                            </Space>
+                                            <Space>
+                                                <Typography.Title style={{ fontSize: 14, marginTop: 7 }}>
+                                                    Hình thức thanh toán:
+                                                </Typography.Title>
+                                                <Typography.Text>{renderPaymentStatusTag(dataReciver?.paymentMethod, true)}</Typography.Text>
+                                            </Space>
+                                            <Space>
+                                                <Typography.Title style={{ fontSize: 14, marginTop: 7 }}>
+                                                    Trạng thái đơn hàng:
+                                                </Typography.Title>
+                                                <Typography.Text>{renderPaymentStatusTag(dataReciver?.state, false)}</Typography.Text>
+                                            </Space>
+                                        </Space>
+                                    </Col>
+                                    <Col span={12}>
+                                        <Timeline
+                                            items={[
+                                                {
+                                                    color: 'green',
+                                                    children: `Đặt hàng vào ${dataReciver?.createdDate}` ,
+                                                },
+                                                {
+                                                    color: 'green',
+                                                    children: 'Thanh toán',
+                                                },
+                                                {
+                                                    color: 'green',
+                                                    children: 'Đặt hàng thành công',
+                                                },
+                                                {
+                                                    color: 'green',
+                                                    children: 'Đơn hàng đang được xử lý',
+                                                },
+                                                {
+                                                    color: 'gray',
+                                                    children: 'Đơn hàng được duyệt',
+                                                },
+                                                {
+                                                    color: 'red',
+                                                    children: (
+                                                        <>
+                                                            <p>Solve initial network problems 1</p>
+                                                            <p>Solve initial network problems 2</p>
+                                                            <p>Solve initial network problems 3 2015-09-01</p>
+                                                        </>
+                                                    ),
+                                                },
+                                                {
+                                                    color: '#00CCFF',
+                                                    // dot: <SmileOutlined />,
+                                                    children: <p>Hoàn thành</p>,
+                                                },
+                                            ]}
+                                        />
+                                    </Col>
+                                </Row>
+                            </Space>
+                            <Space size={'large'} style={{ minHeight: 300 }} direction="vertical">
+                                <Divider orientation="left" style={{ fontSize: 20 }}>
+                                    Thông tin đơn hàng
+                                </Divider>
+                                <TableMyOrder search={myOrder} />
+                            </Space>
+                        </Space>
+                    ) : (
+                        <Result
+                            icon={<SearchOutlined />}
+                            title="Vui lòng nhập mã đơn hàng!"
+                            extra={
+                                <Button type="primary">
+                                    <a href="/">Quay về trang chủ</a>
+                                </Button>
+                            }
+                        />
+                    )}
+                    {/* <Tabs defaultActiveKey="1" centered size="large" items={items} style={{ marginBottom: 20 }} /> */}
                 </Card>
             </div>
         </div>
@@ -260,13 +375,17 @@ function TableMyOrder({ stateValues, state, search }) {
                     className="demo-loadmore-list"
                     itemLayout="horizontal"
                     dataSource={search.data.content}
-                    style={{ marginBottom: 10 }}
+                    style={{ marginBottom: 10, minWidth: 900 }}
                     renderItem={(item) => (
                         <Card style={{ backgroundColor: '#eff0f1', marginTop: 10 }}>
                             <List.Item key={item?.id}>
                                 <List.Item.Meta
                                     avatar={<Avatar src={item?.image} size={100} />}
-                                    title={<a style={{ fontSize:25 }} href="https://ant.design">{item?.name}</a>}
+                                    title={
+                                        <a style={{ fontSize: 25 }} href="https://ant.design">
+                                            {item?.name}
+                                        </a>
+                                    }
                                     // description={item?.price}
                                     description={
                                         <div
@@ -280,7 +399,7 @@ function TableMyOrder({ stateValues, state, search }) {
                                                 Số lượng: {item.amount}
                                             </div>
                                             <div style={{ flex: '1', justifyContent: 'center' }}>Màu: {item.color}</div>
-                                            <div style={{ flex: '1', justifyContent: 'center', fontSize:20 }}>
+                                            <div style={{ flex: '1', justifyContent: 'center', fontSize: 20 }}>
                                                 {' '}
                                                 Tổng tiền:{' '}
                                                 {formatMoney(item?.price, {

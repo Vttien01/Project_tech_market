@@ -6,10 +6,14 @@ import apiConfig from '@constants/apiConfig';
 import useFetch from '@hooks/useFetch';
 import { useParams } from 'react-router-dom';
 import CardProduct from './CardProduct';
+import { showErrorMessage } from '@services/notifyService';
 
 function Products({ title }) {
-    const [loading, setLoading] = useState(false);
+    // const [loading, setLoading] = useState(false);
     const params = useParams();
+    const queryParameters = new URLSearchParams(window.location.search);
+    const category = queryParameters.get('category');
+    console.log(category);
     const [items, setItems] = useState([]);
     const [item1, setItem1] = useState([]);
     const [param1, setParam1] = useState();
@@ -17,7 +21,7 @@ function Products({ title }) {
     const [sortProduct, setSortProduct] = useState('az');
     const {
         data: allproducts1,
-        loading: allproductsLoading,
+        loading,
         execute: executgeallproducts,
     } = useFetch(apiConfig.product.autocomplete, {
         params: { categoryName: title },
@@ -44,18 +48,20 @@ function Products({ title }) {
     //     }
     // }, [title]);
     useEffect(() => {
-        // allproductsLoading(true);
-        if (allproducts1?.length > 0) {
-            setItem1(allproducts1);
-            // allproductsLoading(false);
-            setItems([]);
-            console.log(item1);
-        } else setItem1([]);
-    }, [allproducts1, title]);
+        // allproductsLoading(true)
+        executgeallproducts({
+            params: { categoryName:category },
+            onCompleted: (res) => {
+                setItem1(res.data);
+            },
+            onError: (error) => {
+                showErrorMessage(error.message);
+            },
+        });
+    }, [category]);
 
     const getSortedProduct = () => {
         let sortedItem =[...item1];
-        console.log(sortedItem);
         // const sortedItem = listall ? [...listall] : [];
         sortedItem &&
             sortedItem.sort((a, b) => {
@@ -78,7 +84,7 @@ function Products({ title }) {
         return <Spin spinning />;
     }
     return (
-        <div className="Product" style={{ display: 'flex', flexDirection: 'column', justifyContent:'center', marginRight:0, maxWidth:992 }}>
+        <div className="Product" style={{ display: 'flex', flexDirection: 'column', justifyContent:'center', marginRight:0, width:992 }}>
             <div style={{ marginBottom: 10 }}>
                 <Typography.Text style={{ fontSize: '30px', fontWeight: 'bolder' }}> {title} </Typography.Text>
             </div>

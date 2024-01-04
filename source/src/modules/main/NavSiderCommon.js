@@ -12,57 +12,19 @@ const { Sider } = Layout;
 const navMenuConfig = [
     {
         label: (
-            <div style={{ marginLeft: 10, fontSize: 16 }}>
+            <div style={{ marginLeft: 2, fontSize: 16 }}>
                 <PhoneOutlined size={20} /> Điện thoại
             </div>
         ),
-        key: 'Điện thoại',
-        // children: [
-        //     // {
-        //     //     label: <span>Apple</span>,
-        //     //     key: 'APPLE',
-        //     //     // path: routes.adminsListPage.path,
-        //     // },
-        //     // {
-        //     //     label: `Oppo`,
-        //     //     key: 'OPPO',
-        //     // },
-        //     // {
-        //     //     label: `SamSung`,
-        //     //     key: 'SAMSUNG',
-        //     // },
-        //     // {
-        //     //     label: `Vivo`,
-        //     //     key: 'VIVO',
-        //     // },
-        // ],
+        key: 'ĐIỆN THOẠI',
     },
     {
         label: (
-            <div style={{ marginLeft: 10, fontSize: 16 }}>
+            <div style={{ marginLeft: 2, fontSize: 16 }}>
                 <LaptopOutlined size={20} /> Laptop
             </div>
         ),
-        key: 'laptop',
-        // children: [
-        //     // {
-        //     //     label: `Macbook`,
-        //     //     key: 'MACBOOK',
-        //     // },
-        //     // {
-        //     //     label: `Laptop Lenovo`,
-        //     //     key: 'LENOVO',
-        //     // },
-
-        //     // {
-        //     //     label: `Laptop Dell`,
-        //     //     key: 'DELL',
-        //     // },
-        //     // {
-        //     //     label: `Laptop HP`,
-        //     //     key: 'HP',
-        //     // },
-        // ],
+        key: 'LAPTOP',
     },
     {
         label: (
@@ -100,7 +62,6 @@ const NavSiderCommon = ({ collapsed, onCollapse, width }) => {
     const validatePermission = useValidatePermission();
 
     const onMenuClick = (item) => {
-        console.log(item.key);
         navigate(`/all-product?category=${item.key}`);
     };
 

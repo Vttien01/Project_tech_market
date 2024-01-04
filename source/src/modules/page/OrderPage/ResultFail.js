@@ -55,8 +55,8 @@ const ResultFail = () => {
         },
         onCompleted: (respone) => {
             setTimeout(() => {
-                navigate(routes.HistoryOrder.path);
-             }, 2000);
+                navigate(routes.HomePage.path);
+             }, 1000);
         },
       });
     }, []);
