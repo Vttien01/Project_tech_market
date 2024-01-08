@@ -7,6 +7,7 @@ import { getData } from '@utils/localStorage';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import notFoundImage from '@assets/images/bg_404.png';
 
 const Dashboard = () => {
     const userKind = getData(storageKeys.kind);
@@ -31,6 +32,7 @@ const Dashboard = () => {
         }
     }, []);
 
+    // eslint-disable-next-line react/react-in-jsx-scope
     // return <img alt="not-found-background" src={notFoundImage} />;
     return null;
 };

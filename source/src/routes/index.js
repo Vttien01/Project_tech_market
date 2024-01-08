@@ -97,7 +97,7 @@ const routes = {
     // keep this at last
     notFound: {
         component: PageNotFound,
-        auth: null,
+        auth: false,
         title: 'Page not found',
         path: '*',
     },
