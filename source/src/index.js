@@ -19,9 +19,6 @@ render(
         </Provider>
     </React.StrictMode>,
     document.getElementById('root'),
-    document.getElementById('fb-customer-chat'),
-    document.getElementById('fb-root'),
-
 );
 
 // If you want to start measuring performance in your app, pass a function
