@@ -16,7 +16,6 @@ const message = defineMessages({
 
 const UserAdminSavePage = ({ pageOptions }) => {
     const translate = useTranslate();
-    const { id } = useParams();
     const { data } = useFetch(apiConfig.groupPermission.getGroupList, {
         immediate: true,
         mappingData: (res) => res.data?.content?.map((item) => ({ value: item.id, label: item.name })),
@@ -24,7 +23,6 @@ const UserAdminSavePage = ({ pageOptions }) => {
             kind: GROUP_KIND_ADMIN,
         },
     });
-    console.log(data);
     const { detail, mixinFuncs, loading, onSave, setIsChangedFormValues, isEditing, title } = useSaveBase({
         apiConfig: {
             getById: apiConfig.account.getById,
@@ -37,13 +35,14 @@ const UserAdminSavePage = ({ pageOptions }) => {
         },
         override: (funcs) => {
             funcs.prepareUpdateData = (data) => {
+                console.log('data',data);
                 return {
                     status: STATUS_ACTIVE,
-                    kind: UserTypes.ADMIN,
-                    avatarPath: data.avatar,
-                    groupId: data.group.id,
+                    // kind: UserTypes.ADMIN,
+                    // avatarPath: data.avatar,
+                    groupId: detail?.group?.id,
+                    id: detail?.id,
                     ...data,
-                    id: id,
                 };
             };
             funcs.prepareCreateData = (data) => {
@@ -63,6 +62,7 @@ const UserAdminSavePage = ({ pageOptions }) => {
             };
         },
     });
+    console.log(detail);
 
     return (
         <PageWrapper loading={loading} routes={pageOptions.renderBreadcrumbs(commonMessage, translate, title)}>

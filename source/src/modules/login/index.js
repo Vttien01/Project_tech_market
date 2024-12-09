@@ -45,15 +45,10 @@ const LoginPage = () => {
     const { profile } = useAuth();
 
     const onFinish = (values) => {
-        console.log(values.grant_type);
-        let data;
-        if (values.grant_type === 'user') {
-            data = { phone: values.username, password: values.password, grant_type: values.grant_type };
-        } else {
-            data = values;
-        }
         execute({
-            data: { ...data },
+            data: { ...values,
+                grant_type: 'password',
+            },
             onCompleted: (res) => {
                 setCacheAccessToken(res.access_token);
                 executeGetProfile();
@@ -73,31 +68,6 @@ const LoginPage = () => {
     return (
         <div className="grid-container">
             <ListDetailsForm open={openedDetailsModal} onCancel={() => handlerDetailsModal.close()} form={form} />
-            <div className="area_login_1">
-                <nav className="nav">
-                    <div className="nav-left">
-                        <a href="#">
-                            <img width="300" height="80" src={logo} alt="Tech-market" />
-                        </a>
-                    </div>
-                    <div className="nav-right">
-                        <ul>
-                            <li className="active">
-                                <a href="/home">Trang chủ</a>
-                            </li>
-                            <li>
-                                <a href="/introduction">Giới thiệu</a>
-                            </li>
-                            <li>
-                                <a href="/all-product">Sản phẩm</a>
-                            </li>
-                            <li>
-                                <a href="#">Liên hệ</a>
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
-            </div>
             <div className="area_login_left">
                 {/* <div className="loginForm"> */}
                 <div className="top">
@@ -135,20 +105,7 @@ const LoginPage = () => {
                         />
                         <i className="fa-solid fa-eye"></i>
                     </div>
-                    <div className="input">
-                        <SelectField
-                            placeholder={<FormattedMessage defaultMessage="Bạn là?" />}
-                            required
-                            name="grant_type"
-                            options={loginOptions}
-                            style={{ height: 60 }}
-                        />
-                    </div>
-                    <div className="forget">
-                        <a href="#" onClick={handleForgotPasswordClick}>
-                            Quên mật khẩu?
-                        </a>
-                    </div>
+                    
                     <Button
                         type="primary"
                         size="large"
@@ -159,11 +116,6 @@ const LoginPage = () => {
                     >
                         {intl.formatMessage(message.login)}
                     </Button>
-                    <div className="or">
-                        <p>
-                            Nếu chưa có tài khoản hãy <a href="/signup">Đăng ký</a>
-                        </p>
-                    </div>
                 </Form>
             </div>
             <div className="area_login_right">

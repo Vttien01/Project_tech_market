@@ -1,6 +1,7 @@
 import { BaseForm } from '@components/common/form/BaseForm';
 import CropImageField from '@components/common/form/CropImageField';
 import TextField from '@components/common/form/TextField';
+import { AppConstants } from '@constants';
 import apiConfig from '@constants/apiConfig';
 import useBasicForm from '@hooks/useBasicForm';
 import useFetch from '@hooks/useFetch';
@@ -34,6 +35,7 @@ const UserAdminForm = (props) => {
             onCompleted: (response) => {
                 if (response.result === true) {
                     onSuccess();
+                    console.log('response.data.filePath',response);
                     setImageUrl(response.data.filePath);
                     setIsChangedFormValues(true);
                 }
@@ -45,14 +47,18 @@ const UserAdminForm = (props) => {
     };
 
     const handleSubmit = (values) => {
-        return mixinFuncs.handleSubmit({ ...values, avatar: imageUrl });
+        return mixinFuncs.handleSubmit({ ...values, avatarPath: imageUrl });
     };
 
     useEffect(() => {
-        form.setFieldsValue({
-            ...dataDetail,
-        });
-        setImageUrl(dataDetail.avatar);
+        if (dataDetail) {
+            form.setFieldsValue({
+                ...dataDetail,
+            });
+            setImageUrl(dataDetail?.avatarPath);
+            // console.log('detail ',dataDetail?.avatarPath);
+            // console.log('imageURL',`${AppConstants.contentRootUrl}${dataDetail?.avatarPath}`);
+        }
     }, [dataDetail]);
     return (
         <BaseForm id={formId} onFinish={handleSubmit} form={form} onValuesChange={onValuesChange}>
@@ -61,8 +67,8 @@ const UserAdminForm = (props) => {
                     <Col span={12}>
                         <CropImageField
                             label={translate.formatMessage(commonMessage.avatar)}
-                            name="avatar"
                             imageUrl={imageUrl}
+                            // imageUrl={dataDetail?.avatarPath ? `${AppConstants.contentRootUrl}${imageUrl}` : imageUrl}
                             aspect={1 / 1}
                             uploadFile={uploadFile}
                         />

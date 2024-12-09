@@ -83,34 +83,12 @@ const AppHeader = ({ collapsed, onCollapse }) => {
                             {
                                 label: (
                                     <div style={{ display: 'flex', gap: '5px', alignItems: 'center' }}>
-                                        <HomeOutlined />
-                                        <span>{translate.formatMessage(messages.home)}</span>
-                                    </div>
-                                ),
-                                key: 'allProduct',
-                                onClick: () => navigate('/all-product'),
-                            },
-                            {
-                                label: (
-                                    <div style={{ display: 'flex', gap: '5px', alignItems: 'center' }}>
                                         <UserOutlined />
                                         <span>{translate.formatMessage(messages.profile)}</span>
                                     </div>
                                 ),
                                 key: 'profile',
                                 onClick: () => navigate('/profile'),
-                            },
-                            {
-                                // label: translate.formatMessage(messages.locale, { locale }),
-                                label: (
-                                    <div style={{ display: 'flex', gap: '5px', alignItems: 'center' }}>
-                                        <TranslationOutlined />
-                                        <span>{translate.formatMessage(messages.locale, { locale })}</span>
-                                    </div>
-                                ),
-                                key: 'locale',
-                                // icon: <TranslationOutlined />,
-                                onClick: handleChangeLocale,
                             },
                             {
                                 label: (

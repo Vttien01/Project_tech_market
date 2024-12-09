@@ -1,12 +1,4 @@
 @import '@assets/scss/global';
-.sidebar {
-    overflow: auto;
-    height: 100vh;
-    position: fixed;
-    left: 0;
-    top: 0;
-    bottom: 0;
-}
 
 .logo {
     display: flex;
@@ -19,7 +11,7 @@
         padding: 4px;
         img {
             border-radius: 4px;
-            width: 50%;
+            width: 100%;
         }
     }
 
@@ -27,16 +19,16 @@
         margin-top: 20px;
         margin-bottom: 20px;
         padding: 8px;
-        height: auto;
+        height: 100px;
         img {
             border-radius: 10px;
-            width: 98%;
+            width: 100%;
         }
     }
 }
 
 .menu {
-    [role='menuitem'] {
+    [role='menuitem']{
         outline: none !important;
     }
 }
