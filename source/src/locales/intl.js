@@ -57,4 +57,5 @@ export const commonMessage = defineMessages({
     money: 'Money',
     system: 'System',
     brand: 'Thương hiệu',
+    voucher: 'Voucher',
 });

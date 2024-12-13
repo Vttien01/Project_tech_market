@@ -42,10 +42,10 @@ function SelectField({
 
     const onFilterOption = (input, option) =>
         removeAccents(option.label.toLowerCase()).indexOf(removeAccents(input.toLowerCase())) >= 0;
-
     return (
         <Form.Item initialValue={initialValue} key={key} {...formItemProps} label={label} name={name} rules={rules}>
             <Select
+                style={{ width: '100%', height: 40 }}
                 onFocus={onFocus}
                 {...fieldProps}
                 ref={selectRef}

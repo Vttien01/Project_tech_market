@@ -1,5 +1,12 @@
 import qs from 'query-string';
-import { CurrentcyPositions, DATE_FORMAT_DISPLAY, DATE_SHORT_MONTH_FORMAT, DEFAULT_FORMAT, THEMES, apiUrl } from '@constants';
+import {
+    CurrentcyPositions,
+    DATE_FORMAT_DISPLAY,
+    DATE_SHORT_MONTH_FORMAT,
+    DEFAULT_FORMAT,
+    THEMES,
+    apiUrl,
+} from '@constants';
 import dayjs from 'dayjs';
 import moment from 'moment/moment';
 
@@ -110,7 +117,7 @@ export const getYoutubeVideoID = (url) => {
     return pattern.exec(url)?.[3];
 };
 
-export const formatNumber = ( value ) => {
+export const formatNumber = (value) => {
     if (value) {
         const decimalPosition = value.toString().indexOf('.');
         if (decimalPosition > 0) {
@@ -121,10 +128,6 @@ export const formatNumber = ( value ) => {
         return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     } else if (value === 0) return 0;
     return '';
-};
-
-export const formatDateString = (dateString, formatDate = DATE_SHORT_MONTH_FORMAT) => {
-    return dayjs(dateString).format(formatDate);
 };
 
 export const removeAccents = (str) => {
@@ -256,3 +259,11 @@ export function copyToClipboard(text) {
 }
 
 export const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+export const formatDateToZeroTime = (date) => {
+    const dateString = dayjs(date).format(DEFAULT_FORMAT);
+    return dayjs(dateString, DEFAULT_FORMAT).utc().format(DEFAULT_FORMAT);
+};
+
+export const formatDateString = (dateString, formatDate = DATE_SHORT_MONTH_FORMAT) => {
+    return dayjs(dateString).format(formatDate);
+};

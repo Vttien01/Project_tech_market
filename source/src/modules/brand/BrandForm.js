@@ -70,12 +70,12 @@ const BrandForm = (props) => {
     };
 
     useEffect(() => {
-        if (dataDetail.state !== undefined && dataDetail.state !== 1) {
+        if (dataDetail?.state !== undefined && dataDetail?.state !== 1) {
             setIsDisableStartDate(true);
         } else {
             setIsDisableStartDate(false);
         }
-    }, [dataDetail.state]);
+    }, [dataDetail?.state]);
     const initialRules = [
         {
             required: true,

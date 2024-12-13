@@ -447,14 +447,14 @@ const apiConfig = {
     },
     review: {
         getByProductPublic: {
-            baseURL: `${apiUrl}v1/review/get-by-product-public/:id`,
+            baseURL: `${apiUrl}v1/review/get-by-product-public`,
             method: 'GET',
             headers: baseHeader,
             isRequiredTenantId: true,
         },
 
         getByProduct: {
-            baseURL: `${apiUrl}v1/review/get-by-product/:id`,
+            baseURL: `${apiUrl}v1/review/get-by-product`,
             method: 'GET',
             headers: baseHeader,
             isRequiredTenantId: true,
@@ -500,7 +500,7 @@ const apiConfig = {
         },
 
         starListReview: {
-            baseURL: `${apiUrl}v1/review/star/count-for-each/:productId`,
+            baseURL: `${apiUrl}v1/review/star/:id`,
             method: 'GET',
             headers: baseHeader,
             isRequiredTenantId: true,
@@ -647,6 +647,44 @@ const apiConfig = {
 
         getRevenueOfEachProduct: {
             baseURL: `${apiUrl}v1/revenue/get-revenue-of-each-product`,
+            method: 'GET',
+            headers: baseHeader,
+            isRequiredTenantId: true,
+        },
+    },
+    voucher: {
+        getList: {
+            baseURL: `${apiUrl}v1/voucher/list`,
+            method: 'GET',
+            headers: baseHeader,
+            isRequiredTenantId: true,
+        },
+        getById: {
+            baseURL: `${apiUrl}v1/voucher/get/:id`,
+            method: 'GET',
+            headers: baseHeader,
+            isRequiredTenantId: true,
+        },
+        create: {
+            baseURL: `${apiUrl}v1/voucher/create`,
+            method: 'POST',
+            headers: baseHeader,
+            isRequiredTenantId: true,
+        },
+        update: {
+            baseURL: `${apiUrl}v1/voucher/update`,
+            method: 'PUT',
+            headers: baseHeader,
+            isRequiredTenantId: true,
+        },
+        delete: {
+            baseURL: `${apiUrl}v1/voucher/delete/:id`,
+            method: 'DELETE',
+            headers: baseHeader,
+            isRequiredTenantId: true,
+        },
+        autocomplete: {
+            baseURL: `${apiUrl}v1/voucher/auto-complete`,
             method: 'GET',
             headers: baseHeader,
             isRequiredTenantId: true,

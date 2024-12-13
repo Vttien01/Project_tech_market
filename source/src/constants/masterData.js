@@ -27,9 +27,9 @@ import { defineMessages } from 'react-intl';
 import { nationKindMessage } from './intl';
 
 const commonMessage = defineMessages({
-    statusActive: 'Active',
-    statusPending: 'Pending',
-    statusInactive: 'Inactive',
+    statusActive: 'Kích hoạt',
+    statusPending: 'Chờ',
+    statusInactive: 'Khóa',
 });
 
 const paymentMessage = defineMessages({
@@ -53,14 +53,12 @@ const orderStateMessage = defineMessages({
     STATE_CONFIRMED: 'Đã được duyệt',
     STATE_COMPLETED: 'Đã hoàn thành',
     STATE_CANCELED: 'Đã hủy',
-
 });
 const orderStateAdMessage = defineMessages({
     STATE_PENDING_ADMIN: 'Đang xử lý',
     STATE_CONFIRMED_ADMIN: 'Duyệt',
     STATE_COMPLETED_ADMIN: 'Hoàn thành',
     STATE_CANCELED_ADMIN: 'Hủy',
-
 });
 
 const isPaidMessage = defineMessages({
@@ -106,8 +104,8 @@ export const paidOptions = [
 ];
 
 export const paidValues = [
-    { value: STATE_NOPAID, label: isPaidMessage.STATE_NOPAID, color:'yellow' },
-    { value: STATE_PAIDED, label: isPaidMessage.STATE_PAIDEDD, color:'green' },
+    { value: STATE_NOPAID, label: isPaidMessage.STATE_NOPAID, color: 'yellow' },
+    { value: STATE_PAIDED, label: isPaidMessage.STATE_PAIDEDD, color: 'green' },
 ];
 
 export const statusOptions = [
@@ -156,4 +154,17 @@ export const nationKindOptions = [
         value: VILLAGE_KIND,
         label: nationKindMessage.village,
     },
+];
+
+export const statusVoucherOptions = [
+    { value: 1, label: 'Kích hoạt', color: '#00A648' },
+    { value: -1, label: 'Khóa', color: '#CC0000' },
+];
+
+export const kindUseVoucherOptions = [
+    { value: 0, label: 'Tài khoản mới', color: '#c8d2d6' },
+    { value: 1, label: 'Tài khoản bạc', color: '#7b858a' },
+    { value: 2, label: 'Tài khoản vàng', color: '#FFD700' },
+    { value: 3, label: 'Tài khoản kim cương', color: '#00C4FF' },
+    { value: 4, label: 'Tài khoản VIP', color: '#8B0000' },
 ];

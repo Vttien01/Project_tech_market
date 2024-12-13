@@ -6,6 +6,7 @@ import PageWrapper from '@components/common/layout/PageWrapper';
 import BaseTable from '@components/common/table/BaseTable';
 import { AppConstants, DATE_FORMAT_VALUE, DEFAULT_FORMAT, DEFAULT_TABLE_ITEM_SIZE } from '@constants';
 import apiConfig from '@constants/apiConfig';
+import { FieldTypes } from '@constants/formConfig';
 import { userSateteOptions } from '@constants/masterData';
 import useListBase from '@hooks/useListBase';
 import useTranslate from '@hooks/useTranslate';
@@ -117,12 +118,20 @@ const UserListPage = ({ pageOptions }) => {
             key: 'fullName',
             placeholder: translate.formatMessage(commonMessage.fullName),
         },
-        // {
-        //     key: 'status',
-        //     placeholder: translate.formatMessage(commonMessage.status),
-        //     type: FieldTypes.SELECT,
-        //     options: statusValues,
-        // },
+        {
+            key: 'email',
+            placeholder: translate.formatMessage(commonMessage.email),
+        },
+        {
+            key: 'phone',
+            placeholder: translate.formatMessage(commonMessage.phone),
+        },
+        {
+            key: 'status',
+            placeholder: translate.formatMessage(commonMessage.status),
+            type: FieldTypes.SELECT,
+            options: stateValues,
+        },
     ];
 
     return (

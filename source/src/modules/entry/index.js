@@ -23,12 +23,10 @@ const Dashboard = () => {
     // }
 
     useEffect(() => {
-        if (kind == 3) {
-            navigate(routes.HomePage.path);
-        } else if (kind == 2) {
+        if (kind == 2) {
             navigate(routes.brandListPage.path);
         } else {
-            navigate(routes.userListPage.path);
+            navigate(routes.DashboardPage.path);
         }
     }, []);
 

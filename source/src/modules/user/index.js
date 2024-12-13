@@ -11,6 +11,7 @@ import { AppConstants, DEFAULT_TABLE_ITEM_SIZE } from '@constants';
 import useAuth from '@hooks/useAuth';
 import useTranslate from '@hooks/useTranslate';
 import { commonMessage } from '@locales/intl';
+import { FieldTypes } from '@constants/formConfig';
 
 const UserAdminListPage = ({ pageOptions }) => {
     const translate = useTranslate();
@@ -66,12 +67,16 @@ const UserAdminListPage = ({ pageOptions }) => {
 
     const searchFields = [
         {
-            key: 'username',
-            placeholder: translate.formatMessage(commonMessage.username),
-        },
-        {
             key: 'fullName',
             placeholder: translate.formatMessage(commonMessage.fullName),
+        },
+        {
+            key: 'email',
+            placeholder: translate.formatMessage(commonMessage.email),
+        },
+        {
+            key: 'phone',
+            placeholder: translate.formatMessage(commonMessage.phone),
         },
     ];
 

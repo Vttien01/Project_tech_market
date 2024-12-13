@@ -25,13 +25,13 @@ function DatePickerField({
     return (
         <Form.Item key={key} {...formItemProps} label={label} name={name} rules={rules}>
             <DatePicker
-                showTime = {showTime}
+                showTime={showTime}
                 {...fieldProps}
                 disabled={disabled}
                 size={size}
                 disabledDate={disabledDate}
                 allowClear={allowClear}
-                style={style}
+                style={{ ...style, width: '100%' }}
                 format={format}
                 onChange={onChange}
                 placeholder={placeholder}
