@@ -77,7 +77,7 @@ const OrderAdminPage = ({ state }) => {
                                 onClick={(e) => {
                                     e.stopPropagation();
                                     if (record.state == STATE_CONFIRMED && record.isPaid == false) {
-                                        showWarningMessage('Bạn phải thanh toán đơn hàng');
+                                        showWarningMessage('Đơn hàng chưa được thanh toán');
                                     } else showConfirmItemConfirm(record);
                                 }}
                             >

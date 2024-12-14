@@ -95,7 +95,6 @@ const DetailOrder = () => {
                                         getStarReview(dataRow?.productId);
                                         setOrderDetailId(dataRow?.id);
                                         e.stopPropagation();
-                                        console.log(dataRow);
                                         handlersReviewModal.open();
                                     }}
                                 >
@@ -107,7 +106,6 @@ const DetailOrder = () => {
                 };
             },
         });
-    console.log(data);
 
     const columns = [
         {
