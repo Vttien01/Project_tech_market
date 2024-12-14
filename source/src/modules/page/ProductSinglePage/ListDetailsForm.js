@@ -132,7 +132,6 @@ const ListDetailsForm = ({ open, onCancel, data, form, itemCart, saleOff, namePr
                     form.resetFields();
                 },
             });
-            console.log(data);
         } else {
             newArray.forEach((product) => {
                 addToCart(product);
@@ -157,7 +156,7 @@ const ListDetailsForm = ({ open, onCancel, data, form, itemCart, saleOff, namePr
         if (newArray[0]?.quantity === 0) {
             showWarningMessage('Bạn phải chọn sản phẩm');
         } else {
-            const data = newArray.map(item => ({ ...item, productName:nameProduct }));
+            const data = newArray.map((item) => ({ ...item, productName: nameProduct }));
             navigate(routes.OderPage.path, {
                 state: { data: { ...newArray[0] } },
             });
@@ -182,11 +181,14 @@ const ListDetailsForm = ({ open, onCancel, data, form, itemCart, saleOff, namePr
                     </Button>
                 ),
                 check === 2 && (
-                    <Button key="buyNow1" onClick={(e) => {
-                        e.stopPropagation();
-                        handleBuyNow();
-                        // handlerDetailsModal.open();
-                    }}>
+                    <Button
+                        key="buyNow1"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            handleBuyNow();
+                            // handlerDetailsModal.open();
+                        }}
+                    >
                         Thanh toán
                     </Button>
                 ),

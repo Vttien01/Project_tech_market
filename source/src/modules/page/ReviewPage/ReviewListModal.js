@@ -31,8 +31,6 @@ const ReviewListModal = ({
     const translate = useTranslate();
     const { profile } = useAuth();
 
-    console.log(profile);
-
     const [openCreateModal, handlersCreateModal] = useDisclosure(false);
     const handleReviewModal = () => {
         onCancel;
@@ -155,7 +153,7 @@ const ReviewListModal = ({
                         {profile && profile?.kind === 3 && (
                             <Row style={{ marginTop: '20px' }}>
                                 <Col span={12} align="center">
-                                    <Button onClick={ handleReviewModal } type="primary">
+                                    <Button onClick={handleReviewModal} type="primary">
                                         Viết đánh giá
                                     </Button>
                                 </Col>

@@ -17,6 +17,7 @@ import { formatMoney } from '@utils';
 import { Button } from 'antd';
 import React, { useState } from 'react';
 import { defineMessages } from 'react-intl';
+import { useLocation } from 'react-router-dom';
 
 const message = defineMessages({
     objectName: 'Chi tiết đơn hàng',
@@ -31,14 +32,10 @@ const DetailOrder = () => {
     const queryParameters = new URLSearchParams(window.location.search);
     const [orderDetailId, setOrderDetailId] = useState(null);
     const [openReviewModal, handlersReviewModal] = useDisclosure(false);
-
-
-
     const orderId = queryParameters.get('orderId');
-    const statusValues = translate.formatKeys(statusOptions, ['label']);
-    const stateValues = translate.formatKeys(paymentOptions, ['label']);
+    const state = queryParameters.get('state');
     const orderStatetateValues = translate.formatKeys(orderStateOption, ['label']);
-
+    const { pathname: pagePath, search } = useLocation();
 
     const { data, mixinFuncs, queryFilter, loading, pagination, changePagination, serializeParams, serializeParam } =
         useListBase({
@@ -102,7 +99,7 @@ const DetailOrder = () => {
                                         handlersReviewModal.open();
                                     }}
                                 >
-                                    <StarFilled style={{ fontSize:20, color:'yellow' }}/>
+                                    <StarFilled style={{ fontSize: 20, color: 'yellow' }} />
                                 </Button>
                             </BaseTooltip>
                         ),
@@ -118,13 +115,7 @@ const DetailOrder = () => {
             dataIndex: 'image',
             align: 'center',
             width: 40,
-            render: (avatar) => (
-                <AvatarField
-                    size="large"
-                    icon={<UserOutlined />}
-                    src={avatar ? avatar : null}
-                />
-            ),
+            render: (avatar) => <AvatarField size="large" icon={<UserOutlined />} src={avatar ? avatar : null} />,
         },
         {
             title: 'Tên sản phẩm',
@@ -175,33 +166,33 @@ const DetailOrder = () => {
         },
     ];
     const breadRoutes = [
-        { breadcrumbName: "Đơn hàng", path:routes.OrderPageAdmin.path },
+        { breadcrumbName: 'Đơn hàng', path: routes.OrderPageAdmin.path + `?state=${state}` },
         { breadcrumbName: translate.formatMessage(message.objectName) },
     ];
 
-    const { data: dataListReview, loading:dataListLoading, execute: listReview } = useFetch(
-        apiConfig.review.getByProduct,
-        { immediate: false,
-            mappingData: ({ data }) => data.content,
-        });
+    const {
+        data: dataListReview,
+        loading: dataListLoading,
+        execute: listReview,
+    } = useFetch(apiConfig.review.getByProduct, { immediate: false, mappingData: ({ data }) => data.content });
 
     const getListReview = (id) => {
         listReview({
             pathParams: {
-                id : id,
+                id: id,
             },
         });
     };
-    const { data: starData,loading:starDataLoading, execute: starReview } = useFetch(
-        apiConfig.review.starListReview,
-        { immediate: false,
-            mappingData: ({ data }) => data.content,
-        });
+    const {
+        data: starData,
+        loading: starDataLoading,
+        execute: starReview,
+    } = useFetch(apiConfig.review.starListReview, { immediate: false, mappingData: ({ data }) => data.content });
 
     const getStarReview = (id) => {
         starReview({
             pathParams: {
-                productId : id,
+                productId: id,
             },
         });
     };

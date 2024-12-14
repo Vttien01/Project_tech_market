@@ -48,14 +48,14 @@ const accountStatusMessage = defineMessages({
     ACTIVE_ACCOUNT: 'Đang hoạt động',
 });
 
-const orderStateMessage = defineMessages({
-    STATE_PENDING: 'Đang xử lý',
+export const orderStateMessage = defineMessages({
+    STATE_PENDING: 'Chờ xác nhận',
     STATE_CONFIRMED: 'Đã được duyệt',
-    STATE_COMPLETED: 'Đã hoàn thành',
+    STATE_COMPLETED: 'Đã xử lý',
     STATE_CANCELED: 'Đã hủy',
 });
 const orderStateAdMessage = defineMessages({
-    STATE_PENDING_ADMIN: 'Đang xử lý',
+    STATE_PENDING_ADMIN: 'Chờ xác nhận',
     STATE_CONFIRMED_ADMIN: 'Duyệt',
     STATE_COMPLETED_ADMIN: 'Hoàn thành',
     STATE_CANCELED_ADMIN: 'Hủy',

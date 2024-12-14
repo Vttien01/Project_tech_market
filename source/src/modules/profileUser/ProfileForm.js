@@ -20,13 +20,10 @@ const message = defineMessages({
 });
 
 const ProfileForm = (props) => {
-    const { profile } = useAuth();
     const translate = useTranslate();
     const { formId, dataDetail, onSubmit, setIsChangedFormValues, actions } = props;
     const [imageUrl, setImageUrl] = useState(null);
     const { execute: executeUpFile } = useFetch(apiConfig.file.upload);
-
-    console.log(profile);
 
     const { form, mixinFuncs, onValuesChange } = useBasicForm({
         onSubmit,
@@ -65,7 +62,7 @@ const ProfileForm = (props) => {
     const handleFinish = (values) => {
         mixinFuncs.handleSubmit({
             ...values,
-            phone:values.phone,
+            phone: values.phone,
             fullName: values.fullName,
             oldPassword: values.oldPassword,
             password: values.password,
@@ -98,7 +95,7 @@ const ProfileForm = (props) => {
                 />
                 <Row gutter={16}>
                     <Col span={12}>
-                        <TextField label={translate.formatMessage(commonMessage.fullName)} name="fullName" required/>
+                        <TextField label={translate.formatMessage(commonMessage.fullName)} name="fullName" required />
                     </Col>
                     <Col span={12}>
                         <DatePickerField
@@ -116,7 +113,7 @@ const ProfileForm = (props) => {
                         <TextField label={translate.formatMessage(commonMessage.email)} name="email" />
                     </Col>
                     <Col span={12}>
-                        <TextField label={translate.formatMessage(commonMessage.phone)} name="phone" required/>
+                        <TextField label={translate.formatMessage(commonMessage.phone)} name="phone" required />
                     </Col>
                 </Row>
                 <Row gutter={16}>

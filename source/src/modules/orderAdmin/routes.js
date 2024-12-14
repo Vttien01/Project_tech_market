@@ -2,10 +2,11 @@ import apiConfig from '@constants/apiConfig';
 import OrderAdminPage from '.';
 import DetailOrder from './DetailOrder';
 import OrderAdminSavePage from './OrderAdminSavePage';
+import OrderTabPage from './OrderTabPage';
 export default {
     OrderPageAdmin: {
         path: '/order-admin',
-        component: OrderAdminPage,
+        component: OrderTabPage,
         auth: true,
         title: 'Quản lý đơn hàng',
     },

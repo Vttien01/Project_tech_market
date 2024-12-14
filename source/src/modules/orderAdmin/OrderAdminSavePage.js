@@ -4,12 +4,16 @@ import useSaveBase from '@hooks/useSaveBase';
 import useTranslate from '@hooks/useTranslate';
 import route from '@routes';
 import React from 'react';
-import { generatePath, useParams } from 'react-router-dom';
+import { generatePath, useLocation, useParams } from 'react-router-dom';
 import OrderAdminForm from './OrderAdminForm';
+import { STATE_PENDING } from '@constants';
 
 function OrderAdminSavePage() {
     const brandId = useParams();
     const translate = useTranslate();
+    const { pathname: pagePath, search } = useLocation();
+    const queryParameters = new URLSearchParams(window.location.search);
+    const state = queryParameters.get('state');
     const { detail, mixinFuncs, loading, setIsChangedFormValues, isEditing, title } = useSaveBase({
         apiConfig: {
             getById: apiConfig.order.getById,
@@ -17,7 +21,7 @@ function OrderAdminSavePage() {
             update: apiConfig.order.update,
         },
         options: {
-            getListUrl: generatePath(route.OrderPageAdmin.path, { brandId }),
+            getListUrl: generatePath(route.OrderPageAdmin.path + `?state=${state || STATE_PENDING}`),
             objectName: 'Đơn hàng',
         },
         override: (funcs) => {
@@ -40,8 +44,8 @@ function OrderAdminSavePage() {
             loading={loading}
             routes={[
                 {
-                    breadcrumbName: "Đơn hàng",
-                    path: generatePath(route.OrderPageAdmin.path),
+                    breadcrumbName: 'Đơn hàng',
+                    path: route.OrderPageAdmin.path + `?state=${state || STATE_PENDING}`,
                 },
                 { breadcrumbName: title },
             ]}

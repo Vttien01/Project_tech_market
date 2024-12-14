@@ -50,7 +50,6 @@ const SearchBox = () => {
                         value: item.id,
                         text: item,
                     }));
-                    console.log(data);
                     setData(data);
                 },
                 // onError: mixinFuncs.handleGetDetailError,
@@ -67,7 +66,7 @@ const SearchBox = () => {
                 placeholder={props.placeholder}
                 style={props.style}
                 // defaultActiveFirstOption={false}
-                suffixIcon={<IconSearch/>}
+                suffixIcon={<IconSearch />}
                 filterOption={false}
                 onSearch={handleSearch}
                 onChange={handleChange}
@@ -102,7 +101,7 @@ const SearchBox = () => {
     };
 
     return (
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop:10 }}>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
             <SearchInput
                 placeholder="Tìm kiếm"
                 style={{
@@ -118,8 +117,8 @@ const SearchBox = () => {
 };
 
 function DashboardCard({ title, value, icon, icon1, number }) {
-    return (
-        {/* <Spin size="large" tip="Loading" spinning={isLoading()} delay="200">
+    return {
+        /* <Spin size="large" tip="Loading" spinning={isLoading()} delay="200">
                         <div
                             className="mt-4 px-4 py-8 shadow-lg rounded overflow-y-auto scroll bg-white"
                             style={{ width: 600, height: 'calc(100vh - 170px)' }}
@@ -134,7 +133,7 @@ function DashboardCard({ title, value, icon, icon1, number }) {
                                 </div>
                             )}
                         </div>
-                    </Spin> */}
-    );
+                    </Spin> */
+    };
 }
 export default SearchBox;

@@ -11,11 +11,12 @@ import useQueryParams from '@hooks/useQueryParams';
 import useTranslate from '@hooks/useTranslate';
 import { commonMessage } from '@locales/intl';
 import { getData } from '@utils/localStorage';
+import useAuth from '@hooks/useAuth';
 
 const GroupPermissionListPage = () => {
     const { setQueryParams } = useQueryParams();
     const translate = useTranslate();
-    const useKind = getData(storageKeys.USER_KIND) || UserTypes.ADMIN;
+    const { kind } = useAuth();
     const { data, mixinFuncs, queryFilter, loading, pagination } = useListBase({
         apiConfig: apiConfig.groupPermission,
         options: {
@@ -25,7 +26,7 @@ const GroupPermissionListPage = () => {
         override: (funcs) => {
             funcs.getList = () => {
                 const params = mixinFuncs.prepareGetListParams(queryFilter);
-                mixinFuncs.handleFetchList({ kind: useKind, ...params });
+                mixinFuncs.handleFetchList({ kind, ...params });
             };
 
             funcs.mappingData = (response) => {
@@ -64,7 +65,7 @@ const GroupPermissionListPage = () => {
             <ListPage
                 searchForm={mixinFuncs.renderSearchForm({
                     fields: searchFields,
-                    initialValues: { kind: useKind, ...queryFilter },
+                    initialValues: { kind, ...queryFilter },
                 })}
                 baseTable={
                     <BaseTable

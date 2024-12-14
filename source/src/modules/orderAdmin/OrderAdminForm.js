@@ -3,7 +3,7 @@ import DatePickerField from '@components/common/form/DatePickerField';
 import InputTextField from '@components/common/form/InputTextField';
 import SelectField from '@components/common/form/SelectField';
 import TextField from '@components/common/form/TextField';
-import { DATE_FORMAT_DISPLAY, DATE_FORMAT_VALUE, DEFAULT_FORMAT } from '@constants';
+import { DATE_FORMAT_DISPLAY, DATE_FORMAT_VALUE, DEFAULT_FORMAT, STATE_PAIDED } from '@constants';
 import apiConfig from '@constants/apiConfig';
 import { orderStateValue, paidOptions, paymentOptions } from '@constants/masterData';
 import useBasicForm from '@hooks/useBasicForm';
@@ -133,10 +133,10 @@ const OrderAdminForm = (props) => {
                 </Row>
                 <Row gutter={12}>
                     <Col span={12}>
-                        <InputTextField
+                        <TextField
                             label={<FormattedMessage defaultMessage="Tổng tiền thanh toán" />}
                             name="totalMoney"
-                            readOnly={true}
+                            disabled={isEditing}
                         />
                     </Col>
                     <Col span={12}>
@@ -164,6 +164,16 @@ const OrderAdminForm = (props) => {
                         />
                     </Col>
                     <Col span={12}>
+                        <SelectField
+                            // disabled={isEditing}
+                            name="isPaid"
+                            label={<FormattedMessage defaultMessage="Trạng thái thanh toán" />}
+                            allowClear={false}
+                            options={isPaidValues}
+                            disabled={dataDetail?.isPaid == STATE_PAIDED}
+                        />
+                    </Col>
+                    <Col span={12}>
                         <DatePickerField
                             disabled={dataDetail?.state === 4 || dataDetail?.state === 3}
                             label="Ngày dự kiến giao hàng"
@@ -183,8 +193,6 @@ const OrderAdminForm = (props) => {
                             size="small"
                         />
                     </Col>
-                </Row>
-                <Row gutter={12}>
                     <Col span={12}>
                         <SelectField
                             disabled={
@@ -195,15 +203,6 @@ const OrderAdminForm = (props) => {
                             label={<FormattedMessage defaultMessage="Trạng thái đơn hàng" />}
                             allowClear={false}
                             options={orderStateFilter}
-                        />
-                    </Col>
-                    <Col span={12}>
-                        <SelectField
-                            // disabled={isEditing}
-                            name="isPaid"
-                            label={<FormattedMessage defaultMessage="Trạng thái thanh toán" />}
-                            allowClear={false}
-                            options={isPaidValues}
                         />
                     </Col>
                 </Row>
