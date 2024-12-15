@@ -1,6 +1,7 @@
 import { BaseForm } from '@components/common/form/BaseForm';
 import DatePickerField from '@components/common/form/DatePickerField';
 import InputTextField from '@components/common/form/InputTextField';
+import NumericField from '@components/common/form/NumericField';
 import SelectField from '@components/common/form/SelectField';
 import TextField from '@components/common/form/TextField';
 import { DATE_FORMAT_DISPLAY, DATE_FORMAT_VALUE, DEFAULT_FORMAT, STATE_PAIDED } from '@constants';
@@ -33,10 +34,7 @@ const OrderAdminForm = (props) => {
         setIsChangedFormValues,
     });
     const handleSubmit = (values) => {
-        values.expectedDeliveryDate = formatDateString(values?.expectedDeliveryDate, DATE_FORMAT_VALUE) + ' 00:00:00';
-        // if (!values?.status) {
-        //     values.status = 1;
-        // }
+        values.expectedDeliveryDate = formatDateString(values?.expectedDeliveryDate, DEFAULT_FORMAT);
         return mixinFuncs.handleSubmit({ ...values });
     };
 
@@ -57,11 +55,6 @@ const OrderAdminForm = (props) => {
 
     useEffect(() => {
         orderStateValues.map((state, index) => {
-            // if (!dataDetail?.isPaid && dataDetail?.paymentMethod === 1) {
-            //     const length = orderStateValues.length;
-            //     let arrayStateFilter = [];
-            //     setOrderStateFilter(arrayStateFilter);
-            // } else {
             if (dataDetail?.state == state.value) {
                 const length = orderStateValues.length;
                 let arrayStateFilter = [];
@@ -90,13 +83,15 @@ const OrderAdminForm = (props) => {
         },
     ];
     useEffect(() => {
-        dataDetail.createdDate = dataDetail?.createdDate && dayjs(dataDetail?.createdDate, DATE_FORMAT_VALUE);
-        dataDetail.expectedDeliveryDate =
-            dataDetail?.expectedDeliveryDate && dayjs(dataDetail?.expectedDeliveryDate, DATE_FORMAT_VALUE);
-        if (!dataDetail?.expectedDeliveryDate) {
-            dataDetail.expectedDeliveryDate = dataDetail.createdDate;
+        if (dataDetail) {
+            dataDetail.createdDate = dataDetail?.createdDate && dayjs(dataDetail?.createdDate, DATE_FORMAT_VALUE);
+            if (!dataDetail?.expectedDeliveryDate) {
+                dataDetail.expectedDeliveryDate = formatDateString(dayjs().add(1, 'day'), DEFAULT_FORMAT);
+            }
+            dataDetail.expectedDeliveryDate =
+                dataDetail?.expectedDeliveryDate && dayjs(dataDetail?.expectedDeliveryDate, DEFAULT_FORMAT);
+            form.setFieldsValue({ ...dataDetail });
         }
-        if (dataDetail) form.setFieldsValue({ ...dataDetail });
     }, [dataDetail]);
 
     const getRules = () => {
@@ -133,10 +128,13 @@ const OrderAdminForm = (props) => {
                 </Row>
                 <Row gutter={12}>
                     <Col span={12}>
-                        <TextField
-                            label={<FormattedMessage defaultMessage="Tổng tiền thanh toán" />}
+                        <NumericField
+                            label={<FormattedMessage defaultMessage={'Tổng tiền thanh toán'} />}
                             name="totalMoney"
-                            disabled={isEditing}
+                            min={0}
+                            addonAfter="₫"
+                            // defaultValue={0}
+                            readOnly={true}
                         />
                     </Col>
                     <Col span={12}>
@@ -179,7 +177,7 @@ const OrderAdminForm = (props) => {
                             label="Ngày dự kiến giao hàng"
                             showTime={false}
                             name="expectedDeliveryDate"
-                            format={DATE_FORMAT_DISPLAY}
+                            format={DEFAULT_FORMAT}
                             rules={[
                                 {
                                     required: true,

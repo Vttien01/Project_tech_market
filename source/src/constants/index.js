@@ -112,6 +112,7 @@ export const STATE_PAIDED = true;
 export const DEFAULT_TABLE_ITEM_SIZE = 10;
 export const DEFAULT_TABLE_PAGE_START = 0;
 
+export const VNPAY_METHOD = 2;
 export const PAYPAL_METHOD = 1;
 export const COD_METHOD = 0;
 
@@ -155,7 +156,6 @@ export const GROUP_ROLE_EMPLOYEE = 14;
 export const GENDER_MAN = 0;
 export const GENDER_WOWAN = 1;
 export const GENDER_OTHER = 2;
-
 
 export const groupPermissionKindsOptions = [
     { label: 'Admin', value: GROUP_KIND_ADMIN },

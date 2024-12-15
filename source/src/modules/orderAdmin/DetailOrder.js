@@ -174,23 +174,22 @@ const DetailOrder = () => {
         execute: listReview,
     } = useFetch(apiConfig.review.getByProduct, { immediate: false, mappingData: ({ data }) => data.content });
 
-    const getListReview = (id) => {
+    const getListReview = (productId) => {
         listReview({
-            pathParams: {
-                id: id,
+            params: {
+                productId,
             },
         });
     };
     const {
-        data: starData,
+        data: starReviewData,
         loading: starDataLoading,
-        execute: starReview,
-    } = useFetch(apiConfig.review.starListReview, { immediate: false, mappingData: ({ data }) => data.content });
-
+        execute: executeStarReviewData,
+    } = useFetch(apiConfig.review.starCountForEach, { immediate: false, mappingData: ({ data }) => data.content });
     const getStarReview = (id) => {
-        starReview({
+        executeStarReviewData({
             pathParams: {
-                productId: id,
+                id,
             },
         });
     };
@@ -203,7 +202,7 @@ const DetailOrder = () => {
                 data={dataListReview || {}}
                 // courseId = {courseId}
                 orderDetailId={orderDetailId}
-                star={starData}
+                star={starReviewData}
                 // loading={dataListLoading || starDataLoading || loadingData}
                 width={800}
             />

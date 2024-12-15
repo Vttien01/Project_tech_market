@@ -165,7 +165,7 @@ const ReviewListModal = ({
                             <span
                                 style={{ color: '#1890FF', fontSize: '16px', marginLeft: '8px', marginBottom: '10px' }}
                             >
-                                Danh sách đánh giá ({totalRatings} Review)
+                                Danh sách đánh giá ({data?.length || 0} Review)
                             </span>
                         </Row>
                         <div>

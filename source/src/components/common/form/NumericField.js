@@ -4,8 +4,24 @@ import useFormField from '@hooks/useFormField';
 import { formatNumber } from '@utils';
 
 const NumericField = (props) => {
-    const { label, name, disabled, min, max, width, onChange, onBlur, formatter, parser, className, defaultValue } =
-        props;
+    const {
+        label,
+        name,
+        disabled,
+        min,
+        max,
+        width,
+        onChange,
+        onBlur,
+        formatter,
+        parser,
+        className,
+        defaultValue,
+        addonAfter,
+        initialValue,
+        readOnly,
+        height,
+    } = props;
 
     const fieldParser = (value) => {
         return value.replace(/\$\s?|(,*)/g, '');
@@ -16,20 +32,23 @@ const NumericField = (props) => {
     };
 
     const { rules, placeholder } = useFormField(props);
+    // console.log('max', max);
 
     return (
         <Form.Item label={label} name={name} rules={rules} className={className}>
             <InputNumber
+                addonAfter={addonAfter}
                 placeholder={placeholder}
                 max={max}
                 min={min}
                 disabled={disabled}
-                style={{ width: width || '100%' }}
-                formatter={formatter || fieldParser}
-                parser={parser || fieldFormatter}
+                style={{ width: width || '100%', height: height || '100%' }}
+                formatter={formatter || fieldFormatter}
+                parser={parser || fieldParser}
                 onChange={onChange}
                 onBlur={onBlur}
                 defaultValue={defaultValue}
+                readOnly={readOnly}
             />
         </Form.Item>
     );

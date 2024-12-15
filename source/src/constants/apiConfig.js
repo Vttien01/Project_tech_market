@@ -505,6 +505,12 @@ const apiConfig = {
             headers: baseHeader,
             isRequiredTenantId: true,
         },
+        starCountForEach: {
+            baseURL: `${apiUrl}v1/review/star/count-for-each/:id`,
+            method: 'GET',
+            headers: baseHeader,
+            isRequiredTenantId: true,
+        },
     },
     order: {
         getList: {
