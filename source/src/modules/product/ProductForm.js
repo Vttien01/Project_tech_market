@@ -16,6 +16,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 import ListDetailsForm from './ListDetailsForm';
 import ListDetailsTable from './ListDetailsTable';
+import RichTextField from '@components/common/form/RichTextField';
 
 const messages = defineMessages({
     objectName: 'Sản phẩm',
@@ -60,7 +61,7 @@ const ProductForm = ({ isEditing, formId, actions, dataDetail, onSubmit, setIsCh
                 dataDetail?.listProductVariant.map((item, index) => ({
                     ...item,
                     index,
-                    id:item.id,
+                    id: item.id,
                 })),
             );
             formRequest.setFieldsValue({
@@ -212,7 +213,7 @@ const ProductForm = ({ isEditing, formId, actions, dataDetail, onSubmit, setIsCh
                                 required
                             />
                         </Col>
-                        <Col span={12} >
+                        <Col span={12}>
                             <SelectField
                                 disabled={dataDetail?.state === 3 || (dataDetail?.state === 4 && true)}
                                 name="status"
@@ -239,13 +240,10 @@ const ProductForm = ({ isEditing, formId, actions, dataDetail, onSubmit, setIsCh
                                 formatter={(value) => `${value}%`}
                                 parser={(value) => value.replace('%', '')}
                             /> */}
-                            <TextField
-                                label={<FormattedMessage defaultMessage="Giảm giá" />}
-                                name="saleOff"
-                            />
+                            <TextField label={<FormattedMessage defaultMessage="Giảm giá" />} name="saleOff" />
                         </Col>
                     </Row>
-                    <TextField
+                    <RichTextField
                         width={'100%'}
                         label={<FormattedMessage defaultMessage="Mô tả ngắn" />}
                         name="description"
