@@ -31,7 +31,6 @@ const ProductListPage = () => {
     const { profile } = useAuth();
     const companyId = profile.id;
 
-
     const { data, mixinFuncs, loading, pagination, queryFiter } = useListBase({
         apiConfig: apiConfig.product,
         options: {
@@ -130,9 +129,9 @@ const ProductListPage = () => {
             placeholder: translate.formatMessage(commonMessage.status),
             type: FieldTypes.SELECT,
             options: statusValues,
+            submitOnChanged: true,
         },
     ];
-
 
     return (
         <PageWrapper routes={[{ breadcrumbName: translate.formatMessage(message.product) }]}>

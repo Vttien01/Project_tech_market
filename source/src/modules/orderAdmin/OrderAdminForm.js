@@ -90,7 +90,9 @@ const OrderAdminForm = (props) => {
             }
             dataDetail.expectedDeliveryDate =
                 dataDetail?.expectedDeliveryDate && dayjs(dataDetail?.expectedDeliveryDate, DEFAULT_FORMAT);
-            form.setFieldsValue({ ...dataDetail });
+            form.setFieldsValue({
+                ...dataDetail,
+            });
         }
     }, [dataDetail]);
 

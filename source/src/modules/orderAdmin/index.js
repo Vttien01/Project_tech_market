@@ -22,7 +22,8 @@ import useTranslate from '@hooks/useTranslate';
 import routes from '@routes';
 import { showErrorMessage, showSucsessMessage, showWarningMessage } from '@services/notifyService';
 import { convertUtcToLocalTime, formatDateString, formatMoney } from '@utils';
-import { Button, DatePicker, Modal, Tag } from 'antd';
+import { Button, DatePicker, Flex, Modal, Tag } from 'antd';
+import dayjs from 'dayjs';
 import { values } from 'lodash';
 import React from 'react';
 import { defineMessages } from 'react-intl';
@@ -99,12 +100,13 @@ const OrderAdminPage = ({ state }) => {
             cancelText: 'Đóng',
             centered: true,
             onOk: () => {
-                // handleCancelOrder(id);
                 executeUpdateOrder({
                     data: {
                         id: record.id,
                         isPaid: record.isPaid,
                         state: orderStatetateAdmin[state + 1].value,
+                        expectedDeliveryDate: formatDateString(dayjs().add(2, 'day'), DEFAULT_FORMAT),
+                        orderCode: record.orderCode,
                     },
                     onCompleted: () => {
                         showSucsessMessage('Cập nhật đơn hàng thành công');
@@ -151,7 +153,7 @@ const OrderAdminPage = ({ state }) => {
             title: 'Hình thức trả tiền',
             dataIndex: 'paymentMethod',
             align: 'center',
-            width: 120,
+            width: 130,
             render(dataRow) {
                 const state = stateValues.find((item) => item.value == dataRow);
                 return (
@@ -218,6 +220,10 @@ const OrderAdminPage = ({ state }) => {
     const handleSearch = (date, dateString) => {
         console.log(date);
     };
+    const paidOptions = [
+        { value: 0, label: 'Chưa thanh toán' },
+        { value: 1, label: 'Đã thanh toán' },
+    ];
 
     const searchFields = [
         {
@@ -228,12 +234,20 @@ const OrderAdminPage = ({ state }) => {
             key: 'userId',
             placeholder: 'Mã người dùng',
         },
-        // {
-        //     key: 'state',
-        //     placeholder: 'Tình trạng đơn hàng',
-        //     type: FieldTypes.SELECT,
-        //     options: orderStatetateValues,
-        // },
+        {
+            key: 'isPaid',
+            placeholder: 'Trạng thái thanh toán',
+            type: FieldTypes.SELECT,
+            options: paidOptions,
+            submitOnChanged: true,
+        },
+        {
+            key: 'paymentMethod',
+            placeholder: 'Hình thức trả tiền',
+            type: FieldTypes.SELECT,
+            options: stateValues,
+            submitOnChanged: true,
+        },
         // {
         //     key: 'createDate',
         //     placeholder: 'Ngày đặt',
@@ -250,15 +264,19 @@ const OrderAdminPage = ({ state }) => {
     return (
         <ListPage
             searchForm={mixinFuncs.renderSearchForm({ fields: searchFields, initialValues: queryFilter })}
-            actionBar={mixinFuncs.renderActionBar()}
+            actionBar={
+                <Flex justify="end">
+                    <Button type="primary" size="large" loading={true}>
+                        Export to Excel
+                    </Button>
+                </Flex>
+            }
             baseTable={
                 <BaseTable
                     onRow={(record, rowIndex) => ({
                         onClick: (e) => {
                             e.stopPropagation();
                             handleFetchDetail(record.id);
-
-                            // handlersModal.open();
                         },
                     })}
                     onChange={changePagination}

@@ -183,12 +183,14 @@ const NewsListPage = () => {
             placeholder: translate.formatMessage(commonMessage.category),
             type: FieldTypes.SELECT,
             options: categories,
+            submitOnChanged: true,
         },
         {
             key: 'status',
             placeholder: translate.formatMessage(commonMessage.status),
             type: FieldTypes.SELECT,
             options: statusValues,
+            submitOnChanged: true,
         },
     ];
 

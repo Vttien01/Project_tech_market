@@ -696,6 +696,14 @@ const apiConfig = {
             isRequiredTenantId: true,
         },
     },
+    report: {
+        getOrders: {
+            baseURL: `${apiUrl}v1/reports/order`,
+            method: 'GET',
+            headers: baseHeader,
+            isRequiredTenantId: true,
+        },
+    },
 };
 
 export default apiConfig;

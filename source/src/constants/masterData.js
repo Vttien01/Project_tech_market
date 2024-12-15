@@ -52,7 +52,7 @@ const accountStatusMessage = defineMessages({
 
 export const orderStateMessage = defineMessages({
     STATE_PENDING: 'Chờ xác nhận',
-    STATE_CONFIRMED: 'Đã được duyệt',
+    STATE_CONFIRMED: 'Đang xử lý',
     STATE_COMPLETED: 'Đã xử lý',
     STATE_CANCELED: 'Đã hủy',
 });

@@ -84,6 +84,7 @@ const BrandListPage = () => {
             placeholder: translate.formatMessage(message.status),
             type: FieldTypes.SELECT,
             options: statusValues,
+            submitOnChanged: true,
         },
     ];
     const breadRoutes = [{ breadcrumbName: translate.formatMessage(message.objectName) }];

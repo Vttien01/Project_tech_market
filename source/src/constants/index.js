@@ -109,7 +109,7 @@ export const STATE_COMPLETED_ADMIN = 4;
 export const STATE_NOPAID = false;
 export const STATE_PAIDED = true;
 
-export const DEFAULT_TABLE_ITEM_SIZE = 10;
+export const DEFAULT_TABLE_ITEM_SIZE = 20;
 export const DEFAULT_TABLE_PAGE_START = 0;
 
 export const VNPAY_METHOD = 2;
