@@ -10,7 +10,7 @@ import { FormattedMessage, defineMessages } from 'react-intl';
 const messages = defineMessages({
     objectName: 'Yêu cầu',
 });
-const ListDetailsTable = ({ data, loading, handleEditList, handleDeleteList }) => {
+const ListVariantTable = ({ data, loading, handleEditList, handleDeleteList }) => {
     const translate = useTranslate();
     const columns = [
         { dataIndex: 'color', title: <FormattedMessage defaultMessage="Màu sắc" />, width: '100px', align: 'center' },
@@ -30,7 +30,12 @@ const ListDetailsTable = ({ data, loading, handleEditList, handleDeleteList }) =
                 return <div>{formattedValue}</div>;
             },
         },
-        { dataIndex: 'totalStock', title: <FormattedMessage defaultMessage="Hàng trong kho" />, width: '100px', align: 'center' },
+        {
+            dataIndex: 'totalStock',
+            title: <FormattedMessage defaultMessage="Hàng trong kho" />,
+            width: '100px',
+            align: 'center',
+        },
         {
             title: <FormattedMessage defaultMessage="Hành động" />,
             align: 'center',
@@ -71,4 +76,4 @@ const ListDetailsTable = ({ data, loading, handleEditList, handleDeleteList }) =
     return <BaseTable rowKey={(record) => record.index} columns={columns} dataSource={data} loading={loading} />;
 };
 
-export default ListDetailsTable;
+export default ListVariantTable;

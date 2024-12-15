@@ -10,7 +10,7 @@ import { Card, Col, Modal, Row } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-const ListDetailsForm = ({ handleAddList, open, onCancel, data, isEditing, form, handleEditItemList }) => {
+const VariantModal = ({ handleAddList, open, onCancel, data, isEditing, form, handleEditItemList }) => {
     const translate = useTranslate();
     const statusValues = translate.formatKeys(statusOptions, ['label']);
 
@@ -102,4 +102,4 @@ const ListDetailsForm = ({ handleAddList, open, onCancel, data, isEditing, form,
     );
 };
 
-export default ListDetailsForm;
+export default VariantModal;

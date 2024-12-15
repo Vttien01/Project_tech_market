@@ -10,30 +10,47 @@ import useBasicForm from '@hooks/useBasicForm';
 import useDisclosure from '@hooks/useDisclosure';
 import useFetch from '@hooks/useFetch';
 import useTranslate from '@hooks/useTranslate';
-import { Button, Card, Col, Flex, Form, Modal, Row } from 'antd';
+import { Button, Card, Col, Flex, Form, Modal, Row, Spin } from 'antd';
 import Title from 'antd/es/typography/Title';
 import React, { useCallback, useEffect, useState } from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
-import ListDetailsForm from './ListDetailsForm';
-import ListDetailsTable from './ListDetailsTable';
+import VariantModal from './VariantModal';
+import ListVariantTable from './ListVariantTable';
 import RichTextField from '@components/common/form/RichTextField';
+import ListRelatedTable from './ListRelatedTable';
+import RelatedModal from './RelatedModal';
 
 const messages = defineMessages({
     objectName: 'Sản phẩm',
     title: 'Bạn có xác nhận xoá yêu cầu này?',
+    titleRelated: 'Bạn có xác nhận xoá sản phẩm liên quan này?',
     ok: 'Đồng ý',
     cancel: 'Huỷ',
 });
-const ProductForm = ({ isEditing, formId, actions, dataDetail, onSubmit, setIsChangedFormValues, handleFocus }) => {
+const ProductForm = ({
+    isEditing,
+    formId,
+    actions,
+    dataDetail,
+    onSubmit,
+    setIsChangedFormValues,
+    listProduct,
+    loadingGetList,
+    listProductRelated,
+    loadingGetListRelated,
+}) => {
     const translate = useTranslate();
     const statusValues = translate.formatKeys(statusOptions, ['label']);
     const [listData, setListData] = useState([]);
     const [item, setItem] = useState(null);
     const [openedDetailsModal, handlerDetailsModal] = useDisclosure(false);
+    const [openedRelatedModal, handlerRelatedModal] = useDisclosure(false);
     const [form] = Form.useForm();
     const [imageUrl, setImageUrl] = useState(null);
     const [bannerUrl, setBannerUrl] = useState(null);
     const { execute: executeUpFile } = useFetch(apiConfig.file.upload);
+    const [selectedRows, setSelectedRows] = useState([]);
+    const [selectedRowIds, setSelectedRowIds] = useState([]);
     const {
         form: formRequest,
         mixinFuncs,
@@ -44,19 +61,26 @@ const ProductForm = ({ isEditing, formId, actions, dataDetail, onSubmit, setIsCh
     });
 
     const handleSubmit = (values) => {
-        console.log(listData);
         return mixinFuncs.handleSubmit({
             ...values,
             image: imageUrl,
             listDetails: listData.map((item) => ({
                 ...item,
             })),
+            relatedProducts: selectedRowIds,
         });
     };
 
     useEffect(() => {
+        if (listProductRelated != null && listProductRelated?.length > 0) {
+            setSelectedRows(listProductRelated);
+            const excludeIds = listProductRelated.map(({ id }) => id);
+            setSelectedRowIds(excludeIds);
+        }
+    }, [listProductRelated]);
+
+    useEffect(() => {
         if (dataDetail?.listProductVariant) {
-            console.log(dataDetail.listProductVariant);
             setListData(
                 dataDetail?.listProductVariant.map((item, index) => ({
                     ...item,
@@ -73,32 +97,10 @@ const ProductForm = ({ isEditing, formId, actions, dataDetail, onSubmit, setIsCh
             });
             setImageUrl(dataDetail.image);
         }
+        if (dataDetail?.relatedProducts) {
+            setSelectedRows(dataDetail?.relatedProducts);
+        }
     }, [dataDetail]);
-    const {
-        data: category,
-        // loading: getcompanyLoading,
-        execute: executescategorys,
-    } = useFetch(apiConfig.category.autocomplete, {
-        immediate: true,
-        mappingData: ({ data }) =>
-            data.content.map((item) => ({
-                value: item.id,
-                label: item.name,
-            })),
-    });
-
-    const {
-        data: brand,
-        // loading: getcompanyLoading,
-        execute: executesbrands,
-    } = useFetch(apiConfig.brand.autocomplete, {
-        immediate: true,
-        mappingData: ({ data }) =>
-            data.content.map((item) => ({
-                value: item.id,
-                label: item.name,
-            })),
-    });
 
     const handleAddList = useCallback((item) => {
         setListData((pre) => {
@@ -136,6 +138,20 @@ const ProductForm = ({ isEditing, formId, actions, dataDetail, onSubmit, setIsCh
         });
     }, []);
 
+    const handleDeleteRelatedList = useCallback((index) => {
+        Modal.confirm({
+            title: translate.formatMessage(messages.titleRelated),
+            content: '',
+            okText: translate.formatMessage(messages.ok),
+            cancelText: translate.formatMessage(messages.cancel),
+            onOk: () => {
+                setSelectedRows((pre) => pre.filter((_) => _.id !== index));
+                setSelectedRowIds((pre) => pre.filter((_) => _ !== index));
+                setIsChangedFormValues(true);
+            },
+        });
+    }, []);
+
     const uploadFile = (file, onSuccess, onError) => {
         executeUpFile({
             data: {
@@ -143,7 +159,6 @@ const ProductForm = ({ isEditing, formId, actions, dataDetail, onSubmit, setIsCh
                 file: file,
             },
             onCompleted: (response) => {
-                console.log(response);
                 if (response.result === true) {
                     onSuccess();
                     setImageUrl(response.data.filePath);
@@ -155,13 +170,12 @@ const ProductForm = ({ isEditing, formId, actions, dataDetail, onSubmit, setIsCh
             },
         });
     };
-
     return (
         <div>
             <BaseForm formId={formId} onFinish={handleSubmit} form={formRequest} onValuesChange={onValuesChange}>
                 <Card>
                     <Col span={24} style={{ textAlign: 'right' }}>
-                        <ListDetailsForm
+                        <VariantModal
                             open={openedDetailsModal}
                             onCancel={() => handlerDetailsModal.close()}
                             data={item}
@@ -169,6 +183,19 @@ const ProductForm = ({ isEditing, formId, actions, dataDetail, onSubmit, setIsCh
                             handleAddList={handleAddList}
                             form={form}
                             handleEditItemList={handleEditItemList}
+                        />
+                        <RelatedModal
+                            open={openedRelatedModal}
+                            onCancel={() => handlerRelatedModal.close()}
+                            handleAddList={handleAddList}
+                            form={form}
+                            handleEditItemList={handleEditItemList}
+                            listProduct={listProduct}
+                            loading={loadingGetList}
+                            setSelectedRows={setSelectedRows}
+                            setSelectedRowIds={setSelectedRowIds}
+                            excludeIds={selectedRowIds || []}
+                            setIsChangedFormValues={setIsChangedFormValues}
                         />
                     </Col>
                     <Row>
@@ -232,14 +259,6 @@ const ProductForm = ({ isEditing, formId, actions, dataDetail, onSubmit, setIsCh
                             />
                         </Col>
                         <Col span={12}>
-                            {/* <NumericField
-                                label={<FormattedMessage defaultMessage="Giảm giá" />}
-                                name="saleOff"
-                                min={0}
-                                max={100}
-                                formatter={(value) => `${value}%`}
-                                parser={(value) => value.replace('%', '')}
-                            /> */}
                             <TextField label={<FormattedMessage defaultMessage="Giảm giá" />} name="saleOff" />
                         </Col>
                     </Row>
@@ -269,11 +288,33 @@ const ProductForm = ({ isEditing, formId, actions, dataDetail, onSubmit, setIsCh
                             </Button>
                         </Flex>
 
-                        <ListDetailsTable
+                        <ListVariantTable
                             data={listData}
                             handleEditList={handleEditList}
                             handleDeleteList={handleDeleteList}
                         />
+                    </Card>
+                    <Card bordered style={{ marginBottom: '1rem' }}>
+                        <Flex align="center" justify="space-between" style={{ marginBottom: '1rem' }}>
+                            <Title level={4}>
+                                <FormattedMessage defaultMessage="Danh sách sản phẩm liên quan" />
+                            </Title>
+                            <Button
+                                type="primary"
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    setItem(null);
+                                    handlerRelatedModal.open();
+                                    form.resetFields();
+                                }}
+                                style={{ width: '150px' }}
+                            >
+                                <PlusOutlined /> <FormattedMessage defaultMessage="Thêm sản phẩm" />
+                            </Button>
+                        </Flex>
+                        <Spin spinning={loadingGetList || loadingGetListRelated}>
+                            <ListRelatedTable data={selectedRows} handleDeleteRelatedList={handleDeleteRelatedList} />
+                        </Spin>
                     </Card>
                     <div className="footer-card-form">{actions}</div>
                 </Card>

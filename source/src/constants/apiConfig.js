@@ -402,6 +402,12 @@ const apiConfig = {
             headers: baseHeader,
             isRequiredTenantId: true,
         },
+        getListRelated: {
+            baseURL: `${apiUrl}v1/product/get-product-related/:id`,
+            method: 'GET',
+            headers: baseHeader,
+            isRequiredTenantId: true,
+        },
         getById: {
             baseURL: `${apiUrl}v1/product/get/:id`,
             method: 'GET',

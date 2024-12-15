@@ -4,10 +4,11 @@ import useAuth from '@hooks/useAuth';
 import useSaveBase from '@hooks/useSaveBase';
 import useTranslate from '@hooks/useTranslate';
 import routes from '@routes';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { defineMessages } from 'react-intl';
-import { generatePath, useParams } from 'react-router-dom';
+import { generatePath, useLocation, useParams } from 'react-router-dom';
 import ProductForm from './ProductForm';
+import useFetch from '@hooks/useFetch';
 
 const message = defineMessages({
     objectName: 'Product',
@@ -17,6 +18,32 @@ const ProductSavePage = () => {
     const CompanyRequestId = useParams();
     const translate = useTranslate();
     const { profile } = useAuth();
+    const { id } = useParams();
+    const { pathname: pagePath, search } = useLocation();
+    const {
+        data: listProduct,
+        execute: executeGetList,
+        loading: loadingGetList,
+    } = useFetch(apiConfig.product.getList, {
+        immediate: false,
+        mappingData: ({ data }) => data.content,
+    });
+    const {
+        data: listProductRelated,
+        execute: executeGetListRelated,
+        loading: loadingGetListRelated,
+    } = useFetch(apiConfig.product.getListRelated, {
+        immediate: false,
+        mappingData: ({ data }) => data,
+    });
+    useEffect(() => {
+        executeGetList();
+        executeGetListRelated({
+            pathParams: {
+                id,
+            },
+        });
+    }, [id]);
     const { detail, onSave, mixinFuncs, setIsChangedFormValues, isEditing, errors, loading, title } = useSaveBase({
         apiConfig: {
             getById: apiConfig.product.getById,
@@ -24,7 +51,7 @@ const ProductSavePage = () => {
             update: apiConfig.product.update,
         },
         options: {
-            getListUrl: routes.productListPage.path,
+            getListUrl: routes.productListPage.path + search,
             objectName: translate.formatMessage(message.objectName),
         },
         override: (funcs) => {
@@ -45,7 +72,7 @@ const ProductSavePage = () => {
             routes={[
                 {
                     breadcrumbName: translate.formatMessage(message.objectName),
-                    path: generatePath(routes.productListPage.path),
+                    path: generatePath(routes.productListPage.path + search),
                 },
                 { breadcrumbName: title },
             ]}
@@ -59,6 +86,10 @@ const ProductSavePage = () => {
                 setIsChangedFormValues={setIsChangedFormValues}
                 isError={errors}
                 isEditing={isEditing}
+                loadingGetList={loadingGetList}
+                listProduct={listProduct}
+                listProductRelated={listProductRelated}
+                loadingGetListRelated={loadingGetListRelated}
             />
         </PageWrapper>
     );

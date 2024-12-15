@@ -1,0 +1,44 @@
+@import '@assets/scss/global';
+
+.video-list-page {
+    button.add-video-btn {
+        border-color: #2974a5;
+        color: #2974a5;
+    }
+
+    #add-new-video:hover {
+        border-color: #498cb3;
+        color: #498cb3;
+    }
+
+    .search-video {
+        border-color: #2974a5;
+    }
+
+    .action-btn-unselect {
+        :hover {
+            color: #163760;
+        }
+    }
+
+    .action-btn-select {
+        :hover {
+            color: #498cb3;
+        }
+    }
+}
+
+.custom-label-datepicker {
+    display: inline-block;
+    width: 30px;
+    line-height: 32px;
+    text-align: center;
+    margin-right: 4px;
+    margin-left: 5px;
+}
+
+.custom-date-field {
+    display: inline-block;
+    min-width: 181px;
+    max-width: 200px;
+}

@@ -24,12 +24,13 @@ const message = defineMessages({
 const ProductListPage = () => {
     const translate = useTranslate();
     const statusValues = translate.formatKeys(statusOptions, ['label']);
-    const { pathname: pagePath } = useLocation();
+    const { pathname: pagePath, search } = useLocation();
     const queryParameters = new URLSearchParams(window.location.search);
     const [companyOptions, setCompanyOptions] = useState([]);
     const navigate = useNavigate();
     const { profile } = useAuth();
     const companyId = profile.id;
+    console.log(search);
 
     const { data, mixinFuncs, loading, pagination, queryFiter } = useListBase({
         apiConfig: apiConfig.product,
@@ -47,11 +48,11 @@ const ProductListPage = () => {
                 }
             };
             funcs.getCreateLink = () => {
-                return `${pagePath}/create`;
+                return `${pagePath}/create${search}`;
             };
-            // funcs.getItemDetailLink = (dataRow) => {
-            //     return `${pagePath}/${dataRow.id}?companyId=${profile.id}`;
-            // };
+            funcs.getItemDetailLink = (dataRow) => {
+                return `${pagePath}/${dataRow.id}${search}`;
+            };
             funcs.additionalActionColumnButtons = () => ({
                 edit: (item) => (
                     <Button
