@@ -36,14 +36,6 @@ const ProductSavePage = () => {
         immediate: false,
         mappingData: ({ data }) => data,
     });
-    useEffect(() => {
-        executeGetList();
-        executeGetListRelated({
-            pathParams: {
-                id,
-            },
-        });
-    }, [id]);
     const { detail, onSave, mixinFuncs, setIsChangedFormValues, isEditing, errors, loading, title } = useSaveBase({
         apiConfig: {
             getById: apiConfig.product.getById,
@@ -66,6 +58,20 @@ const ProductSavePage = () => {
             };
         },
     });
+    useEffect(() => {
+        if (detail) {
+            executeGetList({
+                params: {
+                    size: 1000,
+                },
+            });
+            executeGetListRelated({
+                pathParams: {
+                    id,
+                },
+            });
+        }
+    }, [id, detail]);
     return (
         <PageWrapper
             loading={loading}

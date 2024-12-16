@@ -30,7 +30,6 @@ const ProductListPage = () => {
     const navigate = useNavigate();
     const { profile } = useAuth();
     const companyId = profile.id;
-    console.log(search);
 
     const { data, mixinFuncs, loading, pagination, queryFiter } = useListBase({
         apiConfig: apiConfig.product,
@@ -124,6 +123,38 @@ const ProductListPage = () => {
         {
             key: 'name',
             placeholder: translate.formatMessage(message.product),
+        },
+        {
+            key: 'categoryId',
+            placeholder: translate.formatMessage(commonMessage.category),
+            type: FieldTypes.AUTOCOMPLETE,
+            apiConfig: apiConfig.category.autocomplete,
+            mappingOptions: (item) => ({
+                value: item.id,
+                label: item.name,
+            }),
+            colSpan: 6,
+            searchParams: (text) => {
+                mixinFuncs.setQueryParams({ name: text });
+                return { name: text };
+            },
+            submitOnChanged: true,
+        },
+        {
+            key: 'brandId',
+            placeholder: translate.formatMessage(commonMessage.brand),
+            type: FieldTypes.AUTOCOMPLETE,
+            apiConfig: apiConfig.brand.autocomplete,
+            mappingOptions: (item) => ({
+                value: item.id,
+                label: item.name,
+            }),
+            colSpan: 6,
+            searchParams: (text) => {
+                mixinFuncs.setQueryParams({ name: text });
+                return { name: text };
+            },
+            submitOnChanged: true,
         },
         {
             key: 'status',
