@@ -133,7 +133,6 @@ const ProductListPage = () => {
                 value: item.id,
                 label: item.name,
             }),
-            colSpan: 6,
             searchParams: (text) => {
                 mixinFuncs.setQueryParams({ name: text });
                 return { name: text };
@@ -149,7 +148,6 @@ const ProductListPage = () => {
                 value: item.id,
                 label: item.name,
             }),
-            colSpan: 6,
             searchParams: (text) => {
                 mixinFuncs.setQueryParams({ name: text });
                 return { name: text };
