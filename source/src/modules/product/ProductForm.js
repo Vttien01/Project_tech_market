@@ -20,6 +20,7 @@ import RichTextField from '@components/common/form/RichTextField';
 import ListRelatedTable from './ListRelatedTable';
 import RelatedModal from './RelatedModal';
 import { getImageUrl } from '@utils';
+import NumericField from '@components/common/form/NumericField';
 
 const messages = defineMessages({
     objectName: 'Sản phẩm',
@@ -254,10 +255,12 @@ const ProductForm = ({
                     </Row>
                     <Row gutter={16}>
                         <Col span={12}>
-                            <TextField
+                            <NumericField
                                 label={<FormattedMessage defaultMessage="Giá sản phẩm" />}
                                 name="price"
                                 required
+                                min={1000}
+                                addonAfter={'đ'}
                             />
                         </Col>
                         <Col span={12}>

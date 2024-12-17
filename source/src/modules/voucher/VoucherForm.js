@@ -50,12 +50,6 @@ const VoucherForm = (props) => {
         }
         return Promise.resolve();
     };
-    const initialRules = [
-        {
-            required: true,
-            message: 'Vui lòng chọn ngày bắt đầu',
-        },
-    ];
     useEffect(() => {
         if (dataDetail) {
             form.setFieldsValue({
@@ -76,12 +70,23 @@ const VoucherForm = (props) => {
                     </Col>
                     <Col span={12}>
                         <NumericField
+                            label={<FormattedMessage defaultMessage="Giá giảm tối đa" />}
+                            name="priceMax"
+                            required
+                            min={1000}
+                            defaultValue={1000}
+                            addonAfter={'đ'}
+                        />
+                    </Col>
+                    <Col span={12}>
+                        <NumericField
                             label={<FormattedMessage defaultMessage="Phần trăm giảm" />}
                             name="percent"
                             required
                             min={0}
                             max={100}
                             defaultValue={0}
+                            addonAfter={'%'}
                         />
                     </Col>
                     <Col span={12}>

@@ -58,6 +58,7 @@ const VariantModal = ({ handleAddList, open, onCancel, data, isEditing, form, ha
             open={open}
             onCancel={onCancel}
             onOk={() => form.submit()}
+            width={'1000px'}
         >
             <BaseForm form={form} onFinish={handleFinish} size="100%">
                 <Card>
@@ -77,16 +78,22 @@ const VariantModal = ({ handleAddList, open, onCancel, data, isEditing, form, ha
                             <TextField label={<FormattedMessage defaultMessage="Màu sắc" />} name="color" required />
                         </Col>
                         <Col span={12}>
-                            <TextField
+                            <NumericField
                                 label={<FormattedMessage defaultMessage="Giá sản phẩm" />}
                                 name="price"
                                 required
+                                min={1000}
+                                addonAfter={'đ'}
                             />
                         </Col>
                     </Row>
                     <Row gutter={16}>
                         <Col span={12}>
-                            <NumericField label={<FormattedMessage defaultMessage="Số lượng" />} name="totalStock" />
+                            <NumericField
+                                label={<FormattedMessage defaultMessage="Số lượng" />}
+                                name="totalStock"
+                                min={1}
+                            />
                         </Col>
                         <Col span={12}>
                             <SelectField
