@@ -4,6 +4,10 @@ const baseHeader = {
     'Content-Type': 'application/json',
 };
 
+const baseHeaderBlod = {
+    'Content-Type': 'blod/form-data',
+};
+
 const multipartFormHeader = {
     'Content-Type': 'multipart/form-data',
 };
@@ -706,7 +710,8 @@ const apiConfig = {
         getOrders: {
             baseURL: `${apiUrl}v1/reports/order`,
             method: 'GET',
-            headers: baseHeader,
+            // responseType: 'blob',
+            headers: baseHeaderBlod,
             isRequiredTenantId: true,
         },
     },

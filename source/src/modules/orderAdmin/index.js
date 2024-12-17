@@ -12,6 +12,7 @@ import {
     STATE_CANCELED,
     STATE_CONFIRMED,
     STATE_PENDING,
+    storageKeys,
 } from '@constants';
 import apiConfig from '@constants/apiConfig';
 import { FieldTypes } from '@constants/formConfig';
@@ -21,11 +22,14 @@ import useListBase from '@hooks/useListBase';
 import useTranslate from '@hooks/useTranslate';
 import routes from '@routes';
 import { showErrorMessage, showSucsessMessage, showWarningMessage } from '@services/notifyService';
-import { convertUtcToLocalTime, formatDateString, formatMoney } from '@utils';
+import { getCacheAccessToken } from '@services/userService';
+import { convertToCamelCase, convertUtcToLocalTime, formatDateString, formatMoney } from '@utils';
+import { getData } from '@utils/localStorage';
 import { Button, DatePicker, Flex, Modal, Tag } from 'antd';
+import axios from 'axios';
 import dayjs from 'dayjs';
-import { values } from 'lodash';
-import React from 'react';
+import { get, values } from 'lodash';
+import React, { useState } from 'react';
 import { defineMessages } from 'react-intl';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -46,7 +50,11 @@ const OrderAdminPage = ({ state }) => {
     const orderStatetateAdmin = translate.formatKeys(orderStateValue, ['label']);
     const isPaidValues = translate.formatKeys(paidValues, ['label']);
     const { pathname: pagePath, search } = useLocation();
+    const [loadingExport, setLoadingExport] = useState(false);
     const { execute: executeUpdateOrder, loading: loadingUpdateOrder } = useFetch(apiConfig.order.update, {
+        immediate: false,
+    });
+    const { execute: executeExportExcel, loading: loadingExportExcel } = useFetch(apiConfig.report.getOrders, {
         immediate: false,
     });
 
@@ -217,9 +225,6 @@ const OrderAdminPage = ({ state }) => {
         ),
     ];
 
-    const handleSearch = (date, dateString) => {
-        console.log(date);
-    };
     const paidOptions = [
         { value: 0, label: 'Chưa thanh toán' },
         { value: 1, label: 'Đã thanh toán' },
@@ -233,6 +238,17 @@ const OrderAdminPage = ({ state }) => {
         {
             key: 'userId',
             placeholder: 'Mã người dùng',
+            type: FieldTypes.AUTOCOMPLETE,
+            apiConfig: apiConfig.user.getList,
+            mappingOptions: (item) => ({
+                value: item.id,
+                label: item.account.fullName,
+            }),
+            searchParams: (text) => {
+                // mixinFuncs.setQueryParams({ name: text });
+                return { fullName: text };
+            },
+            submitOnChanged: true,
         },
         {
             key: 'isPaid',
@@ -260,13 +276,46 @@ const OrderAdminPage = ({ state }) => {
     const handleFetchDetail = (id) => {
         navigate(routes.DetailOrderAdmin.path + `?state=${state}&orderId=${id}`);
     };
+    const userAccessToken = getCacheAccessToken();
+
+    const handleExportExcel = (id) => {
+        setLoadingExport(true);
+        axios({
+            url: `${apiConfig.report.getOrders.baseURL}${search}`,
+            method: 'GET',
+            responseType: 'blob',
+            // withCredentials: true,
+            headers: {
+                Authorization: `Bearer ${userAccessToken}`, // Sử dụng token từ state
+            },
+        })
+            .then((response) => {
+                const date = new Date();
+
+                const excelBlob = new Blob([response.data], {
+                    type: response.headers['content-type'],
+                });
+
+                const link = document.createElement('a');
+
+                link.href = URL.createObjectURL(excelBlob);
+                link.download = `Danh_sach_don_hang_${formatDateString(date)}.xlsx`;
+                link.click();
+                setLoadingExport(false);
+                showSucsessMessage('Tạo danh sách đơn hàng thành công!');
+            })
+            .catch((error) => {
+                setLoadingExport(false);
+                showErrorMessage('Tạo danh sách đơn hàng thất bại!');
+            });
+    };
 
     return (
         <ListPage
             searchForm={mixinFuncs.renderSearchForm({ fields: searchFields, initialValues: queryFilter })}
             actionBar={
                 <Flex justify="end">
-                    <Button type="primary" size="large" loading={true}>
+                    <Button type="primary" size="large" loading={loadingExport} onClick={() => handleExportExcel()}>
                         Export to Excel
                     </Button>
                 </Flex>

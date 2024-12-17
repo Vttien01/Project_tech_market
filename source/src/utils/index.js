@@ -267,3 +267,16 @@ export const formatDateToZeroTime = (date) => {
 export const formatDateString = (dateString, formatDate = DATE_SHORT_MONTH_FORMAT) => {
     return dayjs(dateString).format(formatDate);
 };
+
+export function convertToCamelCase(str) {
+    str = str
+        .normalize('NFD') // chuyển chuỗi sang unicode tổ hợp
+        .replace(/[\u0300-\u036f]/g, ''); // xóa các ký tự dấu sau khi tách tổ hợp
+
+    str = str.replace(/[đĐ]/g, 'd');
+    str = str.replace(/(^\w{1})|(\s+\w{1})/g, (letter) => letter.toUpperCase());
+    str = str.replace(/(\s+)/g, '');
+
+    // return
+    return str;
+}

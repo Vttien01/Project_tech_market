@@ -125,6 +125,7 @@ const VoucherForm = (props) => {
                             name="content"
                             type="textarea"
                             style={{ height: 300 }}
+                            required
                         />
                     </Col>
                 </Row>
