@@ -1,5 +1,6 @@
 import qs from 'query-string';
 import {
+    AppConstants,
     CurrentcyPositions,
     DATE_FORMAT_DISPLAY,
     DATE_SHORT_MONTH_FORMAT,
@@ -279,4 +280,12 @@ export function convertToCamelCase(str) {
 
     // return
     return str;
+}
+
+export function getImageUrl(image) {
+    const cloudinaryPrefix = 'http://res.cloudinary.com/';
+    if (image?.includes(cloudinaryPrefix)) {
+        return image; // Trả về image nếu chứa cloudinaryPrefix
+    }
+    return `${AppConstants.contentRootUrl}${image}`; // Gắn thêm tiền tố
 }

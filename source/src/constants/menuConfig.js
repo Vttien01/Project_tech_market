@@ -24,12 +24,12 @@ export const navMenuConfig = [
         key: 'user-management',
         icon: <UsergroupAddOutlined />,
         children: [
-            {
-                label: <FormattedMessage defaultMessage="Nhân viên" />,
-                key: 'admin',
-                path: routes.adminsListPage.path,
-                permission: [apiConfig.account.getList.baseURL],
-            },
+            // {
+            //     label: <FormattedMessage defaultMessage="Nhân viên" />,
+            //     key: 'admin',
+            //     path: routes.adminsListPage.path,
+            //     permission: [apiConfig.account.getList.baseURL],
+            // },
             {
                 label: <FormattedMessage defaultMessage="Người dùng" />,
                 key: 'user',

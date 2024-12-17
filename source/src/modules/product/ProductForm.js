@@ -19,6 +19,7 @@ import ListVariantTable from './ListVariantTable';
 import RichTextField from '@components/common/form/RichTextField';
 import ListRelatedTable from './ListRelatedTable';
 import RelatedModal from './RelatedModal';
+import { getImageUrl } from '@utils';
 
 const messages = defineMessages({
     objectName: 'Sản phẩm',
@@ -66,6 +67,7 @@ const ProductForm = ({
             image: imageUrl,
             listDetails: listData.map((item) => ({
                 ...item,
+                file: [item.image],
             })),
             relatedProducts: selectedRowIds,
         });
@@ -95,7 +97,7 @@ const ProductForm = ({
                 brandId: dataDetail?.brandDto?.id,
                 categoryId: dataDetail?.categoryDto?.id,
             });
-            setImageUrl(dataDetail.image);
+            setImageUrl(getImageUrl(dataDetail.image));
         }
         if (dataDetail?.relatedProducts) {
             setSelectedRows(dataDetail?.relatedProducts);

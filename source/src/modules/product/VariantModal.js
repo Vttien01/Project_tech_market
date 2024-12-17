@@ -1,5 +1,6 @@
 import { BaseForm } from '@components/common/form/BaseForm';
 import CropImageField from '@components/common/form/CropImageField';
+import NumericField from '@components/common/form/NumericField';
 import SelectField from '@components/common/form/SelectField';
 import TextField from '@components/common/form/TextField';
 import apiConfig from '@constants/apiConfig';
@@ -85,7 +86,7 @@ const VariantModal = ({ handleAddList, open, onCancel, data, isEditing, form, ha
                     </Row>
                     <Row gutter={16}>
                         <Col span={12}>
-                            <TextField label={<FormattedMessage defaultMessage="Số lượng" />} name="totalStock" />
+                            <NumericField label={<FormattedMessage defaultMessage="Số lượng" />} name="totalStock" />
                         </Col>
                         <Col span={12}>
                             <SelectField
