@@ -211,7 +211,7 @@ const OrderAdminPage = ({ state }) => {
         {
             title: 'Tổng tiền',
             name: 'totalMoney',
-            align: 'center',
+            align: 'right',
             render: (record) => {
                 const arrayVoucher = [
                     {
@@ -228,9 +228,9 @@ const OrderAdminPage = ({ state }) => {
                     },
                 ];
                 return (
-                    <Flex align="center" justify="center" gap={8}>
+                    <Flex align="center" justify="end" gap={8}>
                         <div>{changeMoney(record?.totalMoney)}</div>
-                        {record?.totalPriceVoucher && (
+                        {
                             <Popover
                                 trigger={'hover'}
                                 title={
@@ -257,18 +257,12 @@ const OrderAdminPage = ({ state }) => {
                                     width: 280,
                                     background: 'white',
                                     color: 'black',
-                                    // position: 'absolute',
-                                    // right: -9,
-                                    // top: -100,
-                                    // padding: 0,
-                                    // zIndex: 1000,
-                                    // marginRight: 0,
                                 }}
                                 className={styles.popover}
                             >
                                 <ExclamationCircleOutlined style={{ fontSize: 20 }} />
                             </Popover>
-                        )}
+                        }
                     </Flex>
                 );
             },
