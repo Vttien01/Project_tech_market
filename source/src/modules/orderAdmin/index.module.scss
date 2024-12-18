@@ -1,0 +1,52 @@
+.list {
+    margin-top: 40px;
+    display: flex;
+    gap: 25px 20px;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+}
+
+.role {
+    background-color: #fafafa;
+    border: 1px solid #d9d9d9;
+    border-radius: 2px;
+    text-align: center;
+}
+
+.detail {
+    width: max-content;
+    // overflow-y: auto;
+    white-space: nowrap;
+    overflow-y: auto;
+    margin-top: 2px;
+    // text-overflow: ellipsis;
+}
+.checkSum {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 200px;
+}
+.tooltip {
+    // white-space: nowrap;
+    // overflow: hidden;
+    // text-overflow: ellipsis;
+    // width: 800px;
+    // background: white;
+    // color: black ;
+    // white-space: nowrap;
+    overflow-x: auto;
+    overflow-y: auto;
+    // text-overflow: ellipsis;
+    height: 200px;
+}
+
+.popover {
+    :global .ant-popover-content {
+        padding: 0 !important;
+    }
+}
+
+.externalNormal {
+    font-size: 20;
+}

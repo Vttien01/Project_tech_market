@@ -1,4 +1,4 @@
-import { CheckOutlined, DeleteOutlined } from '@ant-design/icons';
+import { CheckOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { BaseTooltip } from '@components/common/form/BaseTooltip';
 import DatePickerField from '@components/common/form/DatePickerField';
 import ListPage from '@components/common/layout/ListPage';
@@ -25,13 +25,14 @@ import { showErrorMessage, showSucsessMessage, showWarningMessage } from '@servi
 import { getCacheAccessToken } from '@services/userService';
 import { convertToCamelCase, convertUtcToLocalTime, formatDateString, formatMoney } from '@utils';
 import { getData } from '@utils/localStorage';
-import { Button, DatePicker, Flex, Modal, Tag } from 'antd';
+import { Button, DatePicker, Flex, Modal, Popover, Tag, Tooltip } from 'antd';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { get, values } from 'lodash';
 import React, { useState } from 'react';
 import { defineMessages } from 'react-intl';
 import { useLocation, useNavigate } from 'react-router-dom';
+import styles from './index.module.scss';
 
 const message = defineMessages({
     objectName: 'Đơn hàng',
@@ -128,6 +129,17 @@ const OrderAdminPage = ({ state }) => {
         });
     };
 
+    const changeMoney = (value) => {
+        if (!value) return '0đ';
+        return formatMoney(value, {
+            groupSeparator: ',',
+            decimalSeparator: '.',
+            currentcy: 'đ',
+            currentcyPosition: 'BACK',
+            currentDecimal: '0',
+        });
+    };
+
     const columns = [
         {
             title: 'Mã đơn hàng',
@@ -198,20 +210,66 @@ const OrderAdminPage = ({ state }) => {
         },
         {
             title: 'Tổng tiền',
-            dataIndex: ['totalMoney'],
             name: 'totalMoney',
             align: 'center',
-            render: (value) => {
+            render: (record) => {
+                const arrayVoucher = [
+                    {
+                        name: 'Tổng phụ',
+                        value: record?.originalTotal,
+                    },
+                    {
+                        name: 'Giảm giá sản phẩm',
+                        value: record?.totalPriceSaleOff,
+                    },
+                    {
+                        name: 'Giảm giá voucher',
+                        value: record?.totalPriceVoucher,
+                    },
+                ];
                 return (
-                    <span>
-                        {formatMoney(value, {
-                            groupSeparator: ',',
-                            decimalSeparator: '.',
-                            currentcy: 'đ',
-                            currentcyPosition: 'BACK',
-                            currentDecimal: '0',
-                        })}
-                    </span>
+                    <Flex align="center" justify="center" gap={8}>
+                        <div>{changeMoney(record?.totalMoney)}</div>
+                        {record?.totalPriceVoucher && (
+                            <Popover
+                                trigger={'hover'}
+                                title={
+                                    <Flex vertical gap={'small'} style={{ margin: 0 }}>
+                                        <div
+                                            style={{
+                                                fontWeight: 600,
+                                                fontFamily: 'Poppins',
+                                                borderBottom: 'solid 1px #bfbfbf',
+                                            }}
+                                        >
+                                            <span style={{ marginLeft: 10 }}>Chi tiết giảm giá voucher</span>
+                                        </div>
+                                        {arrayVoucher.map((item, index) => (
+                                            <Flex justify="space-between" key={index}>
+                                                <span style={{ fontWeight: 600 }}>{item.name}: </span>
+                                                <span style={{ fontWeight: 400 }}>{changeMoney(item.value)}</span>
+                                            </Flex>
+                                        ))}
+                                    </Flex>
+                                }
+                                placement={'bottom'}
+                                overlayInnerStyle={{
+                                    width: 280,
+                                    background: 'white',
+                                    color: 'black',
+                                    // position: 'absolute',
+                                    // right: -9,
+                                    // top: -100,
+                                    // padding: 0,
+                                    // zIndex: 1000,
+                                    // marginRight: 0,
+                                }}
+                                className={styles.popover}
+                            >
+                                <ExclamationCircleOutlined style={{ fontSize: 20 }} />
+                            </Popover>
+                        )}
+                    </Flex>
                 );
             },
         },
