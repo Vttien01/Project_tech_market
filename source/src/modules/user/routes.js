@@ -14,9 +14,9 @@ const paths = {
     adminsLeaderSavePage: '/admins-leader/:id',
     userListPage: '/user',
     userSavePage: '/user/:id',
-    addressListPage:'/user/address',
+    addressListPage: '/user/address',
     // personInfo:'/profile-user',
-    addressSavePage: '/profile-user/address/:id',
+    addressSavePage: '/user/address/:id',
 };
 export default {
     adminsListPage: {
@@ -131,15 +131,13 @@ export default {
         path: paths.addressSavePage,
         component: AddressSavePage,
         separateCheck: true,
-        auth: null,
+        auth: true,
         permission: [apiConfig.address.create.baseURL, apiConfig.address.update.baseURL],
         pageOptions: {
             objectName: commonMessage.address,
-            listPageUrl: "/profile-user",
-            renderBreadcrumbs: ( t, title = {}) => {
-                return [
-                    { breadcrumbName: title },
-                ];
+            listPageUrl: '/user/address',
+            renderBreadcrumbs: (t, title = {}) => {
+                return [{ breadcrumbName: title }];
             },
         },
     },

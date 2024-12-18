@@ -93,15 +93,14 @@ const AddressForm = (props) => {
         setImageUrl(dataDetail.avatar);
     }, [dataDetail]);
     return (
-        <Card className="card-form" bordered={false}>
-            <BaseForm
-                id={formId}
-                onFinish={handleSubmit}
-                form={form}
-                onValuesChange={onValuesChange}
-                style={{ width: '90%' }}
-                labelCol={{ span: 9 }}
-            >
+        <BaseForm
+            id={formId}
+            onFinish={handleSubmit}
+            form={form}
+            onValuesChange={onValuesChange}
+            labelCol={{ span: 9 }}
+        >
+            <Card className="card-form" bordered={false}>
                 <Row gutter={16}>
                     <Col span={12}>
                         <TextField label={translate.formatMessage(commonMessage.Name)} name="name" />
@@ -151,8 +150,8 @@ const AddressForm = (props) => {
                     </Col>
                 </Row>
                 <div className="footer-card-form">{actions}</div>
-            </BaseForm>
-        </Card>
+            </Card>
+        </BaseForm>
     );
 };
 

@@ -51,26 +51,25 @@ const AddressSavePage = ({ pageOptions }) => {
     });
 
     return (
-        <div style={{ width: 1500, display: 'flex', justifyContent: 'center' }}>
-            <PageWrapper
-                loading={loading}
-                routes={[
-                    {
-                        breadcrumbName: 'Thông tin cá nhân',
-                        path: generatePath(routes.PersonInfo.path),
-                    },
-                    { breadcrumbName: 'Sửa địa chỉ' },
-                ]}>
-                <AddressForm
-                    setIsChangedFormValues={setIsChangedFormValues}
-                    dataDetail={detail ? detail : {}}
-                    formId={mixinFuncs.getFormId()}
-                    isEditing={isEditing}
-                    actions={mixinFuncs.renderActions()}
-                    onSubmit={onSave}
-                />
-            </PageWrapper>
-        </div>
+        <PageWrapper
+            loading={loading}
+            routes={[
+                {
+                    breadcrumbName: 'Thông tin cá nhân',
+                    path: generatePath(routes.PersonInfo.path),
+                },
+                { breadcrumbName: 'Sửa địa chỉ' },
+            ]}
+        >
+            <AddressForm
+                setIsChangedFormValues={setIsChangedFormValues}
+                dataDetail={detail ? detail : {}}
+                formId={mixinFuncs.getFormId()}
+                isEditing={isEditing}
+                actions={mixinFuncs.renderActions()}
+                onSubmit={onSave}
+            />
+        </PageWrapper>
     );
 };
 
