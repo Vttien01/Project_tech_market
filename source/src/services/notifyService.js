@@ -21,4 +21,11 @@ const showWarningMessage = (content, translate) => {
     });
 };
 
-export { showErrorMessage, showSucsessMessage, showWarningMessage };
+const showInforMessage = (content, translate) => {
+    notification.info({
+        message: translate?.t(`${translate.ns}:error`, 'Error Message') || 'Thông báo',
+        description: content,
+    });
+};
+
+export { showErrorMessage, showSucsessMessage, showWarningMessage, showInforMessage };

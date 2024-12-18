@@ -58,4 +58,5 @@ export const commonMessage = defineMessages({
     system: 'System',
     brand: 'Thương hiệu',
     voucher: 'Voucher',
+    memberShip: 'Khách hàng thân thiết',
 });

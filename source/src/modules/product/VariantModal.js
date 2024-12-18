@@ -92,7 +92,7 @@ const VariantModal = ({ handleAddList, open, onCancel, data, isEditing, form, ha
                             <NumericField
                                 label={<FormattedMessage defaultMessage="Số lượng" />}
                                 name="totalStock"
-                                min={1}
+                                min={0}
                             />
                         </Col>
                         <Col span={12}>

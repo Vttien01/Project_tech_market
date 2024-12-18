@@ -73,9 +73,9 @@ const routes = {
         auth: true,
         title: 'Profile page',
     },
-    listSettingsPage:{
-        path:'/settings',
-        component:SettingListPage,
+    listSettingsPage: {
+        path: '/settings',
+        component: SettingListPage,
         auth: true,
         title: 'Settings page',
     },
@@ -94,7 +94,6 @@ const routes = {
     ...OrderAdmin,
     ...ProfileUser,
     ...voucherRoutes,
-
 
     // keep this at last
     notFound: {
