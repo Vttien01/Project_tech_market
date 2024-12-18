@@ -6,7 +6,7 @@ import useTranslate from '@hooks/useTranslate';
 import { commonMessage } from '@locales/intl';
 import React from 'react';
 import { defineMessages } from 'react-intl';
-import { generatePath, useParams } from 'react-router-dom';
+import { generatePath, useLocation, useParams } from 'react-router-dom';
 import AddressForm from './AddressForm';
 import routes from '@routes';
 
@@ -19,6 +19,7 @@ const AddressSavePage = ({ pageOptions }) => {
     const { id } = useParams();
     const queryParameters = new URLSearchParams(window.location.search);
     const userId = queryParameters.get('userId');
+    const { search } = useLocation();
     const { detail, mixinFuncs, loading, onSave, setIsChangedFormValues, isEditing, title } = useSaveBase({
         apiConfig: {
             getById: apiConfig.address.getById,
@@ -55,10 +56,14 @@ const AddressSavePage = ({ pageOptions }) => {
             loading={loading}
             routes={[
                 {
-                    breadcrumbName: 'Thông tin cá nhân',
-                    path: generatePath(routes.PersonInfo.path),
+                    breadcrumbName: translate.formatMessage(commonMessage.user),
+                    path: generatePath(routes.userListPage.path),
                 },
-                { breadcrumbName: 'Sửa địa chỉ' },
+                {
+                    breadcrumbName: translate.formatMessage(commonMessage.address),
+                    path: generatePath(routes.addressListPage.path + search),
+                },
+                { breadcrumbName: title },
             ]}
         >
             <AddressForm
